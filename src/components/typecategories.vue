@@ -3,9 +3,8 @@
         <v-dialog v-model="dialog" persistent max-width="400px">
             <v-btn slot="activator" color="cyan accent-4" dark>เพิ่มประเภทของประเภทสถานประกอบการ</v-btn>
         <v-card>
-            <v-card-title>
-                <span class="headline">เพิ่มประเภทของประเภทสถานประกอบการ</span>
-            </v-card-title>
+            <v-card-title  class="font-weight-bold">เพิ่มประเภทของประเภทสถานประกอบการ</v-card-title>
+            <v-divider></v-divider>
             <v-card-text>
                 <v-container grid-list-md>
                     <v-layout wrap>
@@ -27,6 +26,7 @@
                         </v-layout>
                 </v-container>
             </v-card-text>
+            <v-divider></v-divider>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="red darken-4" flat @click="dialog = false">Close</v-btn>
@@ -42,9 +42,9 @@ const axios = require('axios')
   export default {
     created () {
         axios.get('http://localhost:5003/getcompanytype')
-        .then(res => {
-            this.types = res.data
-        })
+            .then(res => {
+                this.types = res.data
+            })
     },
     data: () => ({
         dialog: false,
@@ -68,6 +68,7 @@ const axios = require('axios')
                     CTCname: ''
                 }
                 this.dialog = false
+                this.$emit('AddCTC')
             })
         }
     }

@@ -1,161 +1,167 @@
 <template>
-  <v-layout row justify-center mt-3>  
-    <v-flex xs12 sm10 md8> 
-      <v-card>
-        <v-card-title>
-          <span class="headline">แก้ไขข้อมูลเจ้าของสถานประกอบการ</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12>
-                <v-text-field
-                    v-model="owner.Ocitizenid"
-                    label="รหัสบัตรประจำตัวประชาชน*"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-select
-                    v-model="owner.Prefixid"            
-                    :items="prefix"
-                    item-text="Prefixname"
-                    item-value="Prefixid"
-                    label="คำนำหน้า*"
-                    required
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field 
-                    v-model="owner.Ofirstname"
-                    label="ชื่อเจ้าของกิจการ*"
-                    :rules="nameRules"
-                    require="true"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field
-                    v-model="owner.Olastname"
-                    label="นามสกุล*"
-                    :rules="lnameRules"
-                    required="true"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field
-                    v-model="owner.Oage"
-                    label="อายุ*"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field
-                    v-model="owner.Onationality"
-                    label="สัญชาติ*"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field
-                    v-model="owner.Otel"
-                    label="เบอร์โทรศัพท์*"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field
-                    v-model="owner.Oemail"
-                    label="อีเมล์"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-text-field
-                    v-model="owner.Ohomeno"
-                    label="บ้านเลขที่*"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-text-field
-                    v-model="owner.Omoo"
-                    label="หมู่ที่"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-text-field
-                    v-model="owner.Osoi"
-                    label="ซอย"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-text-field
-                    v-model="owner.Oroad"
-                    label="ถนน"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-select
-                    v-model="owner.Pid"    
-                    :items="province"
-                    item-text="Pname_th"
-                    item-value="Pid"
-                    label="จังหวัด*"
-                    @change="selectedProvince"               
-                    required
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-select
-                    v-model="owner.Did"    
-                    :items="district"
-                    item-text="Dname_th"
-                    item-value="Did"
-                    label="อำเภอ*"                    
-                    @change="selectedDistrict"              
-                    required
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-select
-                    v-model="owner.SDTid"    
-                    :items="subdistrict"
-                    item-text="SDTname_th"
-                    item-value="SDTid"
-                    label="ตำบล*"        
-                    required
-                ></v-select>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat :to="'/Owner/'" >Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="submitUpdateOwner">Save</v-btn>
-        </v-card-actions>
-      </v-card> 
-    </v-flex>
-  </v-layout>
+    <v-layout row justify-center mt-3>  
+        <v-flex xs12 sm10 md8> 
+        <v-card>
+            <v-card-title>
+                <span class="headline">แก้ไขข้อมูลเจ้าของสถานประกอบการ</span>
+            </v-card-title>
+            <v-card-text>
+            <v-container grid-list-md>
+                <v-form
+                    ref="form"
+                    v-model="valid"
+                    lazy-validation
+                >
+                <v-layout wrap>
+                <v-flex xs12>
+                    <v-text-field
+                        v-model="owner.Ocitizenid"
+                        label="รหัสบัตรประจำตัวประชาชน*"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                    <v-select
+                        v-model="owner.Prefixid"            
+                        :items="prefix"
+                        item-text="Prefixname"
+                        item-value="Prefixid"
+                        label="คำนำหน้า*"
+                        required
+                    ></v-select>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                    <v-text-field 
+                        v-model="owner.Ofirstname"
+                        label="ชื่อเจ้าของกิจการ*"
+                        :rules="nameRules"
+                        require="true"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                    <v-text-field
+                        v-model="owner.Olastname"
+                        label="นามสกุล*"
+                        :rules="lnameRules"
+                        required="true"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                    <v-text-field
+                        v-model="owner.Oage"
+                        label="อายุ*"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                    <v-text-field
+                        v-model="owner.Onationality"
+                        label="สัญชาติ*"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                    <v-text-field
+                        v-model="owner.Otel"
+                        label="เบอร์โทรศัพท์*"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                    <v-text-field
+                        v-model="owner.Oemail"
+                        label="อีเมล์"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                    <v-text-field
+                        v-model="owner.Ohomeno"
+                        label="บ้านเลขที่*"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                    <v-text-field
+                        v-model="owner.Omoo"
+                        label="หมู่ที่"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                    <v-text-field
+                        v-model="owner.Osoi"
+                        label="ซอย"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                    <v-text-field
+                        v-model="owner.Oroad"
+                        label="ถนน"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                    <v-select
+                        v-model="owner.Pid"    
+                        :items="province"
+                        item-text="Pname_th"
+                        item-value="Pid"
+                        label="จังหวัด*"
+                        @change="selectedProvince"               
+                        required
+                    ></v-select>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                    <v-select
+                        v-model="owner.Did"    
+                        :items="district"
+                        item-text="Dname_th"
+                        item-value="Did"
+                        label="อำเภอ*"                    
+                        @change="selectedDistrict"              
+                        required
+                    ></v-select>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                    <v-select
+                        v-model="owner.SDTid"    
+                        :items="subdistrict"
+                        item-text="SDTname_th"
+                        item-value="SDTid"
+                        label="ตำบล*"        
+                        required
+                    ></v-select>
+                </v-flex>
+                </v-layout>
+                </v-form>
+            </v-container>
+            </v-card-text>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat :to="'/Owner/'" >Close</v-btn>
+            <v-btn color="blue darken-1" flat @click="submitUpdateOwner">Save</v-btn>
+            </v-card-actions>
+        </v-card> 
+        </v-flex>
+    </v-layout>
 </template>
 <script>
 const axios = require('axios')
   export default {
     created () {
         axios.get('http://localhost:5003/ownergetid/' + this.$route.params.id)
-        .then(res => {
+            .then(res => {
             this.owner = res.data[0]
             axios.get('http://localhost:5003/district/' + this.owner.Pid)
-              .then(res => {
-                  this.district = res.data
-              })
+                .then(res => {
+                    this.district = res.data
+                })
             axios.get('http://localhost:5003/subdistrict/' + this.owner.Did)
-              .then(res => {
-                  this.subdistrict = res.data
-              })
+                .then(res => {
+                    this.subdistrict = res.data
+                })
         })
         axios.get('http://localhost:5003/prefix')
-        .then(res => {
-            this.prefix = res.data
-        })
+            .then(res => {
+                this.prefix = res.data
+            })
         axios.get('http://localhost:5003/province')
-        .then(res => {
-            this.province = res.data
-        })
+            .then(res => {
+                this.province = res.data
+            })
     },
     data: () => ({
         prefix: [],
@@ -163,6 +169,7 @@ const axios = require('axios')
         district: [],
         subdistrict: [],
         owner: {},
+        valid: true,
         nameRules: [
             v => !!v || 'กรุณากรอกชื่อ',
             v => (v && v.length <= 30) || 'ตัวอักษรไม่เกิน 30 ตัวอักษร'
@@ -174,6 +181,9 @@ const axios = require('axios')
     }),
     methods: {
         submitUpdateOwner () {
+            if (this.$refs.form.validate()) {
+                this.snackbar = true
+            }
             let owner = {
                 Ocitizenid: this.owner.Ocitizenid,
                 Prefixid: this.owner.Prefixid,
@@ -192,12 +202,31 @@ const axios = require('axios')
                 Did: this.owner.Did,
                 SDTid: this.owner.SDTid
             }
-            axios.post('http://localhost:5003/updateowner/' + this.$route.params.id, owner)
-            .then(res => {
-                console.log(res)
-                // this.$emit('AddOwner') 
-                this.$router.push('/owner')           
+            this.$swal.fire({
+                title: 'ยืนยันการแก้ไขข้อมูล',
+                text: "คุณต้องการแก้ไขข้อมูลเจ้าของสถานประกอบการหรือไม่ ?",
+                type: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonText: 'ตกลง'
             })
+            .then((result) => {
+                if (result.value) {                    
+                    axios.post('http://localhost:5003/updateowner/' + this.$route.params.id, owner)
+                        .then(res => {
+                            console.log(res)
+                            // this.$emit('AddOwner') 
+                            this.$router.push('/owner')           
+                        })
+                    this.$swal.fire(
+                        'แก้ไขข้อมูลสำเร็จ!',
+                        '',
+                        'success'
+                    )
+                }
+            })            
         },
         selectedProvince (event) {
             axios.get('http://localhost:5003/district/' + event)

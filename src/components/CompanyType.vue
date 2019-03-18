@@ -9,15 +9,16 @@
                     </v-card-title>
                     <v-layout row justify-center>
                         <v-flex xs12 sm10 md10>
-                            <Types />
-                            <Typecategories/>
-                            <Typecategoriesdetail />
-                            <Alltype />
+                            <Types @AddCT="fetchCT()" />
+                            <Typecategories @AddCTC="fetchCT()" />
+                            <Typecategoriesdetail @AddCTCD="fetchCT()" />
+                            <AllType />
                         </v-flex>
                     </v-layout>
                 </v-card>
             </v-flex>
         </v-layout>
+        <UpdateCT v-if="dialogCT" :CTid="CTid" :dialog="dialogCT" @closeDialogCT="dialogCT = false"/>
     </v-container>
 </template>
 
@@ -26,22 +27,64 @@ import axios from 'axios'
 import Types from './types'
 import Typecategories from './typecategories'
 import Typecategoriesdetail from './typecategoriesdetail'
-import Alltype from './alltype'
+import AllType from './alltype'
+import UpdateCT from './UpdateCT'
 export default {
     components: {
         Types,
         Typecategories,
         Typecategoriesdetail,
-        Alltype
+        AllType,
+        UpdateCT
     },
     data: () => ({
         types: [],
         Typecategories: [],
-        Typecategoriesdetail: []
+        Typecategoriesdetail: [],
+        search: '',
+        dialogCT: false,
+        headers: [
+          {
+            text: 'รหัสประเภท',
+            align: 'left',
+            value: 'CTid'
+          },
+          { text: 'ชื่อประเภท', value: 'CTname' },
+          { text: 'จัดการข้อมูล', sortable: false}
+        ]
     }),
     created () {
     },
-    methods: {        
+    methods: {
+        UpdateCT (CTid) {
+            this.dialogCT = true
+            this.CTid = CTid
+        },
+        deleteCT (CTid) {
+            this.$swal.fire({
+                title: 'ลบข้อมูล',
+                text: "คุณต้องการลบข้อมูลประเภทสถานประกอบการหรือไม่ ?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonText: 'ตกลง'
+            })
+            .then((result) => {
+                if(result.value) {
+                    axios.post('http://localhost:5003/deleteCTid/' + CTid)
+                        .then(res => {
+                            this.fetchCT()   
+                        })                    
+                    this.$swal.fire(
+                        'ลบข้อมูลประเภทสถานประกอบการสำเร็จ!',
+                        '',
+                        'success'
+                    )
+                }
+            })
+        }        
     }
 }
 </script>

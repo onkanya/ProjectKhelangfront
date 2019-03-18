@@ -21,7 +21,10 @@
             <v-list class="pa-1">
                 <v-list-tile avatar>
                 <v-list-tile-avatar>
-                    <img src="https://randomuser.me/api/portraits/men/85.jpg">
+                    <v-btn icon>
+                        <v-icon color="cyan lighten-1">account_circle</v-icon>
+                    </v-btn>
+                    <!-- <img src="https://randomuser.me/api/portraits/men/85.jpg"> -->
                 </v-list-tile-avatar>
 
                 <v-list-tile-content>
@@ -61,8 +64,10 @@ export default {
             items: [
                 { title: 'Home', icon: 'dashboard', link: '/home', permission: [0] },
                 { title: 'เจ้าของสถานประกอบการ', icon: 'face', link: '/Owner', permission: [3, 4, 5] },
-                { title: 'Company', icon: 'account_balance', link: '/company', permission: [3, 4, 5] },
-                { title: 'ประเภทสถานประกอบการ', icon: 'account_balance', link: '/companytype', permission: [3] }
+                { title: 'สถานประกอบการ', icon: 'account_balance', link: '/company', permission: [3, 4, 5] },
+                { title: 'ประเภทสถานประกอบการ', icon: 'category', link: '/companytype', permission: [3] },
+                { title: 'ผู้ใช้ระบบ', icon: 'people', link: '/users', permission: [1] },
+                { title: 'คำขอรับ / ต่อใบอนุญาตประกอบกิจการ', icon: 'list', link: '/requestlicense', permission: [3, 4] }
             ],
             userdata: ''
         }

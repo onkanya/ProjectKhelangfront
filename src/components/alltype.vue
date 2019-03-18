@@ -22,12 +22,12 @@
                     <td>{{ props.item.CTid }}</td>
                     <td class="text-xs-right">{{ props.item.CTname }}</td>
                     <td class="text-xs-right">
-                        <div>
+                        <div>                            
                             <v-btn icon class="mx-0">
-                                <v-icon color="cyan lighten-1">edit</v-icon>
+                                <v-icon color="red darken-1" @click="deleteCT(props.item.CTid)">delete</v-icon>
                             </v-btn>
                             <v-btn icon class="mx-0">
-                                <v-icon color="red darken-1">delete</v-icon>
+                                <v-icon color="cyan lighten-1" @click="UpdateCT(props.item.CTid)">edit</v-icon>
                             </v-btn>
                         </div>
                     </td>
@@ -127,9 +127,33 @@ export default {
                         })
                     })
                 })
-
                 console.log(arr)
                 this.types = arr
+            })
+        },
+        deleteCT (CTid) {
+            this.$swal.fire({
+                title: 'ลบข้อมูล',
+                text: "คุณต้องการลบข้อมูลประเภทสถานประกอบการหรือไม่ ?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonText: 'ตกลง'
+            })
+            .then((result) => {
+                if(result.value) {
+                    axios.post('http://localhost:5003/deleteCTid/' + CTid)
+                        .then(res => {
+                            this.fetchCT()   
+                        })                    
+                    this.$swal.fire(
+                        'ลบข้อมูลประเภทสถานประกอบการสำเร็จ!',
+                        '',
+                        'success'
+                    )
+                }
             })
         }
     }

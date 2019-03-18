@@ -61,7 +61,11 @@ export default {
                     localStorage.setItem('userLogin', JSON.stringify(res.data.user[0]))
                     this.$emit('Login')
                 } else {
-                    alert('Invalid Username or Password!')
+                    this.$swal.fire(
+                        'ชื่อผู้ใช้ และรหัสผ่านไม่ถูกต้อง!',
+                        '',
+                        'warning'
+                    )
                 }
             })
         }

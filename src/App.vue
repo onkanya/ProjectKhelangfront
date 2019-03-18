@@ -30,6 +30,7 @@ export default {
       const user = localStorage.getItem('userLogin')
       if (user !== null && user !== undefined) {
         this.isLogin = true
+        this.$router.push('/home')
       }
       this.isLoading = false
     },

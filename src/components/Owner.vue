@@ -5,7 +5,7 @@
             <!-- <NewOwner @AddOwner='fetchData'/>       -->
             <v-btn 
                 slot="activator" 
-                color="teal accent-3" 
+                color="cyan lighten-1" 
                 dark 
                 to="/newowner"
                 >เพิ่มข้อมูลเจ้าของสถานประกอบการ
@@ -90,6 +90,7 @@ export default {
             {
               text: 'จัดการข้อมูล', 
               align: 'center',
+              sortable: false,
               value: ''
             }
         ],
@@ -108,7 +109,6 @@ export default {
             console.log('AddOwner')
             axios.get('http://localhost:5003/owner')
             .then(res => {
-                console.log(res)
                 this.owner = res.data
             })
         },
@@ -127,7 +127,6 @@ export default {
                 if (result.value) {
                     axios.post('http://localhost:5003/deleteowner/' + Oid)
                         .then(res => {
-                            console.log(res)
                             this.fetchData()
                         })
                     this.$swal.fire(

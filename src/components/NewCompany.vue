@@ -1,10 +1,11 @@
 <template>
-    <v-layout row justify-center mt-3>  
+    <v-layout row justify-center mt-3 mb-3>  
         <v-flex xs12 sm10 md8> 
         <v-card>
             <v-card-title>
-            <span class="headline">เพิ่มข้อมูลสถานประกอบการ</span>
+                <span class="font-weight-bold">เพิ่มข้อมูลสถานประกอบการ</span>
             </v-card-title>
+            <v-divider></v-divider>
             <v-card-text>
             <v-container grid-list-md>
                 <v-layout wrap>
@@ -49,21 +50,21 @@
                     <v-flex xs12 sm6 md4>
                         <v-text-field
                             v-model="NewCompany.Carea" 
-                            label="ขนาดพื้นที่*"
+                            label="ขนาดพื้นที่ (ตารางเมตร)"
                             require="true"
                         ></v-text-field>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                         <v-text-field
                             v-model="NewCompany.Cmachine" 
-                            label="จำนวนเครื่องจักร*"
+                            label="จำนวนเครื่องจักร (เครื่อง)"
                             require="true"
                         ></v-text-field>
                     </v-flex>                    
                     <v-flex xs12 sm6 md4>
                         <v-text-field
                             v-model="NewCompany.Cemployee"
-                            label="จำนวนพนักงาน*"
+                            label="จำนวนพนักงาน (คน)"
                         ></v-text-field>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
@@ -80,13 +81,13 @@
                             min-width="290px"
                         >
                             <v-text-field
-                            slot="activator"
-                            v-model="date"
-                            label="วันที่เริ่มกิจการ"
-                            prepend-icon="event"
-                            readonly
-                            ></v-text-field>
-                            <v-date-picker v-model="NewCompany.Cstartdate" no-title scrollable>
+                                slot="activator"
+                                v-model="date"
+                                label="Picker in menu"
+                                prepend-icon="event"
+                                readonly
+                                ></v-text-field>
+                            <v-date-picker v-model="date" no-title scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
                                 <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -148,7 +149,7 @@
                     <v-flex xs12 sm6 md4>
                         <v-select
                             v-model="NewCompany.SDTid" 
-                            :items="owner"
+                            :items="subdistrict"
                             item-text="SDTname_th"
                             item-value="SDTid"
                             label="ตำบล*"
@@ -188,7 +189,8 @@ export default {
             })
     },
     data: () => ({
-        date: new Date().toISOString().substr(0, 10),
+        // date: new Date().toISOString().substr(0, 10),
+        date: null,
         menu: false,
         owner: [],
         province: [],
@@ -225,7 +227,7 @@ export default {
                 Carea: this.NewCompany.Carea,
                 Cmachine: this.NewCompany.Cmachine,
                 Cemployee: this.NewCompany.Cemployee,
-                Cstartdate: this.NewCompany.Cstartdate,
+                Cstartdate: this.date,
                 Chomeno: this.NewCompany.Chomeno,
                 Cmoo: this.NewCompany.Cmoo,
                 Csoi: this.NewCompany.Csoi,
@@ -235,12 +237,31 @@ export default {
                 Did: this.NewCompany.Did,
                 SDTid: this.NewCompany.SDTid
             }
-            axios.post('http://localhost:5003/newcompany', company)
-            .then(res => {
-                console.log(res)
-                // this.$emit('AddOwner')   
-                this.NewCompany = ''  
-                this.$router.push('/company')           
+            this.$swal.fire({
+                title: 'ยืนยันการเพิ่มข้อมูล',
+                text: "คุณต้องการเพิ่มข้อมูลสถานประกอบการหรือไม่ ?",
+                type: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonText: 'ตกลง'
+            })
+            .then((result) => {
+                if (result.value) {                    
+                    axios.post('http://localhost:5003/newcompany', company)
+                    .then(res => {
+                        console.log(res)
+                        // this.$emit('AddOwner')   
+                        this.NewCompany = ''  
+                        this.$router.push('/company')           
+                    })
+                    this.$swal.fire(
+                        'เพิ่มข้อมูลสถานประกอบการสำเร็จ!',
+                        '',
+                        'success'
+                    )
+                }
             })
         },
         selectedProvince (event) {

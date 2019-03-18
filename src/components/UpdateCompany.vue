@@ -1,118 +1,191 @@
 <template>
-  <v-layout row justify-center>
-    <v-layout row wrap>
-        <v-flex xs12>
-            <v-card>
-                <v-card-title
-                class="headline grey lighten-2"
-                primary-title
-                >
-                    Company
-                    <div>{{ $route.params.id }}</div>
-                </v-card-title>
-                <v-card-text>
-                <v-container grid-list-md>
-                    <v-layout wrap>
-                    <v-flex xs12>
-                        <v-text-field
-                            label="เลขที่กิจการ*"
-                            v-model="Company.CompanyCode"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            label="ประเภทของกิจการ*"
-                            v-model="Company.TypeServiceCode"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md8>
-                        <v-text-field 
-                            label="ชื่อกิจการ*" 
-                            v-model="Company.CompanyName"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12>
-                        <v-text-field
-                            label="เจ้าของกิจการ*"
-                            v-model="Company.OwnerID"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12>
-                        <v-text-field
-                            label="รายละเอียดเพิ่มเติมของกิจการ*"
-                            v-model="Company.TypeServiceDetail"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            label="ที่อยู่กิจการ"
-                            v-model="Company.CompanyNo"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            label="หมู่"
-                            v-model="Company.CompanyMoo"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            label="ซอย"
-                            v-model="Company.CompanySoi"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            label="ถนน"
-                            v-model="Company.CompanyRoad"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            label="ตำบล"
-                            v-model="Company.CompanyTumbon"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            label="เบอร์โทรศัพท์"
-                            v-model="Company.CompanyPhone"
-                        >
-                        </v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            label="ขนาดพื้นที่กิจการ"
-                            v-model="Company.CompanyArea"
-                        >
-                        </v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            label="จำนวนเครื่องจักรภายในกิจการ"
-                            v-model="Company.CompanyMachine"
-                        >
-                        </v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            label="จำนวนพนักงาน"
-                            v-model="Company.CompanyLabor"
-                        >
-                        </v-text-field>
-                    </v-flex>
-                    </v-layout>
-                </v-container>
-                </v-card-text>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat :to="'/company/'">Close</v-btn>
-                <v-btn color="blue darken-1" flat @click="submitUpdateCompany">Save</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-flex>
+    <v-layout row justify-center mt-3 mb-3>
+            <v-flex xs12 sm10 md8>
+                <v-card>
+                    <v-card-title>
+                        <span class="font-weight-bold">แก้ไขข้อมูลสถานประกอบการ</span>
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        <v-container grid-list-md>
+                            <v-layout wrap>
+                                <v-flex xs12 sm6 md6>
+                                    <v-select
+                                        v-model="Company.CTid"          
+                                        :items="types"
+                                        item-text="CTname"
+                                        item-value="CTid"
+                                        label="ประเภทสถานประกอบการ*"
+                                        @change="selectedTypes"    
+                                        required
+                                    ></v-select>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6>
+                                    <v-select
+                                        v-model="Company.CTCid"          
+                                        :items="typecategories"
+                                        item-text="CTCname"
+                                        item-value="CTCid"
+                                        label="ประเภทของประเภทสถานประกอบการ*"
+                                        required
+                                    ></v-select>
+                                </v-flex>  
+                                <v-flex xs12 sm6 md6>                
+                                    <v-autocomplete
+                                        v-model="Company.Oid"
+                                        :items="owner"
+                                        item-text="Oname"
+                                        item-value="Oid"
+                                        label="เจ้าของสถานประกอบการ"
+                                    >
+                                    </v-autocomplete>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6>
+                                    <v-text-field
+                                        v-model="Company.Cname" 
+                                        label="ชื่อสถานประกอบการ*"
+                                        require="true"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field
+                                        v-model="Company.Carea" 
+                                        label="ขนาดพื้นที่ (ตารางเมตร)"
+                                        require="true"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field
+                                        v-model="Company.Cmachine" 
+                                        label="จำนวนเครื่องจักร (เครื่อง)"
+                                        require="true"
+                                    ></v-text-field>
+                                </v-flex>                    
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field
+                                        v-model="Company.Cemployee"
+                                        label="จำนวนพนักงาน (คน)"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-menu
+                                        ref="menu"
+                                        :close-on-content-click="false"
+                                        v-model="menu"
+                                        :nudge-right="40"
+                                        :return-value.sync="date"
+                                        lazy
+                                        transition="scale-transition"
+                                        offset-y
+                                        full-width
+                                        min-width="290px"
+                                    >
+                                        <v-text-field
+                                        slot="activator"
+                                        v-model="date"
+                                        label="วันที่เริ่มกิจการ"
+                                        prepend-icon="event"
+                                        readonly
+                                        ></v-text-field>
+                                        <v-date-picker v-model="date" no-title scrollable>
+                                            <v-spacer></v-spacer>
+                                            <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                                            <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                                        </v-date-picker>
+                                    </v-menu>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field
+                                        v-model="Company.Chomeno"
+                                        label="บ้านเลขที่*"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field
+                                        v-model="Company.Cmoo"
+                                        label="หมู่ที่"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field
+                                        v-model="Company.Csoi"
+                                        label="ซอย"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field
+                                        v-model="Company.Croad"
+                                        label="ถนน"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field
+                                        v-model="Company.Cvillage"
+                                        label="หมู่บ้าน"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-select
+                                        v-model="Company.Pid"                            
+                                        :items="province"
+                                        item-text="Pname_th"
+                                        item-value="Pid"
+                                        label="จังหวัด*"
+                                        @change="selectedProvince"               
+                                        required
+                                    ></v-select>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-select
+                                        v-model="Company.Did"    
+                                        :items="district"
+                                        item-text="Dname_th"
+                                        item-value="Did"
+                                        label="อำเภอ*"                    
+                                        @change="selectedDistrict"              
+                                        required
+                                    ></v-select>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-select
+                                        v-model="Company.SDTid" 
+                                        :items="subdistrict"
+                                        item-text="SDTname_th"
+                                        item-value="SDTid"
+                                        label="ตำบล*"
+                                        required
+                                    ></v-select>
+                                </v-flex>
+                            </v-layout>
+                            <v-layout>
+                                <input @change="addImage" type="file" class="upload-btn" name="upload" multiple  accept="image/*">
+                            </v-layout>
+                            New image
+                            <div class="img-container-mean">
+                                <img
+                                    v-for="(img, idx) in showImg" s :key="idx"
+                                    :src="img"
+                                />
+                            </div>
+                            Old image
+                            <div class="img-container-mean">
+                                <img
+                                    v-for="(img, idx) in getImg" s :key="idx"
+                                    :src="img.CPpath"
+                                />
+                            </div>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-layout>
+                            <v-btn color="blue darken-1" flat :to="'/company/'">Close</v-btn>
+                            <v-btn color="blue darken-1" flat @click="submitUpdateCompany">Save</v-btn>
+                        </v-layout>
+                    </v-card-actions>
+                </v-card>
+            </v-flex>
     </v-layout>
-  </v-layout>
 </template>
 
 
@@ -121,39 +194,160 @@ const axios = require('axios')
   export default { 
     created () {
         axios.get('http://localhost:5003/companygetid/' + this.$route.params.id)
-        .then(res => {
-            console.log(res)
-            this.Company = res.data[0]
+            .then(res => {
+                this.Company = res.data[0]
+                axios.get('http://localhost:5003/district/' + this.Company.Pid)
+                    .then(res => {
+                        this.district = res.data
+                    })
+                axios.get('http://localhost:5003/subdistrict/' + this.Company.Did)
+                    .then(res => {
+                        this.subdistrict = res.data
+                    })                
+                axios.get('http://localhost:5003/getcompanytypecategories/' + this.Company.CTid)
+                    .then(res => {
+                        this.typecategories = res.data
+                    })
         })
+        axios.get('http://localhost:5003/ownerforcompany')
+            .then(res => {
+                this.owner = res.data
+            })
+        axios.get('http://localhost:5003/province')
+            .then(res => {
+                this.province = res.data
+            })
+        axios.get('http://localhost:5003/getcompanytype')
+            .then(res => {
+                this.types = res.data
+            })
+        axios.get('http://localhost:5003/imagecompany/' + this.$route.params.id)
+            .then(res => {
+                this.getImg = res.data
+            })
     },
     data: () => ({
-        Company: {}
+        date: new Date().toISOString().substr(0, 10),
+        menu: false,
+        Company: {},
+        owner: [],
+        province: [],
+        types: [],
+        subdistrict: [],
+        district: [],
+        typecategories: [],
+        Cimg: [],
+        showImg: [],
+        getImg: []
     }),
     methods: {
         submitUpdateCompany () {
-            let company = {
-                    CompanyCode: this.Company.CompanyCode,
-                    CompanyName: this.Company.CompanyName,
-                    TypeServiceCode: this.Company.TypeServiceCode,
-                    TypeServiceDetail: this.Company.TypeServiceDetail,
-                    OwnerID: this.Company.OwnerID,
-                    CompanyNo: this.Company.CompanyNo,
-                    CompanyMoo: this.Company.CompanyMoo,
-                    CompanySoi: this.Company.CompanySoi,
-                    CompanyRoad: this.Company.CompanyRoad,
-                    CompanyTumbon: this.Company.CompanyTumbon,
-                    CompanyPhone: this.Company.CompanyPhone,
-                    CompanyArea: this.Company.CompanyArea,
-                    CompanyMachine: this.Company.CompanyMachine,
-                    CompanyLabor: this.Company.CompanyLabor
+            if (this.Cimg.length > 0) {
+                let companyImage = new FormData()
+                this.Cimg.forEach(e => {
+                    companyImage.append('files', e)
+                })
+                axios.post('http://localhost:5003/imagecompany/' + this.$route.params.id, companyImage)
+                    .then(res => {
+                        console.log(res)
+                    })
             }
-            axios.post('http://localhost:5003/updatecompany/' + this.$route.params.id, company)
-            .then(res => {
-                console.log(res) 
-                this.$router.push('/company')          
+            let company = {
+                CTid: this.Company.CTid,
+                CTCid: this.Company.CTCid,
+                Oid: this.Company.Oid,
+                Cname: this.Company.Cname,
+                Carea: this.Company.Carea,
+                Cmachine: this.Company.Cmachine,
+                Cemployee: this.Company.Cemployee,
+                Cstartdate: this.date,
+                Chomeno: this.Company.Chomeno,
+                Cmoo: this.Company.Cmoo,
+                Csoi: this.Company.Csoi,
+                Croad: this.Company.Croad,
+                Cvillage: this.Company.Cvillage,
+                Pid: this.Company.Pid,
+                Did: this.Company.Did,
+                SDTid: this.Company.SDTid,
+                Cimg: this.Cimg
+            }
+            this.$swal.fire({
+                title: 'ยืนยันการแก้ไขข้อมูล',
+                text: "คุณต้องการแก้ไขข้อมูลสถานประกอบการหรือไม่ ?",
+                type: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonText: 'ตกลง'
             })
+            .then((result) => {
+                if (result.value) {
+                    axios.post('http://localhost:5003/updatecompany/' + this.$route.params.id, company)
+                        .then(res => {
+                            console.log(res) 
+                            this.$router.push('/company')          
+                        })
+                    this.$swal.fire(
+                        'แก้ไขข้อมูลสถานประกอบการสำเร็จ!',
+                        '',
+                        'success'
+                    )
+                }
+            })
+        },
+        selectedProvince (event) {
+            axios.get('http://localhost:5003/district/' + event)
+                .then(res => {
+                    this.district = res.data
+                })
+        },        
+        selectedDistrict (event) {
+            axios.get('http://localhost:5003/subdistrict/' + event)
+                .then(res => {
+                    this.subdistrict = res.data
+                })
+        },
+        selectedTypes (event) {
+            axios.get('http://localhost:5003/getcompanytypecategories/' + event)
+                .then(res => {
+                    this.typecategories = res.data
+                })
+        },
+        async addImage (e) {
+            let arr = []
+            for (let index = 0; index < e.target.files.length; index++) {
+                var reader = new FileReader();
+                reader.onloadend = () => {
+                    this.showImg.push(reader.result)
+                }
+                await reader.readAsDataURL(e.target.files[index]);
+                this.Cimg.push(e.target.files[index])
+            }
         }
     }
   }
 </script>
+
+<style lang="scss" scoped>
+    .upload-btn {
+        background-color: rgb(46, 46, 156);
+        color: white;
+    }
+    .img-container-mean {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        border: rgb(107, 107, 107) 1px solid;
+        border-radius: 15px;
+        margin: 15px 0 0 0;
+        min-height: 200px;
+
+        img {
+            max-width: 200px; 
+            max-height: 200px; 
+            margin: 7px;
+        }
+    }
+</style>
 

@@ -2,17 +2,16 @@
   <v-container grid-list-xl text-xs-center>
     <v-layout row wrap>
       <v-flex xs12>
-          <!-- <NewCompany @AddCompany='fetchData' /> -->
           <v-btn 
                 slot="activator" 
                 color="cyan lighten-1" 
                 dark 
-                to="/newcompany"
-                >เพิ่มข้อมูลสถานประกอบการ
+                to="/newrequestlicense"
+                >เพิ่มข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ
             </v-btn>
         <v-card>
           <v-card-title class="font-weight-bold">
-            สถานประกอบการ
+            คำขอรับ / ต่อใบอนุญาตประกอบกิจการ
             <v-spacer></v-spacer>            
             <v-text-field
               v-model="search"
@@ -24,14 +23,15 @@
           </v-card-title>
           <v-data-table
             :headers="headers"
-            :items="company"
+            :items="request"
             :search="search"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ props.item.Cid }}</td>
+              <td>{{ props.item.RLid }}</td>
               <td class="text-xs-center">{{ props.item.Cname }}</td>
-              <td class="text-xs-center" style="max-width:170px">{{ props.item.CTname }}</td>
-              <td class="text-xs-center">{{ `${props.item.Ofirstname}  ${props.item.Olastname}` }}</td>
+              <td class="text-xs-center">{{ `${props.item.RLfname}  ${props.item.RLlname}` }}</td>
+              <td class="text-xs-center" style="max-width:170px">{{ props.item.RLtel }}</td>
+              <td class="text-xs-center" style="max-width:170px">{{ props.item.RLdate }}</td>
               <td class="text-xs-center">
                 <v-btn fab dark small 
                 color="red darken-1"
@@ -64,60 +64,59 @@
 
 <script>
 import axios from 'axios'
-import NewCompany from './NewCompany'
 export default {
-    components: {
-        NewCompany
-    },
-    data () {
-        return {
+    data: () => ({
         search: '',
         headers: [
             {
-              text: 'เลขที่กิจการ',
+              text: 'เลขที่คำขอ',
               align: 'center',
-              // sortable: false,
-              value: 'Cid'
+            //   sortable: false,
+              value: 'RTid'
+            },
+            {
+              text: 'ชื่อสถานประกอบการ',
+              align: 'center', 
+              value: ''
             },
             { 
-              text: 'ชื่อกิจการ', 
-              value: 'Cname',
-              align: 'center' 
+              text: 'ผู้ยื่นคำขอ',
+              align: 'center', 
+              value: '' 
             },
             { 
-              text: 'ประเภทกิจการ', 
-              value: 'CTname',
-              align: 'center' 
+              text: 'เบอร์โทรศัพท์',
+              align: 'center', 
+              value: 'RTtel' 
             },
             { 
-              text: 'เจ้าของกิจการ', 
-              value: 'Oid',
-              align: 'center' 
+              text: 'วันที่ทำรายการ',
+              align: 'center', 
+              value: 'RTdate' 
             },
             {
               text: 'จัดการข้อมูล', 
               align: 'center',
+              sortable: false,
               value: ''
             }
         ],
-        company: []        
-        }
-    },
+        request: []       
+    }),
     created () {
         this.fetchData()
     },
     methods: {
         fetchData () {
-        axios.get('http://localhost:5003/company')
+            axios.get('http://localhost:5003/getrequest')
             .then(res => {
-                console.log(res)
-                this.company = res.data
-            })      
+                this.request = res.data
+            })
         },
-        DeleteCompany (Cid) {
+        DeleteOwner (Oid) {
             this.$swal.fire({
                 title: 'ลบข้อมูล',
-                text: "คุณต้องการลบข้อมูลสถานประกอบการหรือไม่ ?",
+                text: "คุณต้องการลบข้อมูลหรือไม่ ?",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -126,19 +125,20 @@ export default {
                 confirmButtonText: 'ตกลง'
             })
             .then((result) => {
-                if(result.value) {
-                    axios.post('http://localhost:5003/deletecompany/' + Cid)
+                if (result.value) {
+                    axios.post('http://localhost:5003/deleteowner/' + Oid)
                         .then(res => {
-                            this.fetchData()        
+                            this.fetchData()
                         })
                     this.$swal.fire(
-                        'ลบข้อมูลสถานประกอบการสำเร็จ!',
+                        'ลบข้อมูลสำเร็จ!',
                         '',
                         'success'
                     )
                 }
-            })
+            })             
         }
+
     }
 }
 </script>
