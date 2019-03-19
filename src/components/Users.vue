@@ -141,6 +141,15 @@ export default {
             this.Uid = userID
         },
         DeleteUsers (Uid) {
+            let userLogin = JSON.parse(localStorage.getItem('userLogin'))
+            if (Uid === userLogin.Uid) {
+                this.$swal.fire({
+                    title: 'ไม่สามารถลบได้!',
+                    text: "ไม่สามารถลบ User ที่คุณเลือกได้",
+                    type: 'warning',
+                })
+                return
+            }
             this.$swal.fire({
                 title: 'ลบข้อมูล',
                 text: "คุณต้องการลบข้อมูลผู้ใช้งานระบบหรือไม่ ?",

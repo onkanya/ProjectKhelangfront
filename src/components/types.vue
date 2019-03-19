@@ -9,10 +9,10 @@
             <v-container grid-list-md>
                 <v-layout wrap>
                 <v-flex xs12 sm12 md12>
-                        <v-text-field
-                            v-model="NewCT.CTname"
-                            label="ชื่อประเภทสถานประกอบการ"
-                        ></v-text-field></v-flex> 
+                  <v-text-field
+                    v-model="NewCT.CTname"
+                    label="ชื่อประเภทสถานประกอบการ"
+                  ></v-text-field></v-flex> 
                 </v-layout>
             </v-container>
         </v-card-text>
@@ -43,7 +43,6 @@ const axios = require('axios')
             }
             axios.post('http://localhost:5003/addcompanytype', companytype)
             .then(res => {
-                console.log(res)
                 this.companytype = ''
                 this.dialog = false
                 this.$emit('AddCT')

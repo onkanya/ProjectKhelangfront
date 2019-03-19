@@ -106,7 +106,11 @@ const axios = require('axios')
                 }
                 axios.post('http://localhost:5003/addusers', users)
                     .then(res => {
-                        console.log(res)
+                        this.$swal.fire({
+                            title: 'สำเร็จแล้ว!',
+                            text: "คุณได้ทำการเพิ่ม User แล้ว!",
+                            type: 'success',
+                        })
                         this.NewUsers =  {
                             Uusername: '',
                             Upassword: '',

@@ -62,7 +62,6 @@ const axios = require('axios')
             }
             axios.post('http://localhost:5003/addtypecategories', companytypecategories)
             .then(res => {
-                console.log(res)
                 this.NewCTC =  {
                     CTid: null,
                     CTCname: ''

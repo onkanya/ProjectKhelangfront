@@ -11,7 +11,7 @@
                 <v-layout wrap>
                     <v-flex xs12 sm6 md6>
                         <v-select
-                            v-model="NewRequestLicense.RLid"       
+                            v-model="NewRequestLicense.RLTid"       
                             :items="requesttype"
                             item-text="RLTname"
                             item-value="RLTid"
@@ -56,7 +56,7 @@
                                 prepend-icon="event"
                                 readonly
                                 ></v-text-field>
-                            <v-date-picker v-model="date" no-title scrollable>
+                            <v-date-picker v-model="date" @change="onDateChange">
                                 <v-spacer></v-spacer>
                                 <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
                                 <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -199,7 +199,6 @@ export default {
     created () {
         axios.get('http://localhost:5003/getcompanyforrequest')
             .then(res => {
-                console.log(res)
                 this.company = res.data
             })
         axios.get('http://localhost:5003/province')
@@ -208,12 +207,10 @@ export default {
             })
         axios.get('http://localhost:5003/requestlicensetype')
             .then(res => {
-                console.log(res)
                 this.requesttype = res.data
             })
         axios.get('http://localhost:5003/prefix')
         .then(res => {
-            console.log(res)
             this.prefix = res.data
         })
     },
@@ -252,7 +249,11 @@ export default {
         }
     }),
     methods: {
+        onDateChange (e) {
+            this.NewRequestLicense.RLdate = e
+        },
         submitNewRequest () {
+            let { Uid } =  JSON.parse(localStorage.getItem('userLogin'))
             let request = {
                 RLTid: this.NewRequestLicense.RLTid,
                 Cid: this.NewRequestLicense.Cid,
@@ -274,7 +275,7 @@ export default {
                 RLtel: this.NewRequestLicense.RLtel,
                 RLemail: this.NewRequestLicense.RLemail,
                 RLdetail: this.NewRequestLicense.RLdetail,
-                Uid: this.NewRequestLicense.Uid
+                Uid: Uid
             }
             this.$swal.fire({
                 title: 'ยืนยันการเพิ่มข้อมูล',
@@ -287,7 +288,7 @@ export default {
                 confirmButtonText: 'ตกลง'
             })
             .then((result) => {
-                if (result.value) {                    
+                if (result.value) {
                     axios.post('http://localhost:5003/newrequest', request)
                     .then(res => {
                         console.log(res)

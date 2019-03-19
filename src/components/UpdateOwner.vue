@@ -10,122 +10,143 @@
                 <v-form
                     ref="form"
                     v-model="valid"
-                    lazy-validation
                 >
-                <v-layout wrap>
-                <v-flex xs12>
-                    <v-text-field
-                        v-model="owner.Ocitizenid"
-                        label="รหัสบัตรประจำตัวประชาชน*"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                    <v-select
-                        v-model="owner.Prefixid"            
-                        :items="prefix"
-                        item-text="Prefixname"
-                        item-value="Prefixid"
-                        label="คำนำหน้า*"
-                        required
-                    ></v-select>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                    <v-text-field 
-                        v-model="owner.Ofirstname"
-                        label="ชื่อเจ้าของกิจการ*"
-                        :rules="nameRules"
-                        require="true"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                    <v-text-field
-                        v-model="owner.Olastname"
-                        label="นามสกุล*"
-                        :rules="lnameRules"
-                        required="true"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md6>
-                    <v-text-field
-                        v-model="owner.Oage"
-                        label="อายุ*"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md6>
-                    <v-text-field
-                        v-model="owner.Onationality"
-                        label="สัญชาติ*"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md6>
-                    <v-text-field
-                        v-model="owner.Otel"
-                        label="เบอร์โทรศัพท์*"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md6>
-                    <v-text-field
-                        v-model="owner.Oemail"
-                        label="อีเมล์"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md3>
-                    <v-text-field
-                        v-model="owner.Ohomeno"
-                        label="บ้านเลขที่*"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md3>
-                    <v-text-field
-                        v-model="owner.Omoo"
-                        label="หมู่ที่"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md3>
-                    <v-text-field
-                        v-model="owner.Osoi"
-                        label="ซอย"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md3>
-                    <v-text-field
-                        v-model="owner.Oroad"
-                        label="ถนน"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                    <v-select
-                        v-model="owner.Pid"    
-                        :items="province"
-                        item-text="Pname_th"
-                        item-value="Pid"
-                        label="จังหวัด*"
-                        @change="selectedProvince"               
-                        required
-                    ></v-select>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                    <v-select
-                        v-model="owner.Did"    
-                        :items="district"
-                        item-text="Dname_th"
-                        item-value="Did"
-                        label="อำเภอ*"                    
-                        @change="selectedDistrict"              
-                        required
-                    ></v-select>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                    <v-select
-                        v-model="owner.SDTid"    
-                        :items="subdistrict"
-                        item-text="SDTname_th"
-                        item-value="SDTid"
-                        label="ตำบล*"        
-                        required
-                    ></v-select>
-                </v-flex>
-                </v-layout>
+                    <v-layout wrap>
+                        <v-flex xs12>
+                            <v-text-field
+                                v-model="owner.Ocitizenid"
+                                label="รหัสบัตรประจำตัวประชาชน*"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-select
+                                v-model="owner.Prefixid"            
+                                :items="prefix"
+                                item-text="Prefixname"
+                                item-value="Prefixid"
+                                label="คำนำหน้า*"
+                                :rules="textRules"
+                                required
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field 
+                                v-model="owner.Ofirstname"
+                                label="ชื่อเจ้าของกิจการ*"
+                                :rules="nameRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="owner.Olastname"
+                                label="นามสกุล*"
+                                :rules="lnameRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                            <v-text-field
+                                v-model="owner.Oage"
+                                label="อายุ*"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                            <v-text-field
+                                v-model="owner.Onationality"
+                                label="สัญชาติ*"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                            <v-text-field
+                                v-model="owner.Otel"
+                                label="เบอร์โทรศัพท์*"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                            <v-text-field
+                                v-model="owner.Oemail"
+                                label="อีเมล์"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md3>
+                            <v-text-field
+                                v-model="owner.Ohomeno"
+                                label="บ้านเลขที่*"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md3>
+                            <v-text-field
+                                v-model="owner.Omoo"
+                                label="หมู่ที่"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md3>
+                            <v-text-field
+                                v-model="owner.Osoi"
+                                label="ซอย"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md3>
+                            <v-text-field
+                                v-model="owner.Oroad"
+                                label="ถนน"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-select
+                                v-model="owner.Pid"    
+                                :items="province"
+                                item-text="Pname_th"
+                                item-value="Pid"
+                                label="จังหวัด*"
+                                @change="selectedProvince"               
+                                required
+                                :rules="textRules"
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-select
+                                v-model="owner.Did"    
+                                :items="district"
+                                item-text="Dname_th"
+                                item-value="Did"
+                                label="อำเภอ*"                    
+                                @change="selectedDistrict"              
+                                required
+                                :rules="textRules"
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-select
+                                v-model="owner.SDTid"    
+                                :items="subdistrict"
+                                item-text="SDTname_th"
+                                item-value="SDTid"
+                                label="ตำบล*"        
+                                required
+                                :rules="textRules"
+                            ></v-select>
+                        </v-flex>
+                    </v-layout>
                 </v-form>
             </v-container>
             </v-card-text>
@@ -170,6 +191,9 @@ const axios = require('axios')
         subdistrict: [],
         owner: {},
         valid: true,
+        textRules: [
+            v => !!v || 'กรุณากรอกข้อมูล'
+        ],
         nameRules: [
             v => !!v || 'กรุณากรอกชื่อ',
             v => (v && v.length <= 30) || 'ตัวอักษรไม่เกิน 30 ตัวอักษร'
@@ -181,8 +205,13 @@ const axios = require('axios')
     }),
     methods: {
         submitUpdateOwner () {
-            if (this.$refs.form.validate()) {
-                this.snackbar = true
+            if (!this.$refs.form.validate()) {
+                this.$swal.fire({
+                    title: 'ข้อมูลไม่ครบถ้วน!',
+                    text: "กรุณากรอกข้อมูลให้ครบถ้วนก่อนบันทึก",
+                    type: 'warning',
+                })
+                return
             }
             let owner = {
                 Ocitizenid: this.owner.Ocitizenid,

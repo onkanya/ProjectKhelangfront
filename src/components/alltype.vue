@@ -37,7 +37,7 @@
                 <v-card flat>
                     <v-card-text class="grey lighten-3" v-for="cate in props.item.category" :key="cate.CTCid">
                         <v-expansion-panel>
-                            <v-expansion-panel-content v-for="(item, i) in cate.CTCD" :key="i">
+                            <v-expansion-panel-content>
                                 <div slot="header">{{ cate.CTCname }}
                                     <v-btn icon class="mx-0">
                                         <v-icon color="cyan lighten-1">edit</v-icon>
@@ -46,7 +46,7 @@
                                         <v-icon color="red darken-1">delete</v-icon>
                                     </v-btn>
                                 </div>
-                                <v-card>
+                                <v-card v-for="(item, i) in cate.CTCD" :key="i">
                                     <v-card-text class="grey lighten-3">
                                         {{ i + 1 }}: {{ item.CTCDname }} 
                                         <v-btn icon class="mx-0">
@@ -72,26 +72,34 @@ export default {
     created () {        
         this.fetchCT()
     },
+    props: ['updated'],
     data: () => ({
         search: '',
         headers: [
-          {
-            text: 'รหัสประเภท',
-            align: 'left',
-            value: 'CTid'
-          },
-          { text: 'ชื่อประเภท', value: 'CTname' },
-          { text: 'จัดการข้อมูล', sortable: false}
+            {
+                text: 'รหัสประเภท',
+                align: 'left',
+                value: 'CTid'
+            },
+            { text: 'ชื่อประเภท', value: 'CTname' },
+            { text: 'จัดการข้อมูล', sortable: false}
         ],
         types: [],
     }),
+    watch: {
+        updated (val) {
+            if (val === true) {
+                this.fetchCT()
+            }
+            this.$emit('FetchSuccess')
+        }
+    },
     methods: {
         fetchCT () {
             axios.get('http://localhost:5003/getallcompanytype')
             .then(res => {
                 let arr = []
                 res.data.forEach(e => {
-                    console.log(arr.find(el => e.CTid === el))
                     if (arr.find(el => e.CTid === el.CTid) === undefined) {
                         arr.push({
                             CTid: e.CTid,
@@ -104,7 +112,7 @@ export default {
                 arr.forEach(e => {
                     res.data.forEach(el => {
                         if (e.CTid === el.CTid) {
-                            if (e.category.find(ele => e.CTCid === ele.CTCid) === undefined) {
+                            if (e.category.find(ele => el.CTCid === ele.CTCid) === undefined) {
                                 e.category.push({
                                     CTCid: el.CTCid,
                                     CTCname: el.CTCname,
@@ -132,6 +140,7 @@ export default {
             })
         },
         deleteCT (CTid) {
+            let self = this
             this.$swal.fire({
                 title: 'ลบข้อมูล',
                 text: "คุณต้องการลบข้อมูลประเภทสถานประกอบการหรือไม่ ?",
@@ -146,8 +155,8 @@ export default {
                 if(result.value) {
                     axios.post('http://localhost:5003/deleteCTid/' + CTid)
                         .then(res => {
-                            this.fetchCT()   
-                        })                    
+                            self.fetchCT()
+                        })
                     this.$swal.fire(
                         'ลบข้อมูลประเภทสถานประกอบการสำเร็จ!',
                         '',

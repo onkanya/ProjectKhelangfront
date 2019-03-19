@@ -9,10 +9,10 @@
                     </v-card-title>
                     <v-layout row justify-center>
                         <v-flex xs12 sm10 md10>
-                            <Types @AddCT="fetchCT()" />
-                            <Typecategories @AddCTC="fetchCT()" />
-                            <Typecategoriesdetail @AddCTCD="fetchCT()" />
-                            <AllType />
+                            <Types @AddCT="onTypeDataChange" />
+                            <Typecategories @AddCTC="onTypeDataChange" />
+                            <Typecategoriesdetail @AddCTCD="onTypeDataChange" />
+                            <AllType @FetchSuccess="onFetchSuccess" :updated="updated" />
                         </v-flex>
                     </v-layout>
                 </v-card>
@@ -43,20 +43,25 @@ export default {
         Typecategoriesdetail: [],
         search: '',
         dialogCT: false,
+        updated: false,
         headers: [
-          {
-            text: 'รหัสประเภท',
-            align: 'left',
-            value: 'CTid'
-          },
-          { text: 'ชื่อประเภท', value: 'CTname' },
-          { text: 'จัดการข้อมูล', sortable: false}
+            {
+                text: 'รหัสประเภท',
+                align: 'left',
+                value: 'CTid'
+            },
+            { text: 'ชื่อประเภท', value: 'CTname' },
+            { text: 'จัดการข้อมูล', sortable: false}
         ]
     }),
-    created () {
-    },
     methods: {
-        UpdateCT (CTid) {
+        onTypeDataChange () {
+            this.updated = true
+        },
+        onFetchSuccess () {
+            this.updated = false
+        },
+        UpdateCT (CTid) { 
             this.dialogCT = true
             this.CTid = CTid
         },
@@ -75,7 +80,7 @@ export default {
                 if(result.value) {
                     axios.post('http://localhost:5003/deleteCTid/' + CTid)
                         .then(res => {
-                            this.fetchCT()   
+                            this.onTypeDataChange   
                         })                    
                     this.$swal.fire(
                         'ลบข้อมูลประเภทสถานประกอบการสำเร็จ!',
