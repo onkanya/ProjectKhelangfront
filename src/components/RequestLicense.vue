@@ -37,7 +37,7 @@
                 color="red darken-1"
                 router
                 exact
-                @click="DeleteCompany(props.item.Cid)"
+                @click="DeleteRequest(props.item.RLid)"
                 >
                   <v-icon dark>delete</v-icon>
                 </v-btn>
@@ -46,7 +46,7 @@
                   color="cyan lighten-1"
                   router
                   exact
-                  :to="'/updatecompany/' + props.item.Cid"
+                  :to="'/updaterequestlicense/' + props.item.RLid"
                   >
                     <v-icon dark>edit</v-icon>
                   </v-btn>
@@ -113,7 +113,7 @@ export default {
                 this.request = res.data
             })
         },
-        DeleteOwner (Oid) {
+        DeleteRequest (RLid) {
             this.$swal.fire({
                 title: 'ลบข้อมูล',
                 text: "คุณต้องการลบข้อมูลหรือไม่ ?",
@@ -126,7 +126,7 @@ export default {
             })
             .then((result) => {
                 if (result.value) {
-                    axios.post('http://localhost:5003/deleteowner/' + Oid)
+                    axios.post('http://localhost:5003/deleterequest/' + RLid)
                         .then(res => {
                             this.fetchData()
                         })

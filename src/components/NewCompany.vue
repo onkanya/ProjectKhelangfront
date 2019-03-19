@@ -8,155 +8,186 @@
             <v-divider></v-divider>
             <v-card-text>
             <v-container grid-list-md>
-                <v-layout wrap>
-                    <v-flex xs12 sm6 md6>
-                        <v-select
-                            v-model="NewCompany.CTid"          
-                            :items="types"
-                            item-text="CTname"
-                            item-value="CTid"
-                            label="ประเภทสถานประกอบการ*"
-                            @change="selectTypes"    
-                            required
-                        ></v-select>
-                    </v-flex>
-                    <v-flex xs12 sm6 md6>
-                        <v-select
-                            v-model="NewCompany.CTCid"          
-                            :items="typecategories"
-                            item-text="CTCname"
-                            item-value="CTCid"
-                            label="ประเภทของประเภทสถานประกอบการ*"
-                            required
-                        ></v-select>
-                    </v-flex>  
-                    <v-flex xs12 sm6 md6>                
-                        <v-autocomplete
-                            v-model="NewCompany.Oid"
-                            :items="owner"
-                            item-text="Oname"
-                            item-value="Oid"
-                            label="เจ้าของสถานประกอบการ"
-                        >
-                        </v-autocomplete>
-                    </v-flex>
-                    <v-flex xs12 sm6 md6>
-                        <v-text-field
-                            v-model="NewCompany.Cname" 
-                            label="ชื่อสถานประกอบการ*"
-                            require="true"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            v-model="NewCompany.Carea" 
-                            label="ขนาดพื้นที่ (ตารางเมตร)"
-                            require="true"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            v-model="NewCompany.Cmachine" 
-                            label="จำนวนเครื่องจักร (เครื่อง)"
-                            require="true"
-                        ></v-text-field>
-                    </v-flex>                    
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            v-model="NewCompany.Cemployee"
-                            label="จำนวนพนักงาน (คน)"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-menu
-                            ref="menu"
-                            :close-on-content-click="false"
-                            v-model="menu"
-                            :nudge-right="40"
-                            :return-value.sync="date"
-                            lazy
-                            transition="scale-transition"
-                            offset-y
-                            full-width
-                            min-width="290px"
-                        >
+                <v-form
+                    ref="form"
+                    v-model="valid"
+                >
+                    <v-layout wrap>
+                        <v-flex xs12 sm6 md6>
+                            <v-select
+                                v-model="NewCompany.CTid"          
+                                :items="types"
+                                item-text="CTname"
+                                item-value="CTid"
+                                label="ประเภทสถานประกอบการ*"
+                                @change="selectTypes"
+                                :rules="textRules"
+                                required
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                            <v-select
+                                v-model="NewCompany.CTCid"   
+                                :items="typecategories"
+                                item-text="CTCname"
+                                item-value="CTCid"
+                                label="ประเภทของประเภทสถานประกอบการ*"
+                                :rules="textRules"
+                                required
+                            ></v-select>
+                        </v-flex>  
+                        <v-flex xs12 sm6 md6>                
+                            <v-autocomplete
+                                v-model="NewCompany.Oid"
+                                :items="owner"
+                                item-text="Oname"
+                                item-value="Oid"
+                                label="เจ้าของสถานประกอบการ"
+                                :rules="textRules"
+                            >
+                            </v-autocomplete>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
                             <v-text-field
-                                slot="activator"
-                                v-model="date"
-                                label="Picker in menu"
-                                prepend-icon="event"
-                                readonly
-                                ></v-text-field>
-                            <v-date-picker v-model="date" no-title scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-                                <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-                            </v-date-picker>
-                        </v-menu>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            v-model="NewCompany.Chomeno"
-                            label="บ้านเลขที่*"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            v-model="NewCompany.Cmoo"
-                            label="หมู่ที่"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            v-model="NewCompany.Csoi"
-                            label="ซอย"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            v-model="NewCompany.Croad"
-                            label="ถนน"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-text-field
-                            v-model="NewCompany.Cvillage"
-                            label="หมู่บ้าน"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-select
-                            v-model="NewCompany.Pid"                            
-                            :items="province"
-                            item-text="Pname_th"
-                            item-value="Pid"
-                            label="จังหวัด*"
-                            @change="selectedProvince"               
-                            required
-                        ></v-select>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-select
-                            v-model="NewCompany.Did"    
-                            :items="district"
-                            item-text="Dname_th"
-                            item-value="Did"
-                            label="อำเภอ*"                    
-                            @change="selectedDistrict"              
-                            required
-                        ></v-select>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                        <v-select
-                            v-model="NewCompany.SDTid" 
-                            :items="subdistrict"
-                            item-text="SDTname_th"
-                            item-value="SDTid"
-                            label="ตำบล*"
-                            required
-                        ></v-select>
-                    </v-flex>
-                </v-layout>
+                                v-model="NewCompany.Cname" 
+                                label="ชื่อสถานประกอบการ*"
+                                :rules="textRules"  
+                                require
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Carea" 
+                                label="ขนาดพื้นที่ (ตารางเมตร)"
+                                :mask="mask"
+                                :rules="textRules"
+                                require
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Cmachine" 
+                                label="จำนวนเครื่องจักร (เครื่อง)"
+                                :rules="textRules"
+                                :mask="mask"
+                                require
+                            ></v-text-field>
+                        </v-flex>                    
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Cemployee"
+                                label="จำนวนพนักงาน (คน)"
+                                :rules="textRules"
+                                :mask="mask"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-menu
+                                ref="menu"
+                                :close-on-content-click="false"
+                                v-model="menu"
+                                :nudge-right="40"
+                                :return-value.sync="date"
+                                lazy
+                                transition="scale-transition"
+                                offset-y
+                                full-width
+                                min-width="290px"
+                            >
+                                <v-text-field
+                                    slot="activator"
+                                    v-model="date"
+                                    label="วันที่ก่อตั้งกิจการ"
+                                    prepend-icon="event"
+                                    readonly
+                                    :rules="textRules"
+                                    required
+                                    ></v-text-field>
+                                <v-date-picker v-model="date" no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                                    <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                                </v-date-picker>
+                            </v-menu>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Chomeno"
+                                label="บ้านเลขที่*"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Cmoo"
+                                label="หมู่ที่"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Csoi"
+                                label="ซอย"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Croad"
+                                label="ถนน"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Cvillage"
+                                label="หมู่บ้าน"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-select
+                                v-model="NewCompany.Pid"                            
+                                :items="province"
+                                item-text="Pname_th"
+                                item-value="Pid"
+                                label="จังหวัด*"
+                                @change="selectedProvince"
+                                :rules="textRules"               
+                                required
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-select
+                                v-model="NewCompany.Did"    
+                                :items="district"
+                                item-text="Dname_th"
+                                item-value="Did"
+                                label="อำเภอ*"                    
+                                @change="selectedDistrict"
+                                :rules="textRules"              
+                                required
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-select
+                                v-model="NewCompany.SDTid" 
+                                :items="subdistrict"
+                                item-text="SDTname_th"
+                                item-value="SDTid"
+                                label="ตำบล*"
+                                :rules="textRules"
+                                required
+                            ></v-select>
+                        </v-flex>
+                    </v-layout>
+                </v-form>
             </v-container>
             </v-card-text>
             <v-card-actions>
@@ -190,6 +221,8 @@ export default {
     },
     data: () => ({
         // date: new Date().toISOString().substr(0, 10),
+        mask: '####',
+        valid: true,
         date: null,
         menu: false,
         owner: [],
@@ -215,10 +248,21 @@ export default {
             SDTid: null
         },
         types: [],
-        typecategories: []
+        typecategories: [],
+        textRules: [
+            v => !!v || 'กรุณากรอกข้อมูล'
+        ]
     }),
     methods: {
         submitNewCompany () {
+            if (!this.$refs.form.validate()) {
+                this.$swal.fire({
+                    title: 'ข้อมูลไม่ครบถ้วน!',
+                    text: "กรุณากรอกข้อมูลให้ครบถ้วนก่อนบันทึก",
+                    type: 'warning',
+                })
+                return
+            } 
             let company = {
                 CTid: this.NewCompany.CTid,
                 CTCid: this.NewCompany.CTCid,

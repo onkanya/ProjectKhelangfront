@@ -3,7 +3,7 @@
         <v-flex xs12 sm10 md8> 
         <v-card>
             <v-card-title>
-                <span class="font-weight-bold">เพิ่มข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ</span>
+                <span class="font-weight-bold">แก้ไขข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ</span>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -15,7 +15,7 @@
                     <v-layout wrap>
                         <v-flex xs12 sm6 md6>
                             <v-select
-                                v-model="NewRequestLicense.RLTid"       
+                                v-model="RequestLicense.RLTid"                                       
                                 :items="requesttype"
                                 item-text="RLTname"
                                 item-value="RLTid"
@@ -26,7 +26,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md6>                
                             <v-autocomplete
-                                v-model="NewRequestLicense.Cid"
+                                v-model="RequestLicense.Cid"
                                 :items="company"
                                 item-text="Cname"
                                 item-value="Cid"
@@ -37,7 +37,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md6>
                             <v-text-field
-                                v-model="NewRequestLicense.RLnorequest"
+                                v-model="RequestLicense.RLnorequest"
                                 label="เลขที่คำขอ*"
                                 :rules="textRules"
                                 required
@@ -73,7 +73,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-select
-                                v-model="NewRequestLicense.Prefixid"          
+                                v-model="RequestLicense.Prefixid"         
                                 :items="prefix"
                                 item-text="Prefixname"
                                 item-value="Prefixid"
@@ -84,7 +84,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-text-field
-                                v-model="NewRequestLicense.RLfname" 
+                                v-model="RequestLicense.RLfname"
                                 label="ชื่อผู้ยื่นคำขอ*"
                                 :rules="textRules"
                                 require
@@ -92,7 +92,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-text-field
-                                v-model="NewRequestLicense.RLlname"
+                                v-model="RequestLicense.RLlname"
                                 label="นามสกุล*"
                                 :rules="textRules"
                                 required
@@ -100,7 +100,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-text-field
-                                v-model="NewRequestLicense.RLage"
+                                v-model="RequestLicense.RLage"
                                 label="อายุ*"
                                 :rules="textRules"
                                 required
@@ -108,7 +108,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-text-field
-                                v-model="NewRequestLicense.RLnationality"
+                                v-model="RequestLicense.RLnationality"
                                 label="สัญชาติ*"
                                 :rules="textRules"
                                 required
@@ -116,7 +116,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-text-field
-                                v-model="NewRequestLicense.RLtel"
+                                v-model="RequestLicense.RLtel"
                                 label="เบอร์โทรศัพท์*"
                                 :rules="textRules"
                                 :mask="masktel"
@@ -125,7 +125,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md6>
                             <v-text-field
-                                v-model="NewRequestLicense.RLemail"
+                                v-model="RequestLicense.RLemail"
                                 label="อีเมล์"
                                 :rules="emailRules"
                                 required
@@ -133,7 +133,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md6>
                             <v-text-field
-                                v-model="NewRequestLicense.RLdetail"
+                                v-model="RequestLicense.RLdetail"
                                 label="รายละเอียดเพิ่มเติม"
                                 :rules="textRules"
                                 required
@@ -141,7 +141,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md3>
                             <v-text-field
-                                v-model="NewRequestLicense.RLhomeno"
+                                v-model="RequestLicense.RLhomeno"
                                 label="บ้านเลขที่*"
                                 :rules="textRules"
                                 required
@@ -149,14 +149,14 @@
                         </v-flex>
                         <v-flex xs12 sm6 md3>
                             <v-text-field
-                                v-model="NewRequestLicense.RLmoo"
+                                v-model="RequestLicense.RLmoo"
                                 label="หมู่ที่"
                                 :rules="textRules"
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md3>
                             <v-text-field
-                                v-model="NewRequestLicense.RLsoi"
+                                v-model="RequestLicense.RLsoi"
                                 label="ซอย"
                                 :rules="textRules"
                                 required
@@ -164,7 +164,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md3>
                             <v-text-field
-                                v-model="NewRequestLicense.RLroad"
+                                v-model="RequestLicense.RLroad"
                                 label="ถนน"
                                 :rules="textRules"
                                 required
@@ -172,7 +172,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-select
-                                v-model="NewRequestLicense.Pid"    
+                                v-model="RequestLicense.Pid"  
                                 :items="province"
                                 item-text="Pname_th"
                                 item-value="Pid"
@@ -184,7 +184,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-select
-                                v-model="NewRequestLicense.Did"    
+                                v-model="RequestLicense.Did"  
                                 :items="district"
                                 item-text="Dname_th"
                                 item-value="Did"
@@ -196,7 +196,7 @@
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-select
-                                v-model="NewRequestLicense.SDTid"    
+                                v-model="RequestLicense.SDTid"
                                 :items="subdistrict"
                                 item-value="SDTid"
                                 item-text="SDTname_th"
@@ -212,7 +212,7 @@
             <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" flat :to="'/requestlicense/'" >Close</v-btn>
-            <v-btn color="blue darken-1" flat @click="submitNewRequest">Save</v-btn>
+            <v-btn color="blue darken-1" flat @click="submitRequest">Save</v-btn>
             </v-card-actions>
         </v-card> 
         </v-flex>
@@ -223,6 +223,19 @@
 import axios from 'axios'
 export default {
     created () {
+        axios.get('http://localhost:5003/getrequest/' + this.$route.params.id)
+            .then(res => {
+                console.log(res)
+                this.RequestLicense = res.data[0]
+                axios.get('http://localhost:5003/district/' + this.RequestLicense.Pid)
+                    .then(res => {
+                        this.district = res.data
+                    })
+                axios.get('http://localhost:5003/subdistrict/' + this.RequestLicense.Did)
+                    .then(res => {
+                        this.subdistrict = res.data
+                    })
+        })
         axios.get('http://localhost:5003/getcompanyforrequest')
             .then(res => {
                 this.company = res.data
@@ -252,29 +265,7 @@ export default {
         district: [],
         subdistrict: [],
         prefix: [],
-        NewRequestLicense: {
-            RLTid: null,
-            Cid: null,
-            RLnorequest: '',
-            RLdate: null,
-            Prefixid: null,
-            RLfname: '',
-            RLlname: '',
-            RLage: '',
-            RLnationality: '',
-            RLhomeno: '',
-            RLmoo: '',
-            RLsoi: '',
-            RLroad: '',
-            RLvillage: '',
-            SDTid: null,
-            Did: null,
-            Pid: null,
-            RLtel: '',
-            RLemail: '',
-            RLdetail: '',
-            Uid: null
-        },
+        RequestLicense: {},
         textRules: [
             v => !!v || 'กรุณากรอกข้อมูล'
         ],
@@ -284,9 +275,9 @@ export default {
     }),
     methods: {
         onDateChange (e) {
-            this.NewRequestLicense.RLdate = e
+            this.RequestLicense.RLdate = e
         },
-        submitNewRequest () {
+        submitRequest () {
             if (!this.$refs.form.validate()) {
                 this.$swal.fire({
                     title: 'ข้อมูลไม่ครบถ้วน!',
@@ -295,33 +286,32 @@ export default {
                 })
                 return
             }
-            let { Uid } =  JSON.parse(localStorage.getItem('userLogin'))
+            // let { Uid } =  JSON.parse(localStorage.getItem('userLogin'))
             let request = {
-                RLTid: this.NewRequestLicense.RLTid,
-                Cid: this.NewRequestLicense.Cid,
-                RLnorequest: this.NewRequestLicense.RLnorequest,
-                RLdate: this.NewRequestLicense.RLdate,
-                Prefixid: this.NewRequestLicense.Prefixid,
-                RLfname: this.NewRequestLicense.RLfname,
-                RLlname: this.NewRequestLicense.RLlname,
-                RLage: this.NewRequestLicense.RLage,
-                RLnationality: this.NewRequestLicense.RLnationality,
-                RLhomeno: this.NewRequestLicense.RLhomeno,
-                RLmoo: this.NewRequestLicense.RLmoo,
-                RLsoi: this.NewRequestLicense.RLsoi,
-                RLroad: this.NewRequestLicense.RLroad,
-                RLvillage: this.NewRequestLicense.RLvillage,
-                SDTid: this.NewRequestLicense.SDTid,
-                Did: this.NewRequestLicense.Did,
-                Pid: this.NewRequestLicense.Pid,
-                RLtel: this.NewRequestLicense.RLtel,
-                RLemail: this.NewRequestLicense.RLemail,
-                RLdetail: this.NewRequestLicense.RLdetail,
-                Uid: Uid
+                RLTid: this.RequestLicense.RLTid,
+                Cid: this.RequestLicense.Cid,
+                RLnorequest: this.RequestLicense.RLnorequest,
+                RLdate: this.date,
+                Prefixid: this.RequestLicense.Prefixid,
+                RLfname: this.RequestLicense.RLfname,
+                RLlname: this.RequestLicense.RLlname,
+                RLage: this.RequestLicense.RLage,
+                RLnationality: this.RequestLicense.RLnationality,
+                RLhomeno: this.RequestLicense.RLhomeno,
+                RLmoo: this.RequestLicense.RLmoo,
+                RLsoi: this.RequestLicense.RLsoi,
+                RLroad: this.RequestLicense.RLroad,
+                RLvillage: this.RequestLicense.RLvillage,
+                SDTid: this.RequestLicense.SDTid,
+                Did: this.RequestLicense.Did,
+                Pid: this.RequestLicense.Pid,
+                RLtel: this.RequestLicense.RLtel,
+                RLemail: this.RequestLicense.RLemail,
+                RLdetail: this.RequestLicense.RLdetail
             }
             this.$swal.fire({
-                title: 'ยืนยันการเพิ่มข้อมูล',
-                text: "คุณต้องการเพิ่มข้อมูลคำขอหรือไม่ ?",
+                title: 'ยืนยันการแก้ไขข้อมูล',
+                text: "คุณต้องการแก้ไขข้อมูลคำขอหรือไม่ ?",
                 type: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -331,15 +321,15 @@ export default {
             })
             .then((result) => {
                 if (result.value) {
-                    axios.post('http://localhost:5003/newrequest', request)
+                    axios.post('http://localhost:5003/updaterequest/' + this.$route.params.id, request)
                     .then(res => {
                         console.log(res)
-                        // this.$emit('AddOwner')   
-                        this.NewRequestLicense = ''  
+                        // this.$emit('AddOwner')
+                        this.RequestLicense = ''
                         this.$router.push('/requestlicense')           
                     })
                     this.$swal.fire(
-                        'เพิ่มข้อมูลคำขอสำเร็จ!',
+                        'แก้ไขข้อมูลคำขอสำเร็จ!',
                         '',
                         'success'
                     )

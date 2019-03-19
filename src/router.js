@@ -11,6 +11,7 @@ import UpdateCompany from "./views/UpdateCompany.vue"
 import Users from "./views/Users.vue"
 import RequestLicense from "./views/RequestLicense.vue"
 import NewRequestLicense from "./views/NewRequestLicense.vue"
+import UpdateRequestLicense from "./views/UpdateRequestLicense.vue"
 
 Vue.use(Router);
 
@@ -72,6 +73,11 @@ export default new Router({
       path: "/newrequestlicense",
       name: "newrequestlicense",
       component: NewRequestLicense
-    }
+    },
+    {
+      path: "/updaterequestlicense/:id",
+      name: "updaterequestlicense",
+      component: UpdateRequestLicense
+    },
   ]
 });

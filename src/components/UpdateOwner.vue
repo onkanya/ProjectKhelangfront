@@ -16,7 +16,8 @@
                             <v-text-field
                                 v-model="owner.Ocitizenid"
                                 label="รหัสบัตรประจำตัวประชาชน*"
-                                :rules="textRules"
+                                :rules="citizenRules"
+                                :mask="maskcitizen"
                                 required
                             ></v-text-field>
                         </v-flex>
@@ -68,6 +69,7 @@
                                 v-model="owner.Otel"
                                 label="เบอร์โทรศัพท์*"
                                 :rules="textRules"
+                                :mask="masktel"
                                 required
                             ></v-text-field>
                         </v-flex>
@@ -75,7 +77,7 @@
                             <v-text-field
                                 v-model="owner.Oemail"
                                 label="อีเมล์"
-                                :rules="textRules"
+                                :rules="emailRules"
                                 required
                             ></v-text-field>
                         </v-flex>
@@ -185,12 +187,21 @@ const axios = require('axios')
             })
     },
     data: () => ({
+        maskcitizen: '#-####-#####-##-#',
+        masktel: '###-#######',
         prefix: [],
         province: [],
         district: [],
         subdistrict: [],
         owner: {},
         valid: true,
+        citizenRules: [
+            v => !!v || 'กรุณาเลขบัตรประจำตัวประชาชน',
+            v => (v && v.length <= 13) || 'ตัวเลข 13 ตัวเท่านั้น'
+        ],
+        emailRules: [
+            v => /.+@.+/.test(v) || 'กรุณากรอกรูปแบบอีเมลล์ให้ถูกต้อง'
+        ],
         textRules: [
             v => !!v || 'กรุณากรอกข้อมูล'
         ],
