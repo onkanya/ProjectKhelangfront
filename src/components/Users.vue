@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-flex xs12>
           <NewUsers @AddUsers='fetchData' />
-        <v-card>
+        <v-card class="mb-5">
           <v-card-title>
             ผู้ใช้งานระบบ
             <v-spacer></v-spacer>            

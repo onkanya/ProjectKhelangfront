@@ -12,13 +12,13 @@
                             <Types @AddCT="onTypeDataChange" />
                             <Typecategories @AddCTC="onTypeDataChange" />
                             <Typecategoriesdetail @AddCTCD="onTypeDataChange" />
-                            <AllType @FetchSuccess="onFetchSuccess" :updated="updated" />
+                            <AllType @FetchSuccess="onFetchSuccess" :updated="updated" @triggerUpdate="onTriggerUpdate"/>
                         </v-flex>
                     </v-layout>
                 </v-card>
             </v-flex>
         </v-layout>
-        <UpdateCT v-if="dialogCT" :CTid="CTid" :dialog="dialogCT" @closeDialogCT="dialogCT = false"/>
+        <UpdateCT v-if="dialogCT" :CTid="CTid" :dialog="dialogCT" @closeDialogCT="dialogCT = false" @onUpdateSuccess="onUpdateSuccess"/>
     </v-container>
 </template>
 
@@ -58,12 +58,16 @@ export default {
         onTypeDataChange () {
             this.updated = true
         },
+        onUpdateSuccess () {
+            this.updated = true
+            this.dialogCT = false
+        },
         onFetchSuccess () {
             this.updated = false
         },
-        UpdateCT (CTid) { 
+        onTriggerUpdate (typeID) {
+            this.CTid = typeID
             this.dialogCT = true
-            this.CTid = CTid
         },
         deleteCT (CTid) {
             this.$swal.fire({

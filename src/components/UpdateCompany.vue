@@ -87,7 +87,7 @@
                                         prepend-icon="event"
                                         readonly
                                         ></v-text-field>
-                                        <v-date-picker v-model="date" no-title scrollable>
+                                        <v-date-picker v-model="date">
                                             <v-spacer></v-spacer>
                                             <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
                                             <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -160,14 +160,14 @@
                             <v-layout>
                                 <input @change="addImage" type="file" class="upload-btn" name="upload" multiple  accept="image/*">
                             </v-layout>
-                            New image
+                            เลือกรูปภาพใหม่
                             <div class="img-container-mean">
                                 <img
                                     v-for="(img, idx) in showImg" s :key="idx"
                                     :src="img"
                                 />
                             </div>
-                            Old image
+                            รูปภาพเดิม
                             <div class="img-container-mean">
                                 <img
                                     v-for="(img, idx) in getImg" s :key="idx"
@@ -196,6 +196,7 @@ const axios = require('axios')
         axios.get('http://localhost:5003/companygetid/' + this.$route.params.id)
             .then(res => {
                 this.Company = res.data[0]
+                this.date = this.Company.Cstartdate
                 axios.get('http://localhost:5003/district/' + this.Company.Pid)
                     .then(res => {
                         this.district = res.data
@@ -317,13 +318,15 @@ const axios = require('axios')
         async addImage (e) {
             let arr = []
             for (let index = 0; index < e.target.files.length; index++) {
-                var reader = new FileReader();
-                reader.onloadend = () => {
-                    this.showImg.push(reader.result)
-                }
-                await reader.readAsDataURL(e.target.files[index]);
                 this.Cimg.push(e.target.files[index])
+                let result_base64 = await new Promise((resolve) => {
+                    let fileReader = new FileReader();
+                    fileReader.onload = (e) => resolve(fileReader.result);
+                    fileReader.readAsDataURL(e.target.files[index]);
+                });
+                arr.push(result_base64)
             }
+            this.showImg = arr
         }
     }
   }

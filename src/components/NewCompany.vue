@@ -32,8 +32,6 @@
                                 item-text="CTCname"
                                 item-value="CTCid"
                                 label="ประเภทของประเภทสถานประกอบการ*"
-                                :rules="textRules"
-                                required
                             ></v-select>
                         </v-flex>  
                         <v-flex xs12 sm6 md6>                

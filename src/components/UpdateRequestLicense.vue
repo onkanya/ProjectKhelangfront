@@ -227,6 +227,7 @@ export default {
             .then(res => {
                 console.log(res)
                 this.RequestLicense = res.data[0]
+                this.date = this.RequestLicense.RLdate
                 axios.get('http://localhost:5003/district/' + this.RequestLicense.Pid)
                     .then(res => {
                         this.district = res.data

@@ -20,7 +20,7 @@
             <template slot="items" slot-scope="props">
                 <tr @click="props.expanded = !props.expanded">
                     <td>{{ props.item.CTid }}</td>
-                    <td class="text-xs-right">{{ props.item.CTname }}</td>
+                    <td class="">{{ props.item.CTname }}</td>
                     <td class="text-xs-right">
                         <div>                            
                             <v-btn icon class="mx-0">
@@ -81,7 +81,11 @@ export default {
                 align: 'left',
                 value: 'CTid'
             },
-            { text: 'ชื่อประเภท', value: 'CTname' },
+            { 
+                text: 'ชื่อประเภท',
+                align: 'center',
+                value: 'CTname'
+            },
             { text: 'จัดการข้อมูล', sortable: false}
         ],
         types: [],
@@ -95,6 +99,9 @@ export default {
         }
     },
     methods: {
+        UpdateCT (ctID) {
+            this.$emit('triggerUpdate', ctID)
+        },
         fetchCT () {
             axios.get('http://localhost:5003/getallcompanytype')
             .then(res => {

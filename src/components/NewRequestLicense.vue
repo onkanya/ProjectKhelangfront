@@ -1,7 +1,7 @@
 <template>
     <v-layout row justify-center mt-3 mb-3>  
         <v-flex xs12 sm10 md8> 
-        <v-card>
+        <v-card class="mb-5">
             <v-card-title>
                 <span class="font-weight-bold">เพิ่มข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ</span>
             </v-card-title>
@@ -44,34 +44,6 @@
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md6>
-                            <v-menu
-                                ref="menu"
-                                :close-on-content-click="false"
-                                v-model="menu"
-                                :nudge-right="40"
-                                :return-value.sync="date"
-                                lazy
-                                transition="scale-transition"
-                                offset-y
-                                full-width
-                                min-width="290px"
-                            >
-                                <v-text-field
-                                    slot="activator"
-                                    v-model="date"
-                                    label="วันที่ก่อตั้งกิจการ"
-                                    prepend-icon="event"
-                                    :rules="textRules"
-                                    readonly
-                                    ></v-text-field>
-                                <v-date-picker v-model="date" @change="onDateChange">
-                                    <v-spacer></v-spacer>
-                                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-                                    <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-                                </v-date-picker>
-                            </v-menu>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
                             <v-select
                                 v-model="NewRequestLicense.Prefixid"          
                                 :items="prefix"
@@ -82,7 +54,7 @@
                                 required
                             ></v-select>
                         </v-flex>
-                        <v-flex xs12 sm6 md4>
+                        <v-flex xs12 sm6 md6>
                             <v-text-field
                                 v-model="NewRequestLicense.RLfname" 
                                 label="ชื่อผู้ยื่นคำขอ*"
@@ -90,7 +62,7 @@
                                 require
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md4>
+                        <v-flex xs12 sm6 md6>
                             <v-text-field
                                 v-model="NewRequestLicense.RLlname"
                                 label="นามสกุล*"
@@ -256,7 +228,6 @@ export default {
             RLTid: null,
             Cid: null,
             RLnorequest: '',
-            RLdate: null,
             Prefixid: null,
             RLfname: '',
             RLlname: '',
@@ -300,7 +271,6 @@ export default {
                 RLTid: this.NewRequestLicense.RLTid,
                 Cid: this.NewRequestLicense.Cid,
                 RLnorequest: this.NewRequestLicense.RLnorequest,
-                RLdate: this.NewRequestLicense.RLdate,
                 Prefixid: this.NewRequestLicense.Prefixid,
                 RLfname: this.NewRequestLicense.RLfname,
                 RLlname: this.NewRequestLicense.RLlname,
