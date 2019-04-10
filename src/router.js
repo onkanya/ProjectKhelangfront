@@ -12,6 +12,7 @@ import Users from "./views/Users.vue"
 import RequestLicense from "./views/RequestLicense.vue"
 import NewRequestLicense from "./views/NewRequestLicense.vue"
 import UpdateRequestLicense from "./views/UpdateRequestLicense.vue"
+import ConfirmRL from "./views/ConfirmRL.vue"
 
 Vue.use(Router);
 
@@ -79,5 +80,10 @@ export default new Router({
       name: "updaterequestlicense",
       component: UpdateRequestLicense
     },
+    {
+      path: "/confirmrequest",
+      name: "confirmrequest",
+      component: ConfirmRL
+    }
   ]
 });

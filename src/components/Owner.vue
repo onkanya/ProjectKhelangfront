@@ -72,26 +72,26 @@ export default {
         search: '',
         headers: [
             {
-              text: 'รหัสประจำตัวเจ้าของกิจการ',
-              align: 'center',
+                text: 'รหัสประจำตัวเจ้าของกิจการ',
+                align: 'center',
             //   sortable: false,
-              value: 'Ocitizenid'
+                value: 'Ocitizenid'
             },
             {
-              text: 'ชื่อ - สกุล',
-              align: 'center', 
-              value: 'Ofirstname'
+                text: 'ชื่อ - สกุล',
+                align: 'center', 
+                value: 'Ofirstname'
             },
             { 
-              text: 'เบอร์โทรศัพท์',
-              align: 'center', 
-              value: 'Otel' 
+                text: 'เบอร์โทรศัพท์',
+                align: 'center', 
+                value: 'Otel' 
             },
             {
-              text: 'จัดการข้อมูล', 
-              align: 'center',
-              sortable: false,
-              value: ''
+                text: 'จัดการข้อมูล', 
+                align: 'center',
+                sortable: false,
+                    value: ''
             }
         ],
         owner: []       
