@@ -1,59 +1,59 @@
 <template>
-  <v-container grid-list-xl text-xs-center>
-    <v-layout row wrap>
-      <v-flex xs12>
-          <NewUsers @AddUsers='fetchData' />
-        <v-card class="mb-5">
-          <v-card-title>
-            ผู้ใช้งานระบบ
-            <v-spacer></v-spacer>            
-            <v-text-field
-              v-model="search"
-              append-icon="search"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-card-title>
-          <v-data-table
-            :headers="headers"
-            :items="users"
-            :search="search"
-          >
-            <template slot="items" slot-scope="props">
-              <td>{{ props.item.Uid }}</td>
-              <td class="text-xs-center">{{ props.item.Ufirstname }}</td>
-              <td class="text-xs-center" style="max-width:170px">{{ props.item.Ulastname }}</td>
-              <td class="text-xs-center">{{ statusToText(props.item.Ustatus) }}</td>
-              <td class="text-xs-center">
+    <v-container grid-list-xl text-xs-center>
+        <v-layout row wrap>
+        <v-flex xs12>
+            <NewUsers @AddUsers='fetchData' />
+            <v-card class="mb-5">
+            <v-card-title>
+                ผู้ใช้งานระบบ
+                <v-spacer></v-spacer>            
+                <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Search"
+                single-line
+                hide-details
+                ></v-text-field>
+            </v-card-title>
+            <v-data-table
+                :headers="headers"
+                :items="users"
+                :search="search"
+            >
+                <template slot="items" slot-scope="props">
+                <td>{{ props.item.Uid }}</td>
+                <td class="text-xs-center">{{ props.item.Ufirstname }}</td>
+                <td class="text-xs-center" style="max-width:170px">{{ props.item.Ulastname }}</td>
+                <td class="text-xs-center">{{ statusToText(props.item.Ustatus) }}</td>
+                <td class="text-xs-center">
 
-                <v-btn icon class="mx-0"
-                    router
-                    exact
-                    @click="ShowUpdateUserDialog(props.item.Uid)"
-                >
-                  <v-icon color="cyan lighten-1">edit</v-icon>
-                </v-btn>
-                
-                <v-btn icon class="mx-0"
-                    router
-                    exact
-                    @click="DeleteUsers(props.item.Uid)"
-                >
-                  <v-icon color="red darken-1">delete</v-icon>
-                </v-btn>
+                    <v-btn icon class="mx-0"
+                        router
+                        exact
+                        @click="ShowUpdateUserDialog(props.item.Uid)"
+                    >
+                    <v-icon color="cyan lighten-1">edit</v-icon>
+                    </v-btn>
+                    
+                    <v-btn icon class="mx-0"
+                        router
+                        exact
+                        @click="DeleteUsers(props.item.Uid)"
+                    >
+                    <v-icon color="red darken-1">delete</v-icon>
+                    </v-btn>
 
-              </td>
-            </template>
-            <v-alert slot="no-results" :value="true" color="error" icon="warning">
-              Your search for "{{ search }}" found no results.
-            </v-alert>
-          </v-data-table>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <UpdateUsers v-if="dialog" :Uid="Uid" :dialog="dialog" @closeDialog="dialog = false" @UpdateUsers="fetchData" />
-  </v-container>
+                </td>
+                </template>
+                <v-alert slot="no-results" :value="true" color="error" icon="warning">
+                Your search for "{{ search }}" found no results.
+                </v-alert>
+            </v-data-table>
+            </v-card>
+        </v-flex>
+        </v-layout>
+        <UpdateUsers v-if="dialog" :Uid="Uid" :dialog="dialog" @closeDialog="dialog = false" @UpdateUsers="fetchData" />
+    </v-container>
 </template>
 
 <script>

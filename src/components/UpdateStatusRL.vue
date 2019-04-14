@@ -3,7 +3,7 @@
         <v-flex xs12 sm10 md8> 
         <v-card>
             <v-card-title>
-                <span class="font-weight-bold">แก้ไขข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ</span>
+                <span class="font-weight-bold">ข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ</span>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -19,9 +19,8 @@
                                 :items="requesttype"
                                 item-text="RLTname"
                                 item-value="RLTid"
-                                label="ประเภทคำขอ*"
-                                :rules="textRules"   
-                                required
+                                label="ประเภทคำขอ*"   
+                                disabled
                             ></v-select>
                         </v-flex>
                         <v-flex xs12 sm6 md6>                
@@ -31,7 +30,7 @@
                                 item-text="Cname"
                                 item-value="Cid"
                                 label="สถานประกอบการ"
-                                :rules="textRules"
+                                disabled
                             >
                             </v-autocomplete>
                         </v-flex>
@@ -39,14 +38,13 @@
                             <v-text-field
                                 v-model="RequestLicense.RLnorequest"
                                 label="เลขที่คำขอ*"
-                                :rules="textRules"
-                                required
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md6>
                             <v-text-field
                                 slot="activator"
-                                v-model="date"
+                                v-model="RequestLicense.RLdate"
                                 label="วันที่ทำรายการ"
                                 prepend-icon="event"
                                 :rules="textRules"
@@ -61,96 +59,85 @@
                                 item-text="Prefixname"
                                 item-value="Prefixid"
                                 label="คำนำหน้า*"
-                                :rules="textRules"
-                                required
+                                disabled
                             ></v-select>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="RequestLicense.RLfname"
                                 label="ชื่อผู้ยื่นคำขอ*"
-                                :rules="textRules"
                                 require
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="RequestLicense.RLlname"
                                 label="นามสกุล*"
-                                :rules="textRules"
-                                required
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="RequestLicense.RLage"
                                 label="อายุ*"
-                                :rules="textRules"
-                                required
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="RequestLicense.RLnationality"
                                 label="สัญชาติ*"
-                                :rules="textRules"
-                                required
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="RequestLicense.RLtel"
                                 label="เบอร์โทรศัพท์*"
-                                :rules="textRules"
-                                :mask="masktel"
-                                required
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md6>
                             <v-text-field
                                 v-model="RequestLicense.RLemail"
                                 label="อีเมล์"
-                                :rules="emailRules"
-                                required
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md6>
                             <v-text-field
                                 v-model="RequestLicense.RLdetail"
                                 label="รายละเอียดเพิ่มเติม"
-                                :rules="textRules"
-                                required
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md3>
                             <v-text-field
                                 v-model="RequestLicense.RLhomeno"
                                 label="บ้านเลขที่*"
-                                :rules="textRules"
-                                required
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md3>
                             <v-text-field
                                 v-model="RequestLicense.RLmoo"
                                 label="หมู่ที่"
-                                :rules="textRules"
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md3>
                             <v-text-field
                                 v-model="RequestLicense.RLsoi"
                                 label="ซอย"
-                                :rules="textRules"
-                                required
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md3>
                             <v-text-field
                                 v-model="RequestLicense.RLroad"
                                 label="ถนน"
-                                :rules="textRules"
-                                required
+                                disabled
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
@@ -160,9 +147,7 @@
                                 item-text="Pname_th"
                                 item-value="Pid"
                                 label="จังหวัด*"
-                                @change="selectedProvince"
-                                :rules="textRules"               
-                                required
+                                disabled               
                             ></v-select>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
@@ -171,10 +156,8 @@
                                 :items="district"
                                 item-text="Dname_th"
                                 item-value="Did"
-                                label="อำเภอ*"                    
-                                @change="selectedDistrict"
-                                :rules="textRules"              
-                                required
+                                label="อำเภอ*"
+                                disabled            
                             ></v-select>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
@@ -184,9 +167,58 @@
                                 item-value="SDTid"
                                 item-text="SDTname_th"
                                 label="ตำบล*"
-                                :rules="textRules"
-                                required
+                                disabled
                             ></v-select>
+                        </v-flex>
+                    </v-layout>
+                    <v-subheader>
+                        <v-btn icon>
+                            <v-icon color="blue white--text">info</v-icon>
+                        </v-btn>
+                        สถานะคำขอ
+                    </v-subheader>
+                    <v-spacer></v-spacer>
+                    <v-layout wrap>
+                        <v-flex xs12 sm12 md6>
+                            <v-select
+                                v-model="RequestLicense.RLstatus"                                       
+                                :items="statusoption"
+                                label="สถานะคำขอ"
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm12 md6>
+                            <v-menu
+                                ref="menu"
+                                :close-on-content-click="false"
+                                v-model="menu"
+                                :nudge-right="40"
+                                :return-value.sync="date"
+                                lazy
+                                transition="scale-transition"
+                                offset-y
+                                full-width
+                                min-width="290px"
+                            >
+                                <v-text-field
+                                    slot="activator"
+                                    v-model="statusdate"
+                                    label="วันที่นัดรับใบอนุญาตประกอบกิจการ"
+                                    prepend-icon="event"
+                                    readonly
+                                    ></v-text-field>
+                                <v-date-picker v-model="statusdate" @change="onDateChange">
+                                    <v-spacer></v-spacer>
+                                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                                    <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                                </v-date-picker>
+                            </v-menu>
+                        </v-flex>
+                        <v-flex xs12 sm12 md12>
+                            <v-text-field
+                                v-model="RequestLicense.RLnoted"
+                                label="กรณีที่เอกสารหลักฐานไม่ครบ คือ"
+                                multi-line
+                            ></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-form>
@@ -194,7 +226,7 @@
             </v-card-text>
             <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat :to="'/requestlicense/'" >Close</v-btn>
+            <v-btn color="blue darken-1" flat :to="'/confirmrequest/'" >Close</v-btn>
             <v-btn color="blue darken-1" flat @click="submitRequest">Save</v-btn>
             </v-card-actions>
         </v-card> 
@@ -238,10 +270,9 @@ export default {
         })
     },
     data: () => ({
-        // date: new Date().toISOString().substr(0, 10),
-        valid: true,
-        masktel: '###-#######',
+        // date: new Date().toISOString().substr(0, 10),        
         date: null,
+        statusdate: null,
         menu: false,
         company: [],
         requesttype: [],
@@ -250,11 +281,10 @@ export default {
         subdistrict: [],
         prefix: [],
         RequestLicense: {},
-        textRules: [
-            v => !!v || 'กรุณากรอกข้อมูล'
-        ],
-        emailRules: [
-            v => /.+@.+/.test(v) || 'กรุณากรอกรูปแบบอีเมลล์ให้ถูกต้อง'
+        statusoption: [
+            { text: 'รอตรวจสอบคำขอ', value: '1'},
+            { text: 'เอกสารหลักฐานไม่ครบ', value: '2'},
+            { text: 'เอกสารหลักฐานครบ', value: '3'}
         ]
     }),
     methods: {
@@ -271,27 +301,10 @@ export default {
                 return
             }
             // let { Uid } =  JSON.parse(localStorage.getItem('userLogin'))
-            let request = {
-                RLTid: this.RequestLicense.RLTid,
-                Cid: this.RequestLicense.Cid,
-                RLnorequest: this.RequestLicense.RLnorequest,
-                RLdate: this.date,
-                Prefixid: this.RequestLicense.Prefixid,
-                RLfname: this.RequestLicense.RLfname,
-                RLlname: this.RequestLicense.RLlname,
-                RLage: this.RequestLicense.RLage,
-                RLnationality: this.RequestLicense.RLnationality,
-                RLhomeno: this.RequestLicense.RLhomeno,
-                RLmoo: this.RequestLicense.RLmoo,
-                RLsoi: this.RequestLicense.RLsoi,
-                RLroad: this.RequestLicense.RLroad,
-                RLvillage: this.RequestLicense.RLvillage,
-                SDTid: this.RequestLicense.SDTid,
-                Did: this.RequestLicense.Did,
-                Pid: this.RequestLicense.Pid,
-                RLtel: this.RequestLicense.RLtel,
-                RLemail: this.RequestLicense.RLemail,
-                RLdetail: this.RequestLicense.RLdetail
+            let confirmrequest = {
+                RLstatus: this.RequestLicense.RLstatus,
+                RLnoted: this.RequestLicense.RLnoted,
+                RLgetlicensedate: this.statusdate
             }
             this.$swal.fire({
                 title: 'ยืนยันการแก้ไขข้อมูล',
@@ -305,12 +318,11 @@ export default {
             })
             .then((result) => {
                 if (result.value) {
-                    axios.post('http://localhost:5003/updaterequest/' + this.$route.params.id, request)
+                    axios.post('http://localhost:5003/confirmrequest/' + this.$route.params.id, confirmrequest)
                     .then(res => {
                         console.log(res)
                         // this.$emit('AddOwner')
-                        this.RequestLicense = ''
-                        this.$router.push('/requestlicense')           
+                        this.$router.push('/confirmrequest')           
                     })
                     this.$swal.fire(
                         'แก้ไขข้อมูลคำขอสำเร็จ!',
@@ -319,18 +331,6 @@ export default {
                     )
                 }
             })
-        },
-        selectedProvince (event) {
-            axios.get('http://localhost:5003/district/' + event)
-                .then(res => {
-                    this.district = res.data
-                })
-        },        
-        selectedDistrict (event) {
-            axios.get('http://localhost:5003/subdistrict/' + event)
-                .then(res => {
-                    this.subdistrict = res.data
-                })
         }
     }
 }

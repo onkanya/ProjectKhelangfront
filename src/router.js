@@ -13,6 +13,9 @@ import RequestLicense from "./views/RequestLicense.vue"
 import NewRequestLicense from "./views/NewRequestLicense.vue"
 import UpdateRequestLicense from "./views/UpdateRequestLicense.vue"
 import ConfirmRL from "./views/ConfirmRL.vue"
+import UpdateStatusRL from "./views/UpdateStatusRL.vue"
+import Investigation from "./views/Investigation.vue"
+import NewInvestigation from "./views/NewInvestigation.vue"
 
 Vue.use(Router);
 
@@ -84,6 +87,21 @@ export default new Router({
       path: "/confirmrequest",
       name: "confirmrequest",
       component: ConfirmRL
+    },
+    {
+      path: "/updatestatusrl/:id",
+      name: "updatestatusrl",
+      component: UpdateStatusRL
+    },
+    {
+      path: "/investigation",
+      name: "investigation",
+      component: Investigation
+    },
+    {
+      path: "/newinvestigation/:id",
+      name: "newinvestigation",
+      component: NewInvestigation
     }
   ]
 });

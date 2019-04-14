@@ -68,8 +68,9 @@ export default {
                 { title: 'ประเภทสถานประกอบการ', icon: 'category', link: '/companytype', permission: [3] },
                 { title: 'ผู้ใช้ระบบ', icon: 'people', link: '/users', permission: [1] },
                 { title: 'คำขอรับ / ต่อใบอนุญาตประกอบกิจการ', icon: 'list', link: '/requestlicense', permission: [3, 4] },
-                { title: 'ตรวจสอบคำขอรับ / ต่อใบอนุญาตประกอบกิจการ', icon: 'list', link: 'confirmrequest', permission: [3, 4]},
-                { title: 'รายงานการออกใบอนุญาตประกอบกิจการ', icon: 'list', link: '/', permission: [2] }
+                { title: 'ตรวจสอบคำขอรับ / ต่อใบอนุญาตประกอบกิจการ', icon: 'mobile_friendly', link: '/confirmrequest', permission: [3, 4]},
+                { title: 'สำรวจสถานประกอบการ', icon: 'security', link: '/investigation', permission: [3, 5]},
+                { title: 'รายงานการออกใบอนุญาตประกอบกิจการ', icon: 'dashboard', link: '/', permission: [2] }
             ],
             userdata: ''
         }
