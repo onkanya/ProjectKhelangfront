@@ -191,7 +191,7 @@
 
 <script>
 const axios = require('axios')
-  export default { 
+export default { 
     created () {
         axios.get('http://localhost:5003/companygetid/' + this.$route.params.id)
             .then(res => {
@@ -329,7 +329,7 @@ const axios = require('axios')
             this.showImg = arr
         }
     }
-  }
+}
 </script>
 
 <style lang="scss" scoped>

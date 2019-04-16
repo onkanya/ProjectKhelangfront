@@ -105,12 +105,6 @@ export default {
         RLstatustoText (RLstatus) {
             let text = ''
             switch (RLstatus) {
-                case '1':
-                    text = 'รอตรวจสอบคำขอ'
-                    break
-                case '2':
-                    text = 'เอกสารหลักฐานไม่ครบ'
-                    break
                 case '3':
                     text = 'เอกสารหลักฐานครบ'
                     break

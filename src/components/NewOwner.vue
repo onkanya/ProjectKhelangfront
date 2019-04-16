@@ -288,6 +288,6 @@ const axios = require('axios')
                 })
         }        
     }
-  }
+}
 </script>
 
