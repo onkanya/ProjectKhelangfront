@@ -13,17 +13,6 @@
                     v-model="valid"
                 >
                     <v-layout wrap>
-                        <v-flex xs12 sm6 md6>
-                            <v-select
-                                v-model="RequestLicense.RLTid"                                       
-                                :items="requesttype"
-                                item-text="RLTname"
-                                item-value="RLTid"
-                                label="ประเภทคำขอ*"
-                                :rules="textRules"   
-                                required
-                            ></v-select>
-                        </v-flex>
                         <v-flex xs12 sm6 md6>                
                             <v-autocomplete
                                 v-model="RequestLicense.Cid"
@@ -46,7 +35,7 @@
                         <v-flex xs12 sm6 md6>
                             <v-text-field
                                 slot="activator"
-                                v-model="date"
+                                v-model="RequestLicense.RLdate"
                                 label="วันที่ทำรายการ"
                                 prepend-icon="event"
                                 :rules="textRules"
@@ -210,7 +199,6 @@ export default {
             .then(res => {
                 console.log(res)
                 this.RequestLicense = res.data[0]
-                this.date = this.RequestLicense.RLdate
                 axios.get('http://localhost:5003/district/' + this.RequestLicense.Pid)
                     .then(res => {
                         this.district = res.data
@@ -241,7 +229,6 @@ export default {
         // date: new Date().toISOString().substr(0, 10),
         valid: true,
         masktel: '###-#######',
-        date: null,
         menu: false,
         company: [],
         requesttype: [],
@@ -258,9 +245,6 @@ export default {
         ]
     }),
     methods: {
-        onDateChange (e) {
-            this.RequestLicense.RLdate = e
-        },
         submitRequest () {
             if (!this.$refs.form.validate()) {
                 this.$swal.fire({
@@ -272,10 +256,8 @@ export default {
             }
             // let { Uid } =  JSON.parse(localStorage.getItem('userLogin'))
             let request = {
-                RLTid: this.RequestLicense.RLTid,
                 Cid: this.RequestLicense.Cid,
                 RLnorequest: this.RequestLicense.RLnorequest,
-                RLdate: this.date,
                 Prefixid: this.RequestLicense.Prefixid,
                 RLfname: this.RequestLicense.RLfname,
                 RLlname: this.RequestLicense.RLlname,
@@ -307,8 +289,6 @@ export default {
                 if (result.value) {
                     axios.post('http://localhost:5003/updaterequest/' + this.$route.params.id, request)
                     .then(res => {
-                        console.log(res)
-                        // this.$emit('AddOwner')
                         this.RequestLicense = ''
                         this.$router.push('/requestlicense')           
                     })

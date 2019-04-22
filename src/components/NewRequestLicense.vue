@@ -8,34 +8,13 @@
             <v-divider></v-divider>
             <v-card-text>
             <v-container grid-list-md>
+                
                 <v-form
                     ref="form"
                     v-model="valid"
                 >
                     <v-layout wrap>
-                        <v-flex xs12 sm6 md6>
-                            <v-select
-                                v-model="NewRequestLicense.RLTid"       
-                                :items="requesttype"
-                                item-text="RLTname"
-                                item-value="RLTid"
-                                label="ประเภทคำขอ*"
-                                :rules="textRules"   
-                                required
-                            ></v-select>
-                        </v-flex>
-                        <v-flex xs12 sm6 md6>                
-                            <v-autocomplete
-                                v-model="NewRequestLicense.Cid"
-                                :items="company"
-                                item-text="Cname"
-                                item-value="Cid"
-                                label="สถานประกอบการ"
-                                :rules="textRules"
-                            >
-                            </v-autocomplete>
-                        </v-flex>
-                        <v-flex xs12 sm6 md6>
+                        <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="NewRequestLicense.RLnorequest"
                                 label="เลขที่คำขอ*"
@@ -43,7 +22,22 @@
                                 required
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md6>
+                    </v-layout>
+                    <div style="font-size: 14pt; text-align: center;">
+                        ข้อมูลผู้ประกอบการ
+                    </div>
+                    <v-layout wrap>
+                        <v-flex xs12>
+                            <v-text-field
+                                v-model="NewOwner.Ocitizenid"
+                                label="เลขที่บัตรประจำตัวประชาชน*"
+                                :rules="citizenRules"
+                                :mask="maskcitizen"
+                                @change="selectOcitizenid"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
                             <v-select
                                 v-model="NewRequestLicense.Prefixid"          
                                 :items="prefix"
@@ -54,15 +48,15 @@
                                 required
                             ></v-select>
                         </v-flex>
-                        <v-flex xs12 sm6 md6>
+                        <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="NewRequestLicense.RLfname" 
-                                label="ชื่อผู้ยื่นคำขอ*"
+                                label="ชื่อ*"
                                 :rules="textRules"
                                 require
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md6>
+                        <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="NewRequestLicense.RLlname"
                                 label="นามสกุล*"
@@ -70,7 +64,7 @@
                                 required
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md4>
+                        <v-flex xs12 sm6 md6>
                             <v-text-field
                                 v-model="NewRequestLicense.RLage"
                                 label="อายุ*"
@@ -78,7 +72,7 @@
                                 required
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md4>
+                        <v-flex xs12 sm6 md6>
                             <v-text-field
                                 v-model="NewRequestLicense.RLnationality"
                                 label="สัญชาติ*"
@@ -86,7 +80,7 @@
                                 required
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md4>
+                        <v-flex xs12 sm6 md6>
                             <v-text-field
                                 v-model="NewRequestLicense.RLtel"
                                 label="เบอร์โทรศัพท์*"
@@ -105,28 +99,20 @@
                         </v-flex>
                         <v-flex xs12 sm6 md6>
                             <v-text-field
-                                v-model="NewRequestLicense.RLdetail"
-                                label="รายละเอียดเพิ่มเติม"
-                                :rules="textRules"
-                                required
-                            ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md3>
-                            <v-text-field
                                 v-model="NewRequestLicense.RLhomeno"
                                 label="บ้านเลขที่*"
                                 :rules="textRules"
                                 required
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md3>
+                        <v-flex xs12 sm6 md6>
                             <v-text-field
                                 v-model="NewRequestLicense.RLmoo"
                                 label="หมู่ที่"
                                 :rules="textRules"
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md3>
+                        <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="NewRequestLicense.RLsoi"
                                 label="ซอย"
@@ -134,10 +120,18 @@
                                 required
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md3>
+                        <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="NewRequestLicense.RLroad"
                                 label="ถนน"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewRequestLicense.RLvillage"
+                                label="หมู่บ้าน"
                                 :rules="textRules"
                                 required
                             ></v-text-field>
@@ -178,6 +172,188 @@
                             ></v-select>
                         </v-flex>
                     </v-layout>
+                    <div style="font-size: 14pt; text-align: center;">
+                        ข้อมูลสถานประกอบการ
+                    </div>
+                    <v-layout wrap>
+                        <v-flex xs12 sm6 md6>
+                            <v-select
+                                v-model="NewCompany.CTid"
+                                :items="types"
+                                item-value="CTid"
+                                item-text="CTname"
+                                label="ประเภทสถานประกอบการ*"
+                                @change="selectCompanyType"
+                                :rules="textRules"
+                                required
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                            <v-text-field
+                                v-model="fee"
+                                label="ค่าธรรมเนียม*"
+                                disabled
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm12 md12>
+                            <v-select
+                                v-model="NewCompany.LFid"
+                                :items="licensefee"
+                                item-value="LFid"
+                                item-text="LFname"
+                                label="ชนิดสถานประกอบการ*"
+                                @change="selectLicenseFee"
+                            >
+                            </v-select>
+                        </v-flex>
+                        
+                        <v-flex xs12 sm6 md6>                
+                            <v-text-field
+                                v-model="NewCompany.Cname"
+                                label="ชื่อสถานประกอบการ*"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                            <v-text-field
+                                v-model="NewCompany.Carea"
+                                label="ขนาดพื้นที่ (ตารางเมตร)"
+                                :mask="mask"
+                                :rules="textRules"
+                                require
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                            <v-text-field
+                                v-model="NewCompany.Cmachine"
+                                label="ขนาดเครื่องจักร (แรงม้า)"
+                                :rules="textRules"
+                                :mask="mask"
+                                require
+                            ></v-text-field>
+                        </v-flex>                    
+                        <v-flex xs12 sm6 md6>
+                            <v-text-field
+                                v-model="NewCompany.Cemployee"
+                                label="จำนวนพนักงาน (คน)"
+                                :rules="textRules"
+                                :mask="mask"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-menu
+                                ref="menu"
+                                :close-on-content-click="false"
+                                v-model="menu"
+                                :nudge-right="40"
+                                :return-value.sync="date"
+                                lazy
+                                transition="scale-transition"
+                                offset-y
+                                full-width
+                                min-width="290px"
+                            >
+                                <v-text-field
+                                    slot="activator"
+                                    v-model="date"
+                                    label="วันที่ก่อตั้งกิจการ"
+                                    prepend-icon="event"
+                                    readonly
+                                    :rules="textRules"
+                                    required
+                                    ></v-text-field>
+                                <v-date-picker v-model="date" no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                                    <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                                </v-date-picker>
+                            </v-menu>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Chomeno"
+                                label="บ้านเลขที่*"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Cmoo"
+                                label="หมู่ที่"
+                                :rules="textRules"
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Csoi"
+                                label="ซอย"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Croad"
+                                label="ถนน"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-text-field
+                                v-model="NewCompany.Cvillage"
+                                label="หมู่บ้าน"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-select
+                                v-model="NewCompany.Pid"    
+                                :items="province"
+                                item-text="Pname_th"
+                                item-value="Pid"
+                                label="จังหวัด*"
+                                @change="selectedProvinceCom"
+                                :rules="textRules"               
+                                required
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-select
+                                v-model="NewCompany.Did"    
+                                :items="districtcom"
+                                item-text="Dname_th"
+                                item-value="Did"
+                                label="อำเภอ*"                    
+                                @change="selectedDistrictCom"
+                                :rules="textRules"              
+                                required
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                            <v-select
+                                v-model="NewCompany.SDTid"    
+                                :items="subdistrictcom"
+                                item-value="SDTid"
+                                item-text="SDTname_th"
+                                label="ตำบล*"
+                                :rules="textRules"
+                                required
+                            ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm12 md12>
+                            <v-text-field
+                                v-model="NewRequestLicense.RLdetail"
+                                label="รายละเอียดเพิ่มเติม"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                    </v-layout>
                 </v-form>
             </v-container>
             </v-card-text>
@@ -203,27 +379,36 @@ export default {
             .then(res => {
                 this.province = res.data
             })
-        axios.get('http://localhost:5003/requestlicensetype')
-            .then(res => {
-                this.requesttype = res.data
-            })
         axios.get('http://localhost:5003/prefix')
         .then(res => {
             this.prefix = res.data
         })
+        axios.get('http://localhost:5003/getcompanytype')
+            .then(res => {
+                this.types = res.data
+            })
+        axios.get('http://localhost:5003/getocitizenid')
+            .then(res => {
+                this.ocitizenid = res.data
+            })
     },
     data: () => ({
         // date: new Date().toISOString().substr(0, 10),
         valid: true,
         masktel: '###-#######',
+        maskcitizen: '#-####-#####-##-#',
         date: null,
         menu: false,
+        types: [],
         company: [],
-        requesttype: [],
         province: [],
         district: [],
+        districtcom: [],
         subdistrict: [],
+        subdistrictcom: [],
         prefix: [],
+        licensefee: [],
+        fee: null,
         NewRequestLicense: {
             RLTid: null,
             Cid: null,
@@ -246,12 +431,53 @@ export default {
             RLdetail: '',
             Uid: null
         },
+        NewOwner: {
+            Oid: '',
+            Ocitizenid: '',
+            Prefixid: null,
+            Ofirstname: '',
+            Olastname: '',
+            Oage: '',
+            Onationality: '',
+            Ohomeno: '',
+            Omoo: '',
+            Osoi: '',
+            Oroad: '',
+            Ovillage: '',
+            Pid: null,
+            Did: null,
+            SDTid: null,
+            Otel: '',
+            Oemail: ''
+        },
+        NewCompany: {
+            CTid: null,
+            LFid: null,
+            Oid: null,
+            Cname: '',
+            Carea: '',
+            Cmachine: '',
+            Cemployee: '',
+            Cstartdate: null,
+            Chomeno: '',
+            Cmoo: '',
+            Csoi: '',
+            Croad: '',
+            Cvillage: '',
+            Pid: null,
+            Did: null,
+            SDTid: null
+        },
         textRules: [
             v => !!v || 'กรุณากรอกข้อมูล'
         ],
         emailRules: [
             v => /.+@.+/.test(v) || 'กรุณากรอกรูปแบบอีเมลล์ให้ถูกต้อง'
-        ]
+        ],
+        citizenRules: [
+            v => !!v || 'กรุณาเลขบัตรประจำตัวประชาชน',
+            v => (v && v.length <= 13) || 'ตัวเลข 13 ตัวเท่านั้น'
+        ],
     }),
     methods: {
         onDateChange (e) {
@@ -267,27 +493,23 @@ export default {
                 return
             }
             let { Uid } =  JSON.parse(localStorage.getItem('userLogin'))
-            let request = {
-                RLTid: this.NewRequestLicense.RLTid,
-                Cid: this.NewRequestLicense.Cid,
-                RLnorequest: this.NewRequestLicense.RLnorequest,
+            let owner = {
+                Ocitizenid: this.NewOwner.Ocitizenid,
                 Prefixid: this.NewRequestLicense.Prefixid,
-                RLfname: this.NewRequestLicense.RLfname,
-                RLlname: this.NewRequestLicense.RLlname,
-                RLage: this.NewRequestLicense.RLage,
-                RLnationality: this.NewRequestLicense.RLnationality,
-                RLhomeno: this.NewRequestLicense.RLhomeno,
-                RLmoo: this.NewRequestLicense.RLmoo,
-                RLsoi: this.NewRequestLicense.RLsoi,
-                RLroad: this.NewRequestLicense.RLroad,
-                RLvillage: this.NewRequestLicense.RLvillage,
+                Ofirstname: this.NewRequestLicense.RLfname,
+                Olastname: this.NewRequestLicense.RLlname,
+                Oage: this.NewRequestLicense.RLage,
+                Onationality: this.NewRequestLicense.RLnationality,
+                Ohomeno: this.NewRequestLicense.RLhomeno,
+                Omoo: this.NewRequestLicense.RLmoo,
+                Osoi: this.NewRequestLicense.RLsoi,
+                Oroad: this.NewRequestLicense.RLroad,
+                Ovillage: this.NewRequestLicense.RLvillage,
                 SDTid: this.NewRequestLicense.SDTid,
                 Did: this.NewRequestLicense.Did,
                 Pid: this.NewRequestLicense.Pid,
-                RLtel: this.NewRequestLicense.RLtel,
-                RLemail: this.NewRequestLicense.RLemail,
-                RLdetail: this.NewRequestLicense.RLdetail,
-                Uid: Uid
+                Otel: this.NewRequestLicense.RLtel,
+                Oemail: this.NewRequestLicense.RLemail
             }
             this.$swal.fire({
                 title: 'ยืนยันการเพิ่มข้อมูล',
@@ -299,20 +521,70 @@ export default {
                 cancelButtonText: 'ยกเลิก',
                 confirmButtonText: 'ตกลง'
             })
-            .then((result) => {
+            .then(async (result) => {
                 if (result.value) {
-                    axios.post('http://localhost:5003/newrequest', request)
-                    .then(res => {
-                        console.log(res)
-                        // this.$emit('AddOwner')   
-                        this.NewRequestLicense = ''  
-                        this.$router.push('/requestlicense')           
-                    })
-                    this.$swal.fire(
-                        'เพิ่มข้อมูลคำขอสำเร็จ!',
-                        '',
-                        'success'
-                    )
+                    let company = {
+                        CTid: this.NewCompany.CTid,
+                        LFid: this.NewCompany.LFid,
+                        Oid: this.NewCompany.Oid ? this.NewCompany.Oid : 0,
+                        Cname: this.NewCompany.Cname,
+                        Carea: this.NewCompany.Carea,
+                        Cmachine: this.NewCompany.Cmachine,
+                        Cemployee: this.NewCompany.Cemployee,
+                        Cstartdate: this.date,
+                        Chomeno: this.NewCompany.Chomeno,
+                        Cmoo: this.NewCompany.Cmoo,
+                        Csoi: this.NewCompany.Csoi,
+                        Croad: this.NewCompany.Croad,
+                        Cvillage: this.NewCompany.Cvillage,
+                        Pid: this.NewCompany.Pid,
+                        Did: this.NewCompany.Did,
+                        SDTid: this.NewCompany.SDTid
+                    }
+                    let request = {
+                        Cid: 0,
+                        RLnorequest: this.NewRequestLicense.RLnorequest,
+                        Prefixid: this.NewRequestLicense.Prefixid,
+                        RLfname: this.NewRequestLicense.RLfname,
+                        RLlname: this.NewRequestLicense.RLlname,
+                        RLage: this.NewRequestLicense.RLage,
+                        RLnationality: this.NewRequestLicense.RLnationality,
+                        RLhomeno: this.NewRequestLicense.RLhomeno,
+                        RLmoo: this.NewRequestLicense.RLmoo,
+                        RLsoi: this.NewRequestLicense.RLsoi,
+                        RLroad: this.NewRequestLicense.RLroad,
+                        RLvillage: this.NewRequestLicense.RLvillage,
+                        SDTid: this.NewRequestLicense.SDTid,
+                        Did: this.NewRequestLicense.Did,
+                        Pid: this.NewRequestLicense.Pid,
+                        RLtel: this.NewRequestLicense.RLtel,
+                        RLemail: this.NewRequestLicense.RLemail,
+                        RLdetail: this.NewRequestLicense.RLdetail,
+                        Uid: Uid
+                    }
+                    try {
+                        let res = await axios.post('http://localhost:5003/getownerbyocitizenid', owner)
+                        if (res.data.status) {
+                            const { data } = await axios.post('http://localhost:5003/newowner', owner)
+                            company.Oid = data.Oid
+                        }
+                        const companyRes = await axios.post('http://localhost:5003/newcompany', company)
+                        request.Cid = companyRes.data.Cid
+                        const reqRes = await axios.post('http://localhost:5003/newrequest', request)
+                        this.$swal.fire(
+                            'เพิ่มข้อมูลคำขอสำเร็จ!',
+                            '',
+                            'success'
+                        )
+                        this.$router.push('/requestlicense')
+                    } catch (error) {
+                        console.log(error)
+                        this.$swal.fire(
+                            'เกิดข้อผิดพลาด!',
+                            'เกิดความผิดพลาดในระบบ โปรดลองใหม่ในภายหลัง',
+                            'error'
+                        )
+                    }
                 }
             })
         },
@@ -326,6 +598,62 @@ export default {
             axios.get('http://localhost:5003/subdistrict/' + event)
                 .then(res => {
                     this.subdistrict = res.data
+                })
+        },
+        selectedProvinceCom (event) {
+            axios.get('http://localhost:5003/district/' + event)
+                .then(res => {
+                    this.districtcom = res.data
+                })
+        },        
+        selectedDistrictCom (event) {
+            axios.get('http://localhost:5003/subdistrict/' + event)
+                .then(res => {
+                    this.subdistrictcom = res.data
+                })
+        },
+        selectCompanyType (event) {
+            axios.get('http://localhost:5003/getlicensefee/' + event)
+                .then(res => {
+                    this.licensefee = res.data
+                })
+        },
+        selectLicenseFee (ev) {
+            for (let i = 0; i < this.licensefee.length; i++) {
+                const ele = this.licensefee[i]
+                if (ele.LFid == ev) {
+                    this.fee = ele.LFfee
+                }
+            }
+        },
+        selectOcitizenid (event) {
+            axios.get('http://localhost:5003/getownerbyocitizenid/' + event)
+                .then(res => {
+                    axios.get('http://localhost:5003/district/' + res.data[0].Pid)
+                        .then(res => {
+                            this.district = res.data
+                        })
+                    axios.get('http://localhost:5003/subdistrict/' + res.data[0].Did)
+                        .then(res => {
+                            this.subdistrict = res.data
+                        })
+                        console.log(res)
+                        this.NewCompany.Oid = res.data[0].Oid
+                        this.NewRequestLicense.Prefixid = res.data[0].Prefixid
+                        this.NewRequestLicense.RLfname = res.data[0].Ofirstname
+                        this.NewRequestLicense.RLlname = res.data[0].Olastname
+                        this.NewRequestLicense.RLage = res.data[0].Oage
+                        this.NewRequestLicense.RLnationality = res.data[0].Onationality
+                        this.NewRequestLicense.RLhomeno = res.data[0].Ohomeno
+                        this.NewRequestLicense.RLmoo = res.data[0].Omoo
+                        this.NewRequestLicense.RLsoi = res.data[0].Ohomeno
+                        this.NewRequestLicense.RLroad = res.data[0].Oroad
+                        this.NewRequestLicense.RLvillage = res.data[0].Ohomeno
+                        this.NewRequestLicense.SDTid = res.data[0].SDTid
+                        this.NewRequestLicense.Did = res.data[0].Did
+                        this.NewRequestLicense.Pid = res.data[0].Pid
+                        this.NewRequestLicense.RLtel = res.data[0].Otel
+                        this.NewRequestLicense.RLemail = res.data[0].Oemail
                 })
         }
     }

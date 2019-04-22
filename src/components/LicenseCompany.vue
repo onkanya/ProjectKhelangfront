@@ -22,16 +22,17 @@
                 <template slot="items" slot-scope="props">
                 <td>{{ props.item.RLnorequest }}</td>
                 <td class="text-xs-center">{{ props.item.Cname }}</td>
+                <td class="text-xs-center">{{ `${props.item.RLfname} ${props.item.RLlname}` }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.RLgetlicensedate) }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ RLstatustoText(props.item.RLstatus) }}</td>
                 <td class="text-xs-center">
                     <v-btn fab dark small 
-                    color="cyan lighten-1"
+                    color="orange accent-2"
                     router
                     exact
-                    :to="'/updatestatusrl/' + props.item.RLid"
+                    :to="'/newinvestigation/' + props.item.RLid"
                     >
-                        <v-icon dark>edit</v-icon>
+                        <v-icon dark>playlist_add_check</v-icon>
                     </v-btn>
                 </td>
                 </template>
@@ -59,14 +60,20 @@ export default {
                 value: 'RLnorequest'
             },
             {
-                text: 'ชื่อสถานประกอบการ',
+                text: 'สถานประกอบการ',
+                align: 'center',
+                //   sortable: false,
+                value: 'RLTname'
+            },
+            {
+                text: 'ชื่อ - สกุลผู้ยื่นคำขอ',
                 align: 'center', 
                 value: ''
             },
             { 
                 text: 'วันที่นัดรับใบอนุญาต',
                 align: 'center', 
-                value: 'RLgetlicensedate' 
+                value: 'RLdate' 
             },
             { 
                 text: 'สถานะการดำเนินการ',
@@ -74,7 +81,7 @@ export default {
                 value: 'RLstatus' 
             },
             {
-                text: 'จัดการข้อมูล', 
+                text: 'สำรวจสถานประกอบการ', 
                 align: 'center',
                 sortable: false,
                 value: ''
@@ -90,7 +97,7 @@ export default {
             return date === '0000-00-00' ? date : moment(date).format('DD-MM-YYYY')
         },
         fetchData () {
-            axios.get('http://localhost:5003/getrequest')
+            axios.get('http://localhost:5003/getrequestforinvestigation')
             .then(res => {
                 this.request = res.data
             })
@@ -98,14 +105,14 @@ export default {
         RLstatustoText (RLstatus) {
             let text = ''
             switch (RLstatus) {
-                case '1':
-                    text = 'รอตรวจสอบคำขอ'
-                    break
-                case '2':
-                    text = 'เอกสารหลักฐานไม่ครบ'
-                    break
                 case '3':
                     text = 'เอกสารหลักฐานครบ'
+                    break
+                case '4':
+                    text = 'ไม่ผ่านการสำรวจสถานประกอบการ'
+                    break
+                case '5':
+                    text = 'ผ่านการสำรวจสถานประกอบการ'
                     break
                 default:
                     text = 'ไม่พบสถานะ'

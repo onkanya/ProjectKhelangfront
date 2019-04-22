@@ -28,7 +28,6 @@
           >
             <template slot="items" slot-scope="props">
               <td>{{ props.item.RLnorequest }}</td>
-              <td class="text-xs-center">{{ props.item.RLTname }}</td>
               <td class="text-xs-center">{{ props.item.Cname }}</td>
               <td class="text-xs-center">{{ `${props.item.RLfname}  ${props.item.RLlname}` }}</td>
               <td class="text-xs-center" style="max-width:170px">{{ props.item.RLtel }}</td>
@@ -74,12 +73,6 @@ export default {
               align: 'center',
             //   sortable: false,
               value: 'RLnorequest'
-            },
-            {
-              text: 'ประเภทคำขอ',
-              align: 'center',
-            //   sortable: false,
-              value: 'RLTname'
             },
             {
               text: 'ชื่อสถานประกอบการ',

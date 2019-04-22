@@ -288,9 +288,6 @@ export default {
         ]
     }),
     methods: {
-        onDateChange (e) {
-            this.RequestLicense.RLdate = e
-        },
         submitRequest () {
             if (!this.$refs.form.validate()) {
                 this.$swal.fire({

@@ -81,7 +81,7 @@
                                 required
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md3>
+                        <v-flex xs12 sm6 md6>
                             <v-text-field
                                 v-model="owner.Ohomeno"
                                 label="บ้านเลขที่*"
@@ -89,7 +89,7 @@
                                 required
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md3>
+                        <v-flex xs12 sm6 md6>
                             <v-text-field
                                 v-model="owner.Omoo"
                                 label="หมู่ที่"
@@ -97,7 +97,7 @@
                                 required
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md3>
+                        <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="owner.Osoi"
                                 label="ซอย"
@@ -105,7 +105,7 @@
                                 required
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md3>
+                        <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="owner.Oroad"
                                 label="ถนน"
@@ -113,6 +113,14 @@
                                 required
                             ></v-text-field>
                         </v-flex>
+                        <v-flex xs12 sm6 md4>
+                        <v-text-field
+                            v-model="owner.Ovillage"
+                            label="หมู่บ้าน"
+                            :rules="textRules"
+                            required
+                        ></v-text-field>
+                    </v-flex>
                         <v-flex xs12 sm6 md4>
                             <v-select
                                 v-model="owner.Pid"    
@@ -163,7 +171,7 @@
 </template>
 <script>
 const axios = require('axios')
-  export default {
+export default {
     created () {
         axios.get('http://localhost:5003/ownergetid/' + this.$route.params.id)
             .then(res => {

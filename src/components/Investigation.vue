@@ -4,7 +4,7 @@
         <v-flex xs12>
             <v-card>
             <v-card-title class="font-weight-bold">
-                คำขอรับ / ต่อใบอนุญาตประกอบกิจการ
+                สำรวจสถานประกอบการ
                 <v-spacer></v-spacer>            
                 <v-text-field
                 v-model="search"
@@ -23,21 +23,62 @@
                 <td>{{ props.item.RLnorequest }}</td>
                 <td class="text-xs-center">{{ props.item.Cname }}</td>
                 <td class="text-xs-center">{{ `${props.item.RLfname} ${props.item.RLlname}` }}</td>
-                <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.RLdate) }}</td>
-                <td class="text-xs-center" style="max-width:170px">{{ RLstatustoText(props.item.RLstatus) }}</td>
+                <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.RLgetlicensedate) }}</td>
+                <td class="text-xs-center" style="max-width:170px">{{ HCISresulttoText(props.item.HCISresult) }}</td>
                 <td class="text-xs-center">
-                    <v-btn fab dark small 
-                    color="orange accent-2"
-                    router
-                    exact
-                    :to="'/newinvestigation/' + props.item.RLid"
+                    <v-tooltip top v-if="props.item.HCISresult == 1">
+                        <v-btn fab dark small
+                            color="blue lighten-1"
+                            router
+                            exact
+                            slot="activator"
+                            :to="'/viewinvestigation/' + props.item.RLid"
+                        >
+                            <v-icon dark>visibility</v-icon>
+                        </v-btn>
+                        <span>รายละเอียดการสำรวจ</span>
+                    </v-tooltip>
+                    <v-tooltip top v-else-if="props.item.HCISresult == 2" >
+                        <v-btn fab dark small
+                            color="cyan lighten-1"
+                            router
+                            exact
+                            slot="activator"
+                            :to="'/newinvestigation/' + props.item.RLid"
+                        >
+                            <v-icon dark>edit</v-icon>
+                        </v-btn>
+                        <span>แก้ไขข้อมูลสำรวจ</span>
+                    </v-tooltip>
+                    <v-tooltip top v-else-if="props.item.HCISresult == 3">
+                        <v-btn fab dark small
+                            color="blue lighten-1"
+                            router
+                            exact
+                            slot="activator"
+                            :to="'/viewinvestigation/' + props.item.RLid"
+                        >
+                            <v-icon dark>visibility</v-icon>
+                        </v-btn>
+                        <span>รายละเอียดการสำรวจ</span>
+                    </v-tooltip>
+                    <v-tooltip top v-else>
+                        <v-btn fab dark small
+                        color="orange accent-2"
+                        router
+                        exact
+                        slot="activator"
+                        :to="'/newinvestigation/' + props.item.RLid"
                     >
-                        <v-icon dark>playlist_add_check</v-icon>
+                        <v-icon dark>playlist_add</v-icon>
                     </v-btn>
+                        <span>สำรวจสถานประกอบการ</span>
+                    </v-tooltip>
+                    
                 </td>
                 </template>
                 <v-alert slot="no-results" :value="true" color="error" icon="warning">
-                Your search for "{{ search }}" found no results.
+                ไม่พบข้อมูล "{{ search }}" ในผลลัพธ์.
                 </v-alert>
             </v-data-table>
             </v-card>
@@ -76,9 +117,9 @@ export default {
                 value: 'RLdate' 
             },
             { 
-                text: 'สถานะการดำเนินการ',
+                text: 'ผลลัพธ์การสำรวจสถานประกอบการ',
                 align: 'center', 
-                value: 'RLstatus' 
+                value: 'HCISresult' 
             },
             {
                 text: 'สำรวจสถานประกอบการ', 
@@ -87,7 +128,7 @@ export default {
                 value: ''
             }
         ],
-        request: []       
+        request: [] 
     }),
     created () {
         this.fetchData()
@@ -102,20 +143,20 @@ export default {
                 this.request = res.data
             })
         },
-        RLstatustoText (RLstatus) {
+        HCISresulttoText (HCISresult) {
             let text = ''
-            switch (RLstatus) {
+            switch (HCISresult) {
+                case '1':
+                    text = 'ผ่านการสำรวจ'
+                    break
+                case '2':
+                    text = 'แก้ไขปรับปรุง'
+                    break
                 case '3':
-                    text = 'เอกสารหลักฐานครบ'
-                    break
-                case '4':
-                    text = 'ไม่ผ่านการสำรวจสถานประกอบการ'
-                    break
-                case '5':
-                    text = 'ผ่านการสำรวจสถานประกอบการ'
+                    text = 'ไม่ผ่านการสำรวจ'
                     break
                 default:
-                    text = 'ไม่พบสถานะ'
+                    text = 'รอสำรวจสถานประกอบการ'
                     break
             }
             return text

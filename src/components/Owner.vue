@@ -11,7 +11,7 @@
                 >เพิ่มข้อมูลเจ้าของสถานประกอบการ
             </v-btn>
             <v-card>
-                <v-card-title>
+                <v-card-title class="font-weight-bold">
                     เจ้าของสถานประกอบการ
                     <v-spacer></v-spacer>
                     <v-text-field

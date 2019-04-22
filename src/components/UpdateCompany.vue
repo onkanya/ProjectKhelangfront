@@ -16,17 +16,25 @@
                                         item-text="CTname"
                                         item-value="CTid"
                                         label="ประเภทสถานประกอบการ*"
-                                        @change="selectedTypes"    
+                                        @change="selectCompanyType"    
                                         required
                                     ></v-select>
                                 </v-flex>
                                 <v-flex xs12 sm6 md6>
+                                    <v-text-field
+                                        v-model="Company.LFfee"
+                                        label="ค่าธรรมเนียม*"
+                                        disabled
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm12 md12>
                                     <v-select
-                                        v-model="Company.CTCid"          
-                                        :items="typecategories"
-                                        item-text="CTCname"
-                                        item-value="CTCid"
+                                        v-model="Company.LFid"          
+                                        :items="licensefee"
+                                        item-text="LFname"
+                                        item-value="LFid"
                                         label="ประเภทของประเภทสถานประกอบการ*"
+                                        @change="selectLicenseFee"
                                         required
                                     ></v-select>
                                 </v-flex>  
@@ -157,23 +165,6 @@
                                     ></v-select>
                                 </v-flex>
                             </v-layout>
-                            <v-layout>
-                                <input @change="addImage" type="file" class="upload-btn" name="upload" multiple  accept="image/*">
-                            </v-layout>
-                            เลือกรูปภาพใหม่
-                            <div class="img-container-mean">
-                                <img
-                                    v-for="(img, idx) in showImg" s :key="idx"
-                                    :src="img"
-                                />
-                            </div>
-                            รูปภาพเดิม
-                            <div class="img-container-mean">
-                                <img
-                                    v-for="(img, idx) in getImg" s :key="idx"
-                                    :src="img.CPpath"
-                                />
-                            </div>
                         </v-container>
                     </v-card-text>
                     <v-card-actions>
@@ -204,10 +195,10 @@ export default {
                 axios.get('http://localhost:5003/subdistrict/' + this.Company.Did)
                     .then(res => {
                         this.subdistrict = res.data
-                    })                
-                axios.get('http://localhost:5003/getcompanytypecategories/' + this.Company.CTid)
+                    })
+                axios.get('http://localhost:5003/getlicensefee/' + this.Company.CTid)
                     .then(res => {
-                        this.typecategories = res.data
+                        this.licensefee = res.data
                     })
         })
         axios.get('http://localhost:5003/ownerforcompany')
@@ -236,10 +227,11 @@ export default {
         types: [],
         subdistrict: [],
         district: [],
-        typecategories: [],
         Cimg: [],
         showImg: [],
-        getImg: []
+        getImg: [],
+        licensefee: [],
+        fee: null
     }),
     methods: {
         submitUpdateCompany () {
@@ -255,7 +247,7 @@ export default {
             }
             let company = {
                 CTid: this.Company.CTid,
-                CTCid: this.Company.CTCid,
+                LFid: this.Company.LFid,
                 Oid: this.Company.Oid,
                 Cname: this.Company.Cname,
                 Carea: this.Company.Carea,
@@ -309,11 +301,19 @@ export default {
                     this.subdistrict = res.data
                 })
         },
-        selectedTypes (event) {
-            axios.get('http://localhost:5003/getcompanytypecategories/' + event)
+        selectCompanyType (event) {
+            axios.get('http://localhost:5003/getlicensefee/' + event)
                 .then(res => {
-                    this.typecategories = res.data
+                    this.licensefee = res.data
                 })
+        },
+        selectLicenseFee (ev) {
+            for (let i = 0; i < this.licensefee.length; i++) {
+                const ele = this.licensefee[i]
+                if (ele.LFid == ev) {
+                    this.Company.LFfee = ele.LFfee
+                }
+            }
         },
         async addImage (e) {
             let arr = []

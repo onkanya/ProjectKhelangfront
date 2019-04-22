@@ -26,17 +26,14 @@
                                         v-model="valid"
                                     >
                                         <v-layout wrap>
-                                            <v-flex xs12 sm6 md6>
-                                                <v-select
-                                                    v-model="RequestLicense.RLTid"                                       
-                                                    :items="requesttype"
-                                                    item-text="RLTname"
-                                                    item-value="RLTid"
-                                                    label="ประเภทคำขอ*"   
+                                            <v-flex xs12 sm6 md4>
+                                                <v-text-field
+                                                    v-model="RequestLicense.RLnorequest"
+                                                    label="เลขที่คำขอ*"
                                                     disabled
-                                                ></v-select>
+                                                ></v-text-field>
                                             </v-flex>
-                                            <v-flex xs12 sm6 md6>                
+                                            <v-flex xs12 sm6 md4>                
                                                 <v-autocomplete
                                                     v-model="RequestLicense.Cid"
                                                     :items="company"
@@ -47,14 +44,7 @@
                                                 >
                                                 </v-autocomplete>
                                             </v-flex>
-                                            <v-flex xs12 sm6 md6>
-                                                <v-text-field
-                                                    v-model="RequestLicense.RLnorequest"
-                                                    label="เลขที่คำขอ*"
-                                                    disabled
-                                                ></v-text-field>
-                                            </v-flex>
-                                            <v-flex xs12 sm6 md6>
+                                            <v-flex xs12 sm6 md4>
                                                 <v-text-field
                                                     slot="activator"
                                                     v-model="RequestLicense.RLdate"
@@ -226,6 +216,7 @@
                         <div style="text-align: right;">
                             <v-btn flat color="red darken-1" :to="'/Investigation/'">ยกเลิก</v-btn>
                             <v-btn flat color="blue darken-1" @click.native="e1 = 2">ถัดไป</v-btn>
+                            <v-btn flat color="purple darken-1" @click="printPDF">Print</v-btn>
                         </div>
                     </v-stepper-content>
                     <v-stepper-content step="2">
@@ -256,6 +247,7 @@
                                             :rules="textRules"
                                             :mask="mask"
                                             required
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
@@ -263,6 +255,7 @@
                                             label="ขนาดพื้นที่ (ตารางเมตร)"
                                             :rules="textRules"
                                             required
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
@@ -271,6 +264,7 @@
                                             label="บ้านเลขที่*"
                                             :rules="textRules"
                                             required
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
@@ -279,6 +273,7 @@
                                             label="หมู่ที่"
                                             :rules="textRules"
                                             required
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
@@ -287,6 +282,7 @@
                                             label="ซอย"
                                             :rules="textRules"
                                             required
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md6>
@@ -295,6 +291,7 @@
                                             label="ถนน"
                                             :rules="textRules"
                                             required
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md6>
@@ -303,6 +300,7 @@
                                             label="หมู่บ้าน"
                                             :rules="textRules"
                                             required
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
@@ -315,6 +313,7 @@
                                             @change="selectedProvince"
                                             :rules="textRules"               
                                             required
+                                            disabled
                                         ></v-select>
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
@@ -327,6 +326,7 @@
                                             @change="selectedDistrict"
                                             :rules="textRules"              
                                             required
+                                            disabled
                                         ></v-select>
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
@@ -338,70 +338,43 @@
                                             label="ตำบล*"
                                             :rules="textRules"
                                             required
+                                            disabled
                                         ></v-select>
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
                                         <v-text-field
-                                            v-model="HCIgeneral.HCIGdayopen"
+                                            v-model="hci.HCIGdayopen"
                                             label="วันเปิดทำการ*"
                                             :rules="textRules"
                                             required
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
-                                        <v-menu
-                                            ref="menu"
-                                            :close-on-content-click="false"
-                                            v-model="menuopen"
-                                            :nudge-right="40"
-                                            :return-value.sync="time"
-                                            lazy
-                                            transition="scale-transition"
-                                            offset-y
-                                            full-width
-                                            max-width="290px"
-                                            min-width="290px"
-                                        >
                                             <v-text-field
                                             slot="activator"
-                                            v-model="HCIgeneral.HCIGtimeopen"
+                                            v-model="hci.HCIGtimeopen"
                                             label="เวลาเปิดทำงาน"
                                             prepend-icon="access_time"
-                                            readonly
+                                            disabled
                                             ></v-text-field>
-                                            <v-time-picker v-model="HCIgeneral.HCIGtimeopen" @change="$refs.menu.save(time)" format="24hr"></v-time-picker>
-                                        </v-menu>
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
-                                        <v-menu
-                                            ref="menu"
-                                            :close-on-content-click="false"
-                                            v-model="menuclose"
-                                            :nudge-right="40"
-                                            :return-value.sync="time"
-                                            lazy
-                                            transition="scale-transition"
-                                            offset-y
-                                            full-width
-                                            max-width="290px"
-                                            min-width="290px"
-                                        >
                                             <v-text-field
                                             slot="activator"
-                                            v-model="HCIgeneral.HCIGtimeclose"
+                                            v-model="hci.HCIGtimeclose"
                                             label="เวลาปิดทำการ"
                                             prepend-icon="access_time"
-                                            readonly
+                                            disabled
                                             ></v-text-field>
-                                            <v-time-picker v-model="HCIgeneral.HCIGtimeclose" @change="$refs.menu.save(time)" format="24hr"></v-time-picker>
-                                        </v-menu>
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
                                         <v-text-field
-                                            v-model="HCIgeneral.HCIGbuilding"
+                                            v-model="hci.HCIGbuilding"
                                             label="ลักษณะอาคาร*"
                                             :rules="textRules"
                                             required
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md6>                
@@ -422,23 +395,14 @@
                                             label="เบอร์โทรศัพท์*"
                                             :rules="textRules"
                                             required
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     </v-layout>
-                                    <v-layout>
-                                        <input @change="addImage" type="file" class="upload-btn" name="upload" multiple  accept="image/*">
-                                    </v-layout>
-                                    เลือกรูปภาพใหม่
+                                    รูปภาพ
                                     <div class="img-container-mean">
                                         <img
-                                            v-for="(img, idx) in showImg" s :key="idx"
-                                            :src="img"
-                                        />
-                                    </div>
-                                    รูปภาพเดิม
-                                    <div class="img-container-mean">
-                                        <img
-                                            v-for="(img, idx) in getImg" s :key="idx"
+                                            v-for="(img, idx) in getImg" :key="idx"
                                             :src="img.IPpath"
                                         />
                                     </div>
@@ -455,12 +419,10 @@
                                             streetviewcontrol: false
                                         }"
                                         style="width: 100%; height: 500px"
-                                        @click="onMarkerPlace"
                                     >
                                         <GmapMarker
                                             :position="{ lat: companyowner.Clat, lng: companyowner.Clong }"
-                                            @dragend="onMarkerPlace"
-                                            :draggable="true"
+                                            @click="popToGmap"
                                         />
                                     </GmapMap>
                                 </v-container>
@@ -497,6 +459,7 @@
                                                         primary
                                                         hide-details
                                                         @click.native="toggleAll"
+                                                        readonly
                                                     ></v-checkbox>
                                                 </th>
                                                 <th
@@ -516,14 +479,15 @@
                                             <td>{{ child.name }}</td>
                                             <td>
                                                 <v-checkbox
-                                                    :input-value="HCIenvironment[child.checked]"
+                                                    readonly
+                                                    :input-value="hci[child.checked]"
                                                     primary
                                                     hide-details
                                                     :disabled="child.checked === null"
                                                 ></v-checkbox>
                                             </td>
                                             <td class="text-xs-center">
-                                                <v-text-field v-model="HCIenvironment[child.noted]"></v-text-field>
+                                                <v-text-field v-model="hci[child.noted]" multi-line disabled></v-text-field>
                                             </td>
                                         </tr>
                                     </template>
@@ -546,7 +510,7 @@
                                     <v-layout wrap>
                                     <v-flex xs12 sm12 md12>
                                         <p>ผลการสำรวจ</p>
-                                        <v-radio-group v-model="HCIsummary.HCISresult" row>
+                                        <v-radio-group v-model="hci.HCISresult" row readonly>
                                             <v-radio label="ผ่าน" value="1"></v-radio>
                                             <v-radio label="แก้ไขปรับปรุง" value="2"></v-radio>
                                             <v-radio label="ไม่ผ่าน" value="3"></v-radio>
@@ -554,9 +518,10 @@
                                     </v-flex>
                                     <v-flex xs12 sm12 md12>
                                         <v-text-field
-                                            v-model="HCIsummary.HCIScomment"
+                                            v-model="hci.HCIScomment"
                                             label="คำแนะนำและความคิดเห็นของเจ้าหน้าที่"
                                             multi-line
+                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     </v-layout>
@@ -565,7 +530,7 @@
                         </v-card>
                         <div style="text-align: right;">
                             <v-btn flat color="red darken-1" @click.native="e1 = 3">ยกเลิก</v-btn>
-                            <v-btn flat color="blue darken-1" @click="submitUpdate">ถัดไป</v-btn>
+                            <v-btn flat color="blue darken-1" :to="'/Investigation/'">เสร็จสิ้น</v-btn>
                         </div>
                     </v-stepper-content>
                     </v-stepper-items>
@@ -578,6 +543,23 @@
 
 <script>
 import axios from 'axios'
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.fonts = {
+    THSarabun: {
+        normal: 'THSarabun.ttf',
+        bold: 'THSarabun Bold.ttf',
+        italics: 'THSarabun Italic.ttf',
+        bolditalics: 'THSarabun Bold Italic.ttf'
+    },
+    Roboto: {
+        normal: 'Roboto-Regular.ttf',
+        bold: 'Roboto-Medium.ttf',
+        italics: 'Roboto-Italic.ttf',
+        bolditalics: 'Roboto-MediumItalic.ttf'
+    }
+}
 export default {
     created () {
         axios.get('http://localhost:5003/getrequest/' + this.$route.params.id)
@@ -635,8 +617,12 @@ export default {
             })
         axios.get('http://localhost:5003/imageHCI/' + this.$route.params.id)
             .then(res => {
-                console.log(res)
                 this.getImg = res.data
+            })
+        axios.get('http://localhost:5003/getinvestigation/' + this.$route.params.id)
+            .then(res => {
+                console.log(res)
+                this.hci = res.data[0]
             })
     },
     data: () => ({
@@ -653,7 +639,6 @@ export default {
         statusdate: null,
         menu: false,
         company: [],
-        requesttype: [],
         province: [],
         districtrequest: [],
         subdistrictrequest: [],
@@ -685,33 +670,6 @@ export default {
             HCIGdayopen: '',
             HCIGtimeopen: null,
             HCIGtimeclose: null
-        },
-        HCIenvironment: {
-            HCIEbuildprotect: false,
-            HCIEbuildprotectnoted: '',
-            HCIEbuilddoor: false,
-            HCIEbuilddoornoted: '',
-            HCIEbuildoverview: false,
-            HCIEbuildoverviewnoted: '',
-            HCIEsoundprotect: false,
-            HCIEsoundprotectnoted: '',
-            HCIEventilate: '',
-            HCIEventilateenough: false,
-            HCIEventilateenoughnoted: '',
-            HCIEventilatesmoking: false,
-            HCIEventilatesmokingnoted: '',
-            HCIElightingenough: false,
-            HCIElightingenoughnoted: '',
-            HCIElightinglaser: false,
-            HCIElightinglasernoted: '',
-            HCIEsecureemergency: false,
-            HCIEsecureemergencynoted: '',
-            HCIEsecurealarm: false,
-            HCIEsecurealarmnoted: '',
-            HCIEsecurefire: false,
-            HCIEsecurefirenoted: '',
-            HCIEsecurecrowded: false,
-            HCIEsecurecrowdednoted: ''
         },
         selected: [],
         headers: [
@@ -772,9 +730,22 @@ export default {
         HCIsummary: {
             HCISresult: '1',
             HCIScomment: ''
-        }
+        },
+        hci: {}
     }),
     methods: {
+        printPDF(){
+            var docDefinition = {
+                content: [
+                    { text: 'สวัสดีประเทศไทย reat pdf demo ', fontSize: 15 },
+                    { text: 'อาร์ตหัวควย ', fontSize: 15 },
+                ],
+                defaultStyle: {
+                    font: 'THSarabun'
+                }
+            };
+            pdfMake.createPdf(docDefinition).open()
+        },
         toggleAll () {
             this.HCIErules.forEach(e => {
                 e.children.forEach(el => {
@@ -805,103 +776,6 @@ export default {
         onDateChange (e) {
             this.RequestLicense.RLdate = e
         },
-        submitUpdate () {
-            if (!this.$refs.form.validate()) {
-                this.$swal.fire({
-                    title: 'ข้อมูลไม่ครบถ้วน!',
-                    text: "กรุณากรอกข้อมูลให้ครบถ้วนก่อนบันทึก",
-                    type: 'warning',
-                })
-                return
-            }
-            let { Uid } =  JSON.parse(localStorage.getItem('userLogin'))
-            let updatecompany = {
-                Cemployee: this.companyowner.Cemployee,
-                Chomeno: this.companyowner.Chomeno,
-                Cmoo: this.companyowner.Cmoo,
-                Csoi: this.companyowner.Csoi,
-                Croad: this.companyowner.Croad,
-                Cvillage: this.companyowner.Cvillage,
-                Pid: this.companyowner.Pid,
-                Did: this.companyowner.Did,
-                SDTid: this.companyowner.SDTid,
-                Clat: this.companyowner.Clat,
-                Clong: this.companyowner.Clong
-            }
-            let updateowner = {
-                Otel: this.companyowner.Otel
-            }
-            let hcige = {
-                HCIGbuilding: this.HCIgeneral.HCIGbuilding,
-                HCIGdayopen: this.HCIgeneral.HCIGdayopen,
-                HCIGtimeopen: this.HCIgeneral.HCIGtimeopen,
-                HCIGtimeclose: this.HCIgeneral.HCIGtimeclose
-            }
-            let hcisum = {
-                HCISresult: this.HCIsummary.HCISresult,
-                HCIScomment: this.HCIsummary.HCIScomment
-            }
-            this.$swal.fire({
-                title: 'ยืนยันการแก้ไขข้อมูล',
-                text: "คุณต้องการแก้ไขข้อมูลคำขอหรือไม่ ?",
-                type: 'info',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'ยกเลิก',
-                confirmButtonText: 'ตกลง'
-            })
-            .then((result) => {
-                if (result.value) {
-                    let HazardCompanyInvestigation = {
-                        HCIid: 0,
-                        HCIdate: 0,
-                        RLid: this.$route.params.id,
-                        HCIGid: 0,
-                        HCIEid: 0,
-                        HCISid: 0,
-                        Uid: Uid
-                    }
-                    axios.post('http://localhost:5003/updategeneralcompany/' + this.companyowner.Cid, updatecompany)
-                    .then(res => {
-                        axios.post('http://localhost:5003/updategeneralowner/' + this.companyowner.Oid, updateowner)
-                        .then(res => {
-                            axios.post('http://localhost:5003/newhcig', hcige)
-                            .then(res => {
-                                HazardCompanyInvestigation.HCIGid = res.data.HCIGid
-                                    axios.post('http://localhost:5003/newhcie', this.HCIenvironment)
-                                    .then(res => {
-                                        HazardCompanyInvestigation.HCIEid = res.data.HCIEid
-                                            axios.post('http://localhost:5003/newhcis', hcisum)
-                                            .then(res => {
-                                                HazardCompanyInvestigation.HCISid = res.data.HCISid
-                                                    axios.post('http://localhost:5003/newinvestigation', HazardCompanyInvestigation)
-                                                        .then(res => {
-                                                            this.$router.push('/investigation')
-                                                            this.$swal.fire(
-                                                                'แก้ไขข้อมูลคำขอสำเร็จ!',
-                                                                '',
-                                                                'success'
-                                                            )
-                                                        })
-                                            })
-                                    })
-                            })
-                        })
-                    })
-                    if (this.HCIimg.length > 0) {
-                        let HCIimage = new FormData()
-                        this.HCIimg.forEach(e => {
-                            HCIimage.append('files', e)
-                        })
-                        axios.post('http://localhost:5003/imageHCI/' + this.$route.params.id, HCIimage)
-                            .then(res => {
-                                console.log(res)
-                            })
-                    }
-                }
-            })
-        },
         onHCIEnvirontmentSubmit () {
             console.log(this.selected);
         },
@@ -929,6 +803,27 @@ export default {
                 arr.push(result_base64)
             }
             this.showImg = arr
+        },
+        async getCurrentLocation () {
+            let current = { lat: null, lng: null }
+            navigator.geolocation.getCurrentPosition((position) => {
+                current = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                }
+            })
+            return current
+        },
+        async popToGmap () {
+            let current = { lat: null, lng: null }
+            navigator.geolocation.getCurrentPosition((position) => {
+                current = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                }
+                window.open(`https://www.google.com/maps/dir/${ current.lat },${ current.lng }/${ this.companyowner.Clat },${ this.companyowner.Clong }/@${ this.companyowner.Clat },${ this.companyowner.Clong },15z`)
+            })
+            // https://www.google.com/maps/dir/18.8249153,99.0110372/18.8189441,99.0079902/@18.8161615,99.008827,15z
         }
     }
 }

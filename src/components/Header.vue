@@ -63,13 +63,14 @@ export default {
             drawer: null,
             items: [
                 { title: 'หน้าแรก', icon: 'dashboard', link: '/home', permission: [0] },
-                { title: 'เจ้าของสถานประกอบการ', icon: 'face', link: '/Owner', permission: [3, 4, 5] },
-                { title: 'สถานประกอบการ', icon: 'account_balance', link: '/company', permission: [3, 4, 5] },
-                { title: 'ประเภทสถานประกอบการ', icon: 'category', link: '/companytype', permission: [3] },
                 { title: 'ผู้ใช้ระบบ', icon: 'people', link: '/users', permission: [1] },
                 { title: 'คำขอรับ / ต่อใบอนุญาตประกอบกิจการ', icon: 'list', link: '/requestlicense', permission: [3, 4] },
-                { title: 'ตรวจสอบคำขอรับ / ต่อใบอนุญาตประกอบกิจการ', icon: 'mobile_friendly', link: '/confirmrequest', permission: [3, 4]},
+                { title: 'ตรวจสอบคำขอรับใบอนุญาตประกอบกิจการ', icon: 'mobile_friendly', link: '/confirmrequest', permission: [3, 4]},
                 { title: 'สำรวจสถานประกอบการ', icon: 'security', link: '/investigation', permission: [3, 5]},
+                { title: 'เจ้าของสถานประกอบการ', icon: 'face', link: '/Owner', permission: [3, 4, 5] },
+                { title: 'สถานประกอบการ', icon: 'account_balance', link: '/company', permission: [3, 4, 5] },
+                { title: 'ใบอนุญาตประกอบกิจการ', icon: 'account_balance', link: '/licensecompany', permission: [3, 4, 5] },
+                // { title: 'ประเภทสถานประกอบการ', icon: 'category', link: '/companytype', permission: [3] },
                 { title: 'รายงานการออกใบอนุญาตประกอบกิจการ', icon: 'dashboard', link: '/', permission: [2] }
             ],
             userdata: ''

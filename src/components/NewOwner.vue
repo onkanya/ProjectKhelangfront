@@ -81,7 +81,7 @@
                             required
                         ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 sm6 md3>
+                    <v-flex xs12 sm6 md6>
                         <v-text-field
                             v-model="NewOwner.Ohomeno"
                             label="บ้านเลขที่*"
@@ -89,7 +89,7 @@
                             required
                         ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 sm6 md3>
+                    <v-flex xs12 sm6 md6>
                         <v-text-field
                             v-model="NewOwner.Omoo"
                             label="หมู่ที่"
@@ -97,7 +97,7 @@
                             required
                         ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 sm6 md3>
+                    <v-flex xs12 sm6 md4>
                         <v-text-field
                             v-model="NewOwner.Osoi"
                             label="ซอย"
@@ -105,10 +105,18 @@
                             required
                         ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 sm6 md3>
+                    <v-flex xs12 sm6 md4>
                         <v-text-field
                             v-model="NewOwner.Oroad"
                             label="ถนน"
+                            :rules="textRules"
+                            required
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                        <v-text-field
+                            v-model="NewOwner.Ovillage"
+                            label="หมู่บ้าน"
                             :rules="textRules"
                             required
                         ></v-text-field>
