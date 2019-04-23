@@ -356,18 +356,11 @@
                         <v-layout>
                             <input @change="addPDF" type="file" class="upload-btn" name="upload" multiple  accept=".pdf">
                         </v-layout>
-                        เลือกรูปภาพใหม่
+                        เลือกไฟล์
                         <div class="img-container-mean">
                             <img
                                 v-for="(img, idx) in showPdf" s :key="idx"
                                 :src="img"
-                            />
-                        </div>
-                        รูปภาพเดิม
-                        <div class="img-container-mean">
-                            <img
-                                v-for="(img, idx) in getPdf" s :key="idx"
-                                :src="img.RPDFpath"
                             />
                         </div>
                     </v-layout>

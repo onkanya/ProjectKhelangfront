@@ -170,6 +170,13 @@
                                 disabled
                             ></v-select>
                         </v-flex>
+                        ไฟล์แนบ
+                        <div class="img-container-mean">
+                            <img
+                                v-for="(img, idx) in getPdf" s :key="idx"
+                                :src="img.RPDFpath"
+                            />
+                        </div>
                     </v-layout>
                     <v-subheader>
                         <v-btn icon>
@@ -268,6 +275,10 @@ export default {
         .then(res => {
             this.prefix = res.data
         })
+        axios.get('http://localhost:5003/RLpdf/' + this.$route.params.id)
+            .then(res => {
+                this.getPdf = res.data
+            })
     },
     data: () => ({
         // date: new Date().toISOString().substr(0, 10),        
@@ -285,7 +296,10 @@ export default {
             { text: 'รอตรวจสอบคำขอ', value: '1'},
             { text: 'เอกสารหลักฐานไม่ครบ', value: '2'},
             { text: 'เอกสารหลักฐานครบ', value: '3'}
-        ]
+        ],
+        RLpdf: [],
+        showPdf: [],
+        getPdf: [],
     }),
     methods: {
         submitRequest () {
@@ -332,3 +346,25 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .upload-btn {
+        background-color: rgb(46, 46, 156);
+        color: white;
+    }
+    .img-container-mean {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        border: rgb(107, 107, 107) 1px solid;
+        border-radius: 15px;
+        margin: 15px 0 0 0;
+        min-height: 200px;
+
+        img {
+            max-width: 200px; 
+            max-height: 200px; 
+            margin: 7px;
+        }
+    }
+</style>

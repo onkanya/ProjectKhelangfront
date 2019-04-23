@@ -177,6 +177,23 @@
                                 required
                             ></v-select>
                         </v-flex>
+                        <v-layout>
+                            <input @change="addPDF" type="file" class="upload-btn" name="upload" multiple  accept=".pdf">
+                        </v-layout>
+                        เลือกไฟล์
+                        <div class="img-container-mean">
+                            <img
+                                v-for="(img, idx) in showPdf" s :key="idx"
+                                :src="img"
+                            />
+                        </div>
+                        ไฟล์เดิม
+                        <div class="img-container-mean">
+                            <img
+                                v-for="(img, idx) in getPdf" s :key="idx"
+                                :src="img.RPDFpath"
+                            />
+                        </div>
                     </v-layout>
                 </v-form>
             </v-container>
@@ -224,6 +241,10 @@ export default {
         .then(res => {
             this.prefix = res.data
         })
+        axios.get('http://localhost:5003/RLpdf/' + this.$route.params.id)
+            .then(res => {
+                this.getPdf = res.data
+            })
     },
     data: () => ({
         // date: new Date().toISOString().substr(0, 10),
@@ -242,7 +263,10 @@ export default {
         ],
         emailRules: [
             v => /.+@.+/.test(v) || 'กรุณากรอกรูปแบบอีเมลล์ให้ถูกต้อง'
-        ]
+        ],
+        RLpdf: [],
+        showPdf: [],
+        getPdf: [],
     }),
     methods: {
         submitRequest () {
@@ -289,14 +313,23 @@ export default {
                 if (result.value) {
                     axios.post('http://localhost:5003/updaterequest/' + this.$route.params.id, request)
                     .then(res => {
+                        if (this.RLpdf.length > 0) {
+                            let requestPDF = new FormData()
+                            this.RLpdf.forEach(e => {
+                                requestPDF.append('files', e)
+                            })
+                            axios.post('http://localhost:5003/RLpdf/' + this.$route.params.id, requestPDF)
+                                .then(res => {
+                                    this.$swal.fire(
+                                        'แก้ไขข้อมูลคำขอสำเร็จ!',
+                                        '',
+                                        'success'
+                                    )
+                                })
+                        }
                         this.RequestLicense = ''
                         this.$router.push('/requestlicense')           
                     })
-                    this.$swal.fire(
-                        'แก้ไขข้อมูลคำขอสำเร็จ!',
-                        '',
-                        'success'
-                    )
                 }
             })
         },
@@ -311,7 +344,41 @@ export default {
                 .then(res => {
                     this.subdistrict = res.data
                 })
+        },
+        async addPDF (e) {
+            let arr = []
+            for (let index = 0; index < e.target.files.length; index++) {
+                this.RLpdf.push(e.target.files[index])
+                let result_base64 = await new Promise((resolve) => {
+                    let fileReader = new FileReader();
+                    fileReader.onload = (e) => resolve(fileReader.result);
+                    fileReader.readAsDataURL(e.target.files[index]);
+                });
+                arr.push(result_base64)
+            }
+            this.showPdf = arr
         }
     }
 }
 </script>
+<style lang="scss" scoped>
+    .upload-btn {
+        background-color: rgb(46, 46, 156);
+        color: white;
+    }
+    .img-container-mean {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        border: rgb(107, 107, 107) 1px solid;
+        border-radius: 15px;
+        margin: 15px 0 0 0;
+        min-height: 200px;
+
+        img {
+            max-width: 200px; 
+            max-height: 200px; 
+            margin: 7px;
+        }
+    }
+</style>
