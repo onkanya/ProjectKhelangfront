@@ -235,16 +235,6 @@ export default {
     }),
     methods: {
         submitUpdateCompany () {
-            if (this.Cimg.length > 0) {
-                let companyImage = new FormData()
-                this.Cimg.forEach(e => {
-                    companyImage.append('files', e)
-                })
-                axios.post('http://localhost:5003/imagecompany/' + this.$route.params.id, companyImage)
-                    .then(res => {
-                        console.log(res)
-                    })
-            }
             let company = {
                 CTid: this.Company.CTid,
                 LFid: this.Company.LFid,

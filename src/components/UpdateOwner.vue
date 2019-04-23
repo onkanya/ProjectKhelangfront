@@ -291,6 +291,6 @@ export default {
                 })
         }        
     }
-  }
+}
 </script>
 

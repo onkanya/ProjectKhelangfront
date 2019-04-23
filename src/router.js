@@ -17,6 +17,7 @@ import UpdateStatusRL from "./views/UpdateStatusRL.vue"
 import Investigation from "./views/Investigation.vue"
 import NewInvestigation from "./views/NewInvestigation.vue"
 import ViewInvestigation from "./views/ViewInvestigation.vue"
+import UpdateInvestigation from "./views/UpdateInvestigation.vue"
 import LicenseCompany from "./views/LicenseCompany.vue"
 
 Vue.use(Router);
@@ -109,6 +110,11 @@ export default new Router({
       path: "/viewinvestigation/:id",
       name: "viewinvestigation",
       component: ViewInvestigation
+    },
+    {
+      path: "/updateinvestigation/:id",
+      name: "updateinvestigation",
+      component: UpdateInvestigation
     },
     {
       path: "/licensecompany",

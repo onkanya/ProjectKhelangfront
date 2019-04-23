@@ -44,7 +44,7 @@
                             router
                             exact
                             slot="activator"
-                            :to="'/newinvestigation/' + props.item.RLid"
+                            :to="'/updateinvestigation/' + props.item.RLid"
                         >
                             <v-icon dark>edit</v-icon>
                         </v-btn>

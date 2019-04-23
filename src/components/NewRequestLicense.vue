@@ -353,6 +353,23 @@
                                 required
                             ></v-text-field>
                         </v-flex>
+                        <v-layout>
+                            <input @change="addPDF" type="file" class="upload-btn" name="upload" multiple  accept=".pdf">
+                        </v-layout>
+                        เลือกรูปภาพใหม่
+                        <div class="img-container-mean">
+                            <img
+                                v-for="(img, idx) in showPdf" s :key="idx"
+                                :src="img"
+                            />
+                        </div>
+                        รูปภาพเดิม
+                        <div class="img-container-mean">
+                            <img
+                                v-for="(img, idx) in getPdf" s :key="idx"
+                                :src="img.RPDFpath"
+                            />
+                        </div>
                     </v-layout>
                 </v-form>
             </v-container>
@@ -395,6 +412,7 @@ export default {
     data: () => ({
         // date: new Date().toISOString().substr(0, 10),
         valid: true,
+        mask: '####',
         masktel: '###-#######',
         maskcitizen: '#-####-#####-##-#',
         date: null,
@@ -409,6 +427,9 @@ export default {
         prefix: [],
         licensefee: [],
         fee: null,
+        RLpdf: [],
+        showPdf: [],
+        getPdf: [],
         NewRequestLicense: {
             RLTid: null,
             Cid: null,
@@ -542,6 +563,7 @@ export default {
                         SDTid: this.NewCompany.SDTid
                     }
                     let request = {
+                        RLid: 0,
                         Cid: 0,
                         RLnorequest: this.NewRequestLicense.RLnorequest,
                         Prefixid: this.NewRequestLicense.Prefixid,
@@ -571,6 +593,17 @@ export default {
                         const companyRes = await axios.post('http://localhost:5003/newcompany', company)
                         request.Cid = companyRes.data.Cid
                         const reqRes = await axios.post('http://localhost:5003/newrequest', request)
+                        request.RLid = reqRes.data.RLid
+                        if (this.RLpdf.length > 0) {
+                            let requestPDF = new FormData()
+                            this.RLpdf.forEach(e => {
+                                requestPDF.append('files', e)
+                            })
+                            axios.post('http://localhost:5003/RLpdf/' + request.RLid, requestPDF)
+                                .then(res => {
+                                    console.log(res)
+                                })
+                        }
                         this.$swal.fire(
                             'เพิ่มข้อมูลคำขอสำเร็จ!',
                             '',
@@ -655,7 +688,42 @@ export default {
                         this.NewRequestLicense.RLtel = res.data[0].Otel
                         this.NewRequestLicense.RLemail = res.data[0].Oemail
                 })
+        },
+        async addPDF (e) {
+            let arr = []
+            for (let index = 0; index < e.target.files.length; index++) {
+                this.RLpdf.push(e.target.files[index])
+                let result_base64 = await new Promise((resolve) => {
+                    let fileReader = new FileReader();
+                    fileReader.onload = (e) => resolve(fileReader.result);
+                    fileReader.readAsDataURL(e.target.files[index]);
+                });
+                arr.push(result_base64)
+            }
+            this.showPdf = arr
         }
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .upload-btn {
+        background-color: rgb(46, 46, 156);
+        color: white;
+    }
+    .img-container-mean {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        border: rgb(107, 107, 107) 1px solid;
+        border-radius: 15px;
+        margin: 15px 0 0 0;
+        min-height: 200px;
+
+        img {
+            max-width: 200px; 
+            max-height: 200px; 
+            margin: 7px;
+        }
+    }
+</style>

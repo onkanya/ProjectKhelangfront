@@ -816,6 +816,7 @@ export default {
             }
             let { Uid } =  JSON.parse(localStorage.getItem('userLogin'))
             let updatecompany = {
+                Carea: this.companyowner.Carea,
                 Cemployee: this.companyowner.Cemployee,
                 Chomeno: this.companyowner.Chomeno,
                 Cmoo: this.companyowner.Cmoo,

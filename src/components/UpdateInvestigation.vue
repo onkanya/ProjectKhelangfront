@@ -216,7 +216,6 @@
                         <div style="text-align: right;">
                             <v-btn flat color="red darken-1" :to="'/Investigation/'">ยกเลิก</v-btn>
                             <v-btn flat color="blue darken-1" @click.native="e1 = 2">ถัดไป</v-btn>
-                            <v-btn flat color="purple darken-1" @click="printPDF">Print</v-btn>
                         </div>
                     </v-stepper-content>
                     <v-stepper-content step="2">
@@ -247,15 +246,14 @@
                                             :rules="textRules"
                                             :mask="mask"
                                             required
-                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
                                         <v-text-field
+                                            v-model="companyowner.Carea"
                                             label="ขนาดพื้นที่ (ตารางเมตร)"
                                             :rules="textRules"
                                             required
-                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
@@ -264,7 +262,6 @@
                                             label="บ้านเลขที่*"
                                             :rules="textRules"
                                             required
-                                            disabled
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md4>
@@ -336,7 +333,7 @@
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
                                         <v-text-field
-                                            v-model="HCIgeneral.HCIGdayopen"
+                                            v-model="hci.HCIGdayopen"
                                             label="วันเปิดทำการ*"
                                             :rules="textRules"
                                             required
@@ -358,12 +355,12 @@
                                         >
                                             <v-text-field
                                             slot="activator"
-                                            v-model="HCIgeneral.HCIGtimeopen"
+                                            v-model="hci.HCIGtimeopen"
                                             label="เวลาเปิดทำงาน"
                                             prepend-icon="access_time"
                                             readonly
                                             ></v-text-field>
-                                            <v-time-picker v-model="HCIgeneral.HCIGtimeopen" @change="$refs.menu.save(time)" format="24hr"></v-time-picker>
+                                            <v-time-picker v-model="hci.HCIGtimeopen" @change="$refs.menu.save(time)" format="24hr"></v-time-picker>
                                         </v-menu>
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
@@ -382,17 +379,17 @@
                                         >
                                             <v-text-field
                                             slot="activator"
-                                            v-model="HCIgeneral.HCIGtimeclose"
+                                            v-model="hci.HCIGtimeclose"
                                             label="เวลาปิดทำการ"
                                             prepend-icon="access_time"
                                             readonly
                                             ></v-text-field>
-                                            <v-time-picker v-model="HCIgeneral.HCIGtimeclose" @change="$refs.menu.save(time)" format="24hr"></v-time-picker>
+                                            <v-time-picker v-model="hci.HCIGtimeclose" @change="$refs.menu.save(time)" format="24hr"></v-time-picker>
                                         </v-menu>
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
                                         <v-text-field
-                                            v-model="HCIgeneral.HCIGbuilding"
+                                            v-model="hci.HCIGbuilding"
                                             label="ลักษณะอาคาร*"
                                             :rules="textRules"
                                             required
@@ -406,7 +403,6 @@
                                             item-value="Oid"
                                             label="เจ้าของสถานประกอบการ"
                                             :rules="textRules"
-                                            disabled
                                         >
                                         </v-autocomplete>
                                     </v-flex>
@@ -419,7 +415,17 @@
                                         ></v-text-field>
                                     </v-flex>
                                     </v-layout>
-                                    รูปภาพ
+                                    <v-layout>
+                                        <input @change="addImage" type="file" class="upload-btn" name="upload" multiple  accept="image/*">
+                                    </v-layout>
+                                    เลือกรูปภาพใหม่
+                                    <div class="img-container-mean">
+                                        <img
+                                            v-for="(img, idx) in showImg" s :key="idx"
+                                            :src="img"
+                                        />
+                                    </div>
+                                    รูปภาพเดิม
                                     <div class="img-container-mean">
                                         <img
                                             v-for="(img, idx) in getImg" :key="idx"
@@ -474,6 +480,7 @@
                                             <template v-for="(header, idx) in props.headers">
                                                 <th v-if="idx === 3" :key="idx">
                                                     <v-checkbox
+                                                        readonly
                                                         :input-value="props.all"
                                                         :indeterminate="props.indeterminate"
                                                         primary
@@ -498,7 +505,6 @@
                                             <td>{{ child.name }}</td>
                                             <td>
                                                 <v-checkbox
-                                                    readonly
                                                     :input-value="hci[child.checked]"
                                                     primary
                                                     hide-details
@@ -506,7 +512,7 @@
                                                 ></v-checkbox>
                                             </td>
                                             <td class="text-xs-center">
-                                                <v-text-field v-model="hci[child.noted]" disabled></v-text-field>
+                                                <v-text-field v-model="hci[child.noted]"></v-text-field>
                                             </td>
                                         </tr>
                                     </template>
@@ -529,7 +535,7 @@
                                     <v-layout wrap>
                                     <v-flex xs12 sm12 md12>
                                         <p>ผลการสำรวจ</p>
-                                        <v-radio-group v-model="HCIsummary.HCISresult" row>
+                                        <v-radio-group v-model="hci.HCISresult" row>
                                             <v-radio label="ผ่าน" value="1"></v-radio>
                                             <v-radio label="แก้ไขปรับปรุง" value="2"></v-radio>
                                             <v-radio label="ไม่ผ่าน" value="3"></v-radio>
@@ -537,7 +543,7 @@
                                     </v-flex>
                                     <v-flex xs12 sm12 md12>
                                         <v-text-field
-                                            v-model="HCIsummary.HCIScomment"
+                                            v-model="hci.HCIScomment"
                                             label="คำแนะนำและความคิดเห็นของเจ้าหน้าที่"
                                             multi-line
                                         ></v-text-field>
@@ -548,7 +554,7 @@
                         </v-card>
                         <div style="text-align: right;">
                             <v-btn flat color="red darken-1" @click.native="e1 = 3">ยกเลิก</v-btn>
-                            <v-btn flat color="blue darken-1" :to="'/Investigation/'">เสร็จสิ้น</v-btn>
+                            <v-btn flat color="blue darken-1" @click="submitUpdate">เสร็จสิ้น</v-btn>
                         </div>
                     </v-stepper-content>
                     </v-stepper-items>
@@ -767,7 +773,7 @@ export default {
         toggleAll () {
             this.HCIErules.forEach(e => {
                 e.children.forEach(el => {
-                    this.HCIenvironment[el.checked] = !this.HCIenvironment[el.checked]
+                    this.hci[el.checked] = !this.hci[el.checked]
                 })
             })
         },
@@ -805,6 +811,7 @@ export default {
             }
             let { Uid } =  JSON.parse(localStorage.getItem('userLogin'))
             let updatecompany = {
+                Carea: this.companyowner.Carea,
                 Cemployee: this.companyowner.Cemployee,
                 Chomeno: this.companyowner.Chomeno,
                 Cmoo: this.companyowner.Cmoo,
@@ -821,14 +828,41 @@ export default {
                 Otel: this.companyowner.Otel
             }
             let hcige = {
-                HCIGbuilding: this.HCIgeneral.HCIGbuilding,
-                HCIGdayopen: this.HCIgeneral.HCIGdayopen,
-                HCIGtimeopen: this.HCIgeneral.HCIGtimeopen,
-                HCIGtimeclose: this.HCIgeneral.HCIGtimeclose
+                HCIGbuilding: this.hci.HCIGbuilding,
+                HCIGdayopen: this.hci.HCIGdayopen,
+                HCIGtimeopen: this.hci.HCIGtimeopen,
+                HCIGtimeclose: this.hci.HCIGtimeclose
+            }
+            let HCIenvironment = {
+                HCIEbuildprotect: this.hci.HCIEbuildprotect,
+                HCIEbuildprotectnoted: this.hci.HCIEbuildprotectnoted,
+                HCIEbuilddoor: this.hci.HCIEbuilddoor,
+                HCIEbuilddoornoted: this.hci.HCIEbuilddoornoted,
+                HCIEbuildoverview: this.hci.HCIEbuildoverview,
+                HCIEbuildoverviewnoted: this.hci.HCIEbuildoverviewnoted,
+                HCIEsoundprotect: this.hci.HCIEsoundprotect,
+                HCIEsoundprotectnoted: this.hci.HCIEsoundprotectnoted,
+                HCIEventilate: this.hci.HCIEventilate,
+                HCIEventilateenough: this.hci.HCIEventilateenough,
+                HCIEventilateenoughnoted: this.hci.HCIEventilateenoughnoted,
+                HCIEventilatesmoking: this.hci.HCIEventilatesmoking,
+                HCIEventilatesmokingnoted: this.hci.HCIEventilatesmokingnoted,
+                HCIElightingenough: this.hci.HCIElightingenough,
+                HCIElightingenoughnoted: this.hci.HCIElightingenoughnoted,
+                HCIElightinglaser: this.hci.HCIElightinglaser,
+                HCIElightinglasernoted: this.hci.HCIElightinglasernoted,
+                HCIEsecureemergency: this.hci.HCIEsecureemergency,
+                HCIEsecureemergencynoted: this.hci.HCIEsecureemergencynoted,
+                HCIEsecurealarm: this.hci.HCIEsecurealarm,
+                HCIEsecurealarmnoted: this.hci.HCIEsecurealarmnoted,
+                HCIEsecurefire: this.hci.HCIEsecurefire,
+                HCIEsecurefirenoted: this.hci.HCIEsecurefirenoted,
+                HCIEsecurecrowded: this.hci.HCIEsecurecrowded,
+                HCIEsecurecrowdednoted: this.hci.HCIEsecurecrowdednoted
             }
             let hcisum = {
-                HCISresult: this.HCIsummary.HCISresult,
-                HCIScomment: this.HCIsummary.HCIScomment
+                HCISresult: this.hci.HCISresult,
+                HCIScomment: this.hci.HCIScomment
             }
             this.$swal.fire({
                 title: 'ยืนยันการแก้ไขข้อมูล',
@@ -842,39 +876,25 @@ export default {
             })
             .then((result) => {
                 if (result.value) {
-                    let HazardCompanyInvestigation = {
-                        HCIid: 0,
-                        HCIdate: 0,
-                        RLid: this.$route.params.id,
-                        HCIGid: 0,
-                        HCIEid: 0,
-                        HCISid: 0,
-                        Uid: Uid
-                    }
                     axios.post('http://localhost:5003/updategeneralcompany/' + this.companyowner.Cid, updatecompany)
                     .then(res => {
                         axios.post('http://localhost:5003/updategeneralowner/' + this.companyowner.Oid, updateowner)
                         .then(res => {
-                            axios.post('http://localhost:5003/newhcig', hcige)
+                            axios.post('http://localhost:5003/updatehcigeneral/' + this.hci.HCIGid, hcige)
                             .then(res => {
-                                HazardCompanyInvestigation.HCIGid = res.data.HCIGid
-                                    axios.post('http://localhost:5003/newhcie', this.HCIenvironment)
-                                    .then(res => {
-                                        HazardCompanyInvestigation.HCIEid = res.data.HCIEid
-                                            axios.post('http://localhost:5003/newhcis', hcisum)
-                                            .then(res => {
-                                                HazardCompanyInvestigation.HCISid = res.data.HCISid
-                                                    axios.post('http://localhost:5003/newinvestigation', HazardCompanyInvestigation)
-                                                        .then(res => {
-                                                            this.$router.push('/investigation')
-                                                            this.$swal.fire(
-                                                                'แก้ไขข้อมูลคำขอสำเร็จ!',
-                                                                '',
-                                                                'success'
-                                                            )
-                                                        })
-                                            })
-                                    })
+                                axios.post('http://localhost:5003/updatehcienvironment/' + this.hci.HCIEid, HCIenvironment)
+                                .then(res => {
+                                    console.log(res)
+                                        axios.post('http://localhost:5003/updatehcisummary/' + this.hci.HCISid, hcisum)
+                                        .then(res => {
+                                            this.$router.push('/investigation')
+                                            this.$swal.fire(
+                                                'แก้ไขข้อมูลคำขอสำเร็จ!',
+                                                '',
+                                                'success'
+                                            )
+                                        })
+                                })
                             })
                         })
                     })
@@ -899,7 +919,7 @@ export default {
                 .then(res => {
                     this.district = res.data
                 })
-        },        
+        },
         selectedDistrict (event) {
             axios.get('http://localhost:5003/subdistrict/' + event)
                 .then(res => {
