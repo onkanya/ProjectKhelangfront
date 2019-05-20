@@ -694,9 +694,9 @@ export default {
                         this.NewRequestLicense.RLnationality = res.data[0].Onationality
                         this.NewRequestLicense.RLhomeno = res.data[0].Ohomeno
                         this.NewRequestLicense.RLmoo = res.data[0].Omoo
-                        this.NewRequestLicense.RLsoi = res.data[0].Ohomeno
+                        this.NewRequestLicense.RLsoi = res.data[0].Osoi
                         this.NewRequestLicense.RLroad = res.data[0].Oroad
-                        this.NewRequestLicense.RLvillage = res.data[0].Ohomeno
+                        this.NewRequestLicense.RLvillage = res.data[0].Ovillage
                         this.NewRequestLicense.SDTid = res.data[0].SDTid
                         this.NewRequestLicense.Did = res.data[0].Did
                         this.NewRequestLicense.Pid = res.data[0].Pid

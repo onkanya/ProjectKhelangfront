@@ -32,6 +32,7 @@
                 <td class="text-xs-center">{{ `${props.item.RLfname}  ${props.item.RLlname}` }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ props.item.RLtel }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.RLdate) }}</td>
+                <td class="text-xs-center" style="max-width:170px">{{ `${props.item.Ufirstname}  ${props.item.Ulastname}` }}</td>
                 <td class="text-xs-center">
                     <v-tooltip top>
                         <v-btn fab dark small 
@@ -102,6 +103,11 @@ export default {
                 text: 'วันที่ทำรายการ',
                 align: 'center', 
                 value: 'RLdate' 
+                },
+                { 
+                text: 'เจ้าหน้าที่รับคำขอ',
+                align: 'center', 
+                value: 'Uid' 
                 },
                 {
                 text: 'จัดการข้อมูล', 

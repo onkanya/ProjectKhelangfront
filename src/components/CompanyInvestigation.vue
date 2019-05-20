@@ -119,7 +119,7 @@
                                     <div style="text-align: right;">
                                     <v-spacer></v-spacer>
                                     
-                                    <v-btn color="red darken-4" flat :to="'/company/'" >
+                                    <v-btn color="red darken-4" flat @click="$router.go(-1)" >
                                         <v-icon>arrow_back_ios</v-icon>
                                         <span>ย้อนกลับ</span>
                                     </v-btn>

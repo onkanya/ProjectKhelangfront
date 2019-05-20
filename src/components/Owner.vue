@@ -63,7 +63,7 @@
                             router
                             exact
                             slot="activator"
-                            @click="ViewDetailOwner(props.item.Oid)"
+                            :to="'/viewownerdetail/' + props.item.Oid"
                             >
                                 <v-icon dark>rate_review</v-icon>
                             </v-btn>
@@ -78,7 +78,6 @@
             </v-card>
         </v-flex>
         </v-layout>
-            <ViewOwner v-if="dialog" :Oid="Oid" :dialog="dialog" @closeDialog="dialog = false"/>
     </v-container>
 </template>
 
@@ -86,11 +85,7 @@
 // import NewOwner from './NewOwner'
 // const axios = require('axios')
 import axios from 'axios'
-import ViewOwner from './ViewOwner'
 export default {
-    components: {
-        ViewOwner
-    },
     data: () => ({
         search: '',
         headers: [
@@ -130,10 +125,6 @@ export default {
         //     })
     },
     methods: {
-        ViewDetailOwner (ownerID) {
-            this.dialog = true
-            this.Oid = ownerID
-        },
         fetchData () {
             this.dialog = false
             console.log('AddOwner')

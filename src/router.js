@@ -22,7 +22,9 @@ import UpdateInvestigation from "./views/UpdateInvestigation.vue"
 import LicenseCompany from "./views/LicenseCompany.vue"
 import CompanyInvestigation from "./views/CompanyInvestigation.vue"
 import ViewLC from "./views/ViewLC.vue"
+import ViewCompany from "./views/ViewCompany.vue"
 import LicenseFee from "./views/LicenseFee.vue"
+import ViewOwnerDetail from "./views/ViewOwnerDetail.vue"
 
 Vue.use(Router);
 
@@ -139,6 +141,11 @@ export default new Router({
       path: "/licensefee/:id",
       name: "licensefee",
       component: LicenseFee
+    },
+    {
+      path: "/viewownerdetail/:id",
+      name: "viewownerdetail",
+      component: ViewOwnerDetail
     },
     {
       path: "/viewlc",
