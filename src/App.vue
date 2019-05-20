@@ -2,10 +2,7 @@
     <v-app id="layout-app" v-if="!isLoading">
         <Header @Logout="checkLogout" v-if="isLogin" />
         <Login @Login="checkLogin" v-else />
-        <br>
-        <br>
-        <br>
-        <router-view></router-view>
+        <router-view class="mt-5 pt-5"></router-view>
     </v-app>
 </template>
 
