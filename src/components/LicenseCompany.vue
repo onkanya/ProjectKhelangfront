@@ -4,7 +4,7 @@
         <v-flex xs12>
             <v-card>
             <v-card-title class="font-weight-bold">
-                คำขอรับ / ต่อใบอนุญาตประกอบกิจการ
+                ใบอนุญาตประกอบกิจการ
                 <v-spacer></v-spacer>            
                 <v-text-field
                 v-model="search"
@@ -162,7 +162,7 @@ export default {
                 value: 'LFfee' 
             },
             {
-                text: 'สำรวจสถานประกอบการ', 
+                text: 'ใบอนุญาต', 
                 align: 'center',
                 sortable: false,
                 value: ''
