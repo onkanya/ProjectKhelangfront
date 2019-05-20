@@ -8,7 +8,6 @@
             <v-divider></v-divider>
             <v-card-text>
             <v-container grid-list-md>
-                
                 <v-form
                     ref="form"
                     v-model="valid"
@@ -137,7 +136,7 @@
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="NewRequestLicense.Pid"    
                                 :items="province"
                                 item-text="Pname_th"
@@ -146,10 +145,10 @@
                                 @change="selectedProvince"
                                 :rules="textRules"               
                                 required
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="NewRequestLicense.Did"    
                                 :items="district"
                                 item-text="Dname_th"
@@ -158,10 +157,10 @@
                                 @change="selectedDistrict"
                                 :rules="textRules"              
                                 required
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="NewRequestLicense.SDTid"    
                                 :items="subdistrict"
                                 item-value="SDTid"
@@ -169,14 +168,14 @@
                                 label="ตำบล*"
                                 :rules="textRules"
                                 required
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                     </v-layout>
                     <div style="font-size: 14pt; text-align: center;">
                         ข้อมูลสถานประกอบการ
                     </div>
                     <v-layout wrap>
-                        <v-flex xs12 sm6 md6>
+                        <v-flex xs12 sm7 md7>
                             <v-select
                                 v-model="NewCompany.CTid"
                                 :items="types"
@@ -188,23 +187,27 @@
                                 required
                             ></v-select>
                         </v-flex>
-                        <v-flex xs12 sm6 md6>
+                        <v-flex xs12 sm4 md4>
                             <v-text-field
                                 v-model="fee"
                                 label="ค่าธรรมเนียม*"
                                 disabled
                             ></v-text-field>
                         </v-flex>
+                        <v-flex xs12 sm1 md1 class="mt-4">
+                            บาท
+                        </v-flex>
                         <v-flex xs12 sm12 md12>
-                            <v-select
+                            <v-autocomplete
                                 v-model="NewCompany.LFid"
                                 :items="licensefee"
                                 item-value="LFid"
                                 item-text="LFname"
                                 label="ชนิดสถานประกอบการ*"
                                 @change="selectLicenseFee"
+                                :rules="textRules"
                             >
-                            </v-select>
+                            </v-autocomplete>
                         </v-flex>
                         
                         <v-flex xs12 sm6 md6>                
@@ -264,7 +267,7 @@
                                     :rules="textRules"
                                     required
                                     ></v-text-field>
-                                <v-date-picker v-model="date" no-title scrollable>
+                                <v-date-picker locale="th" @change="onDateChange">
                                     <v-spacer></v-spacer>
                                     <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
                                     <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -311,7 +314,7 @@
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="NewCompany.Pid"    
                                 :items="province"
                                 item-text="Pname_th"
@@ -320,10 +323,10 @@
                                 @change="selectedProvinceCom"
                                 :rules="textRules"               
                                 required
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="NewCompany.Did"    
                                 :items="districtcom"
                                 item-text="Dname_th"
@@ -332,10 +335,10 @@
                                 @change="selectedDistrictCom"
                                 :rules="textRules"              
                                 required
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="NewCompany.SDTid"    
                                 :items="subdistrictcom"
                                 item-value="SDTid"
@@ -343,11 +346,20 @@
                                 label="ตำบล*"
                                 :rules="textRules"
                                 required
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
-                        <v-flex xs12 sm12 md12>
+                        <v-flex xs12 sm12 md6>
                             <v-text-field
-                                v-model="NewRequestLicense.RLdetail"
+                                v-model="NewCompany.Ctel"
+                                label="เบอร์โทรศัพท์"
+                                :rules="textRules"
+                                :mask="masktel"
+                                required
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm12 md6>
+                            <v-text-field
+                                v-model="NewCompany.Cnoted"
                                 label="รายละเอียดเพิ่มเติม"
                                 :rules="textRules"
                                 required
@@ -360,7 +372,8 @@
                         <div class="img-container-mean">
                             <img
                                 v-for="(img, idx) in showPdf" s :key="idx"
-                                :src="img"
+                                :src="require('../assets/pdf.png')"
+                                height="100"
                             />
                         </div>
                     </v-layout>
@@ -480,7 +493,9 @@ export default {
             Cvillage: '',
             Pid: null,
             Did: null,
-            SDTid: null
+            SDTid: null,
+            Ctel: '',
+            Cnoted: ''
         },
         textRules: [
             v => !!v || 'กรุณากรอกข้อมูล'
@@ -495,7 +510,12 @@ export default {
     }),
     methods: {
         onDateChange (e) {
-            this.NewRequestLicense.RLdate = e
+            // this.NewRequestLicense.RLdate = e
+            let d = new Date(e)
+            let year = d.getFullYear() + 543
+            let m = d.getMonth() > 8 ? d.getMonth() + 1 : `0${d.getMonth() + 1}`
+            this.date = `${year}-${m}-${d.getDate()}`
+            
         },
         submitNewRequest () {
             if (!this.$refs.form.validate()) {
@@ -553,7 +573,9 @@ export default {
                         Cvillage: this.NewCompany.Cvillage,
                         Pid: this.NewCompany.Pid,
                         Did: this.NewCompany.Did,
-                        SDTid: this.NewCompany.SDTid
+                        SDTid: this.NewCompany.SDTid,
+                        Ctel: this.NewCompany.Ctel,
+                        Cnoted: this.NewCompany.Cnoted
                     }
                     let request = {
                         RLid: 0,
@@ -574,7 +596,7 @@ export default {
                         Pid: this.NewRequestLicense.Pid,
                         RLtel: this.NewRequestLicense.RLtel,
                         RLemail: this.NewRequestLicense.RLemail,
-                        RLdetail: this.NewRequestLicense.RLdetail,
+                        RLdetail: this.NewCompany.Cnoted,
                         Uid: Uid
                     }
                     try {

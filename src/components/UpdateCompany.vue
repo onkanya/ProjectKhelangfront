@@ -28,7 +28,7 @@
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
-                                    <v-select
+                                    <v-autocomplete
                                         v-model="Company.LFid"          
                                         :items="licensefee"
                                         item-text="LFname"
@@ -36,7 +36,7 @@
                                         label="ประเภทของประเภทสถานประกอบการ*"
                                         @change="selectLicenseFee"
                                         required
-                                    ></v-select>
+                                    ></v-autocomplete>
                                 </v-flex>  
                                 <v-flex xs12 sm6 md6>                
                                     <v-autocomplete
@@ -95,7 +95,7 @@
                                         prepend-icon="event"
                                         readonly
                                         ></v-text-field>
-                                        <v-date-picker v-model="date">
+                                        <v-date-picker locale="th" @change="onDateChange" >
                                             <v-spacer></v-spacer>
                                             <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
                                             <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -133,7 +133,7 @@
                                     ></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 md4>
-                                    <v-select
+                                    <v-autocomplete
                                         v-model="Company.Pid"                            
                                         :items="province"
                                         item-text="Pname_th"
@@ -141,28 +141,45 @@
                                         label="จังหวัด*"
                                         @change="selectedProvince"               
                                         required
-                                    ></v-select>
+                                    ></v-autocomplete>
                                 </v-flex>
                                 <v-flex xs12 sm6 md4>
-                                    <v-select
+                                    <v-autocomplete
                                         v-model="Company.Did"    
                                         :items="district"
                                         item-text="Dname_th"
                                         item-value="Did"
                                         label="อำเภอ*"                    
-                                        @change="selectedDistrict"              
+                                        @change="autocompleteedDistrict"              
                                         required
-                                    ></v-select>
+                                    ></v-autocomplete>
                                 </v-flex>
                                 <v-flex xs12 sm6 md4>
-                                    <v-select
+                                    <v-autocomplete
                                         v-model="Company.SDTid" 
                                         :items="subdistrict"
                                         item-text="SDTname_th"
                                         item-value="SDTid"
                                         label="ตำบล*"
                                         required
-                                    ></v-select>
+                                    ></v-autocomplete>
+                                </v-flex>
+                                <v-flex xs12 sm12 md6>
+                                    <v-text-field
+                                        v-model="Company.Ctel"
+                                        label="เบอร์โทรศัพท์"
+                                        :rules="textRules"
+                                        :mask="masktel"
+                                        required
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm12 md6>
+                                    <v-text-field
+                                        v-model="Company.Cnoted"
+                                        label="รายละเอียดเพิ่มเติม"
+                                        :rules="textRules"
+                                        required
+                                    ></v-text-field>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -181,7 +198,8 @@
 
 
 <script>
-const axios = require('axios')
+import axios from 'axios'
+import moment from 'moment'
 export default { 
     created () {
         axios.get('http://localhost:5003/companygetid/' + this.$route.params.id)
@@ -219,8 +237,10 @@ export default {
             })
     },
     data: () => ({
-        date: new Date().toISOString().substr(0, 10),
+        // date: new Date().toISOString().substr(0, 10),
+        date: null,
         menu: false,
+        masktel: '###-#######',
         Company: {},
         owner: [],
         province: [],
@@ -234,6 +254,12 @@ export default {
         fee: null
     }),
     methods: {
+        onDateChange (e) {
+            let d = new Date(e)
+            let year = d.getFullYear() + 543
+            let m = d.getMonth() > 8 ? d.getMonth() + 1 : `0${d.getMonth() + 1}`
+            this.date = `${year}-${m}-${d.getDate()}`
+        },
         submitUpdateCompany () {
             let company = {
                 CTid: this.Company.CTid,
@@ -252,7 +278,9 @@ export default {
                 Pid: this.Company.Pid,
                 Did: this.Company.Did,
                 SDTid: this.Company.SDTid,
-                Cimg: this.Cimg
+                Cimg: this.Cimg,
+                Ctel: this.Company.Ctel,
+                Cnoted: this.Company.Cnoted
             }
             this.$swal.fire({
                 title: 'ยืนยันการแก้ไขข้อมูล',

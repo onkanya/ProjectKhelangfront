@@ -1,10 +1,10 @@
 <template>
     <v-container grid-list-xl text-xs-center>
-        <v-layout row wrap>
+        <v-layout row wrap mt-3 mb-3>
         <v-flex xs12>
-            <v-card>
+            <v-card class="mb-5">
             <v-card-title class="font-weight-bold">
-                ตรวจคำขอรับ / ต่อใบอนุญาตประกอบกิจการ
+                สำรวจสถานประกอบการ
                 <v-spacer></v-spacer>            
                 <v-text-field
                 v-model="search"
@@ -22,37 +22,58 @@
                 <template slot="items" slot-scope="props">
                 <td>{{ props.item.RLnorequest }}</td>
                 <td class="text-xs-center">{{ props.item.Cname }}</td>
+                <td class="text-xs-center">{{ `${props.item.RLfname} ${props.item.RLlname}` }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.RLgetlicensedate) }}</td>
-                <td class="text-xs-center" style="max-width:170px">{{ RLstatustoText(props.item.RLstatus) }}</td>
+                <td class="text-xs-center" style="max-width:170px">{{ HCISresulttoText(props.item.HCISresult) }}</td>
                 <td class="text-xs-center">
-                    <v-tooltip top>
-                        <v-btn fab dark small 
-                        color="cyan lighten-1"
-                        router
-                        exact
-                        slot="activator"
-                        :to="'/updatestatusrl/' + props.item.RLid"
-                        >
-                            <v-icon dark>edit</v-icon>
-                        </v-btn>
-                        <span>ตรวจสอบคำขอ</span>
-                    </v-tooltip>
+                    <span v-if="props.item.HCISresult == 1">
+                        <v-tooltip top>
+                            <v-btn fab dark small
+                                color="blue lighten-1"
+                                router
+                                exact
+                                slot="activator"
+                                :to="'/viewinvestigation/' + props.item.RLid"
+                            >
+                                <v-icon dark>rate_review</v-icon>
+                            </v-btn>
+                            <span>รายละเอียดการสำรวจ</span>
+                        </v-tooltip>
+                        <v-tooltip top v-if="props.item.LCreceiptno === null">
+                            <v-btn fab dark small
+                                color="blue lighten-1"
+                                router
+                                exact
+                                slot="activator"
+                                @click="ShowInsertRecieptDialog(props.item.Cid)"
+                            >
+                                <v-icon dark>list</v-icon>
+                            </v-btn>
+                            <span>ออกใบอนุญาต</span>
+                        </v-tooltip>
+                    </span>
                 </td>
                 </template>
                 <v-alert slot="no-results" :value="true" color="error" icon="warning">
-                Your search for "{{ search }}" found no results.
+                ไม่พบข้อมูล "{{ search }}" ในผลลัพธ์.
                 </v-alert>
             </v-data-table>
             </v-card>
         </v-flex>
         </v-layout>
+        <LicensePDF v-if="dialog" :Cid="Cid" :dialog="dialog" @closeDialog="dialog = false" @Receipt="fetchData()"/>
     </v-container>
 </template>
 
 <script>
 import axios from 'axios'
-import moment, { invalid } from 'moment'
+import moment from 'moment'
+import { GetLCforPDF } from '@/utils/LicensePDFhci'
+import LicensePDF from './LicensePDF'
 export default {
+    components: {
+        LicensePDF
+    },
     data: () => ({
         search: '',
         headers: [
@@ -63,57 +84,68 @@ export default {
                 value: 'RLnorequest'
             },
             {
-                text: 'ชื่อสถานประกอบการ',
+                text: 'สถานประกอบการ',
+                align: 'center',
+                //   sortable: false,
+                value: 'RLTname'
+            },
+            {
+                text: 'ชื่อ - สกุลผู้ยื่นคำขอ',
                 align: 'center', 
                 value: ''
             },
             { 
                 text: 'วันที่นัดรับใบอนุญาต',
                 align: 'center', 
-                value: 'RLgetlicensedate' 
+                value: 'RLdate' 
             },
             { 
-                text: 'สถานะการดำเนินการ',
+                text: 'ผลลัพธ์การสำรวจสถานประกอบการ',
                 align: 'center', 
-                value: 'RLstatus' 
+                value: 'HCISresult' 
             },
             {
-                text: 'จัดการข้อมูล', 
+                text: 'สำรวจสถานประกอบการ', 
                 align: 'center',
                 sortable: false,
                 value: ''
             }
         ],
-        request: []       
+        request: [],
+        dialog: false,
+        Cid: 0
     }),
     created () {
         this.fetchData()
     },
     methods: {
+        ShowInsertRecieptDialog (Cid) {
+            this.dialog = true
+            this.Cid = Cid
+        },
         convertToDate (date) {
-            // return date === '0000-00-00' ? '0000-00-00' : moment(date).format('DD-MM-YYYY')
-            return date === '0000-00-00' ? 'รอตรวจสอบ' : moment(date).format('DD-MM-YYYY')
+            return date === '0000-00-00' ? date : moment(date).format('DD-MM-YYYY')
         },
         fetchData () {
-            axios.get('http://localhost:5003/getrequest')
+            axios.get('http://localhost:5003/getrequestforreceipt')
             .then(res => {
                 this.request = res.data
             })
         },
-        RLstatustoText (RLstatus) {
+        HCISresulttoText (HCISresult) {
             let text = ''
-            switch (RLstatus) {
+            switch (HCISresult) {
                 case '1':
-                    text = 'รอตรวจสอบคำขอ'
+                    text = 'ผ่านการสำรวจ'
                     break
                 case '2':
-                    text = 'เอกสารหลักฐานไม่ครบ'
+                    text = 'แก้ไขปรับปรุง'
                     break
                 case '3':
-                    text = 'เอกสารหลักฐานครบ'
+                    text = 'ไม่ผ่านการสำรวจ'
                     break
                 default:
-                    text = 'ไม่พบสถานะ'
+                    text = 'รอสำรวจสถานประกอบการ'
                     break
             }
             return text

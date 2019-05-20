@@ -260,7 +260,7 @@ export default {
                     type: 'warning',
                 })
                 return
-            } 
+            }
             let company = {
                 CTid: this.NewCompany.CTid,
                 CTCid: this.NewCompany.CTCid,

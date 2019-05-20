@@ -1,65 +1,84 @@
 <template>
-  <v-container grid-list-xl text-xs-center>
-    <v-layout row wrap>
-      <v-flex xs12>
-          <!-- <NewCompany @AddCompany='fetchData' /> -->
-          <v-btn 
-                slot="activator" 
-                color="cyan lighten-1" 
-                dark 
-                to="/newcompany"
-                >เพิ่มข้อมูลสถานประกอบการ
-            </v-btn>
-        <v-card>
-          <v-card-title class="font-weight-bold">
-            สถานประกอบการ
-            <v-spacer></v-spacer>            
-            <v-text-field
-              v-model="search"
-              append-icon="search"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-card-title>
-          <v-data-table
-            :headers="headers"
-            :items="company"
-            :search="search"
-          >
-            <template slot="items" slot-scope="props">
-              <td>{{ props.item.Cid }}</td>
-              <td class="text-xs-center">{{ props.item.Cname }}</td>
-              <td class="text-xs-center" style="max-width:170px">{{ props.item.CTname }}</td>
-              <td class="text-xs-center">{{ `${props.item.Ofirstname}  ${props.item.Olastname}` }}</td>
-              <td class="text-xs-center">
-                <v-btn fab dark small 
-                color="red darken-1"
-                router
-                exact
-                @click="DeleteCompany(props.item.Cid)"
-                >
-                  <v-icon dark>delete</v-icon>
-                </v-btn>
-
-                  <v-btn fab dark small 
-                  color="cyan lighten-1"
-                  router
-                  exact
-                  :to="'/updatecompany/' + props.item.Cid"
-                  >
-                    <v-icon dark>edit</v-icon>
-                  </v-btn>
-              </td>
-            </template>
-            <v-alert slot="no-results" :value="true" color="error" icon="warning">
-              Your search for "{{ search }}" found no results.
-            </v-alert>
-          </v-data-table>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+    <v-container grid-list-xl text-xs-center>
+        <v-layout row wrap>
+        <v-flex xs12>
+            <!-- <NewCompany @AddCompany='fetchData' /> -->
+            <!-- <v-btn 
+                    slot="activator" 
+                    color="cyan lighten-1" 
+                    dark 
+                    to="/newcompany"
+                    >เพิ่มข้อมูลสถานประกอบการ
+                </v-btn> -->
+            <v-card>
+            <v-card-title class="font-weight-bold">
+                สถานประกอบการ
+                <v-spacer></v-spacer>            
+                <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Search"
+                single-line
+                hide-details
+                ></v-text-field>
+            </v-card-title>
+            <v-data-table
+                :headers="headers"
+                :items="company"
+                :search="search"
+            >
+                <template slot="items" slot-scope="props">
+                <td>{{ props.item.Cid }}</td>
+                <td class="text-xs-center">{{ props.item.Cname }}</td>
+                <td class="text-xs-center" style="max-width:170px">{{ props.item.CTname }}</td>
+                <td class="text-xs-center">{{ `${props.item.Ofirstname}  ${props.item.Olastname}` }}</td>
+                <td class="text-xs-center">
+                    <v-tooltip top>
+                        <v-btn fab dark small 
+                        color="red darken-1"
+                        router
+                        exact
+                        slot="activator"
+                        @click="DeleteCompany(props.item.Cid)"
+                        >
+                        <v-icon dark>delete</v-icon>
+                        </v-btn>
+                        <span>ลบข้อมูลสถานประกอบการ</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                        <v-btn fab dark small 
+                        color="cyan lighten-1"
+                        router
+                        exact
+                        slot="activator"
+                        :to="'/updatecompany/' + props.item.Cid"
+                        >
+                            <v-icon dark>edit</v-icon>
+                        </v-btn>
+                            <span>แก้ไขข้อมูลสถานประกอบการ</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                        <v-btn fab dark small 
+                        color="blue lighten-1"
+                        router
+                        exact
+                        slot="activator"
+                        :to="'/companyinvestigation/' + props.item.Cid"
+                        >
+                            <v-icon dark>rate_review</v-icon>
+                        </v-btn>
+                        <span>เรียกดูข้อมูลสถานประกอบการ</span>
+                    </v-tooltip>
+                </td>
+                </template>
+                <v-alert slot="no-results" :value="true" color="error" icon="warning">
+                Your search for "{{ search }}" found no results.
+                </v-alert>
+            </v-data-table>
+            </v-card>
+        </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -74,30 +93,30 @@ export default {
         search: '',
         headers: [
             {
-              text: 'เลขที่กิจการ',
-              align: 'center',
-              // sortable: false,
-              value: 'Cid'
-            },
-            { 
-              text: 'ชื่อกิจการ', 
-              value: 'Cname',
-              align: 'center' 
-            },
-            { 
-              text: 'ประเภทกิจการ', 
-              value: 'CTname',
-              align: 'center' 
-            },
-            { 
-              text: 'เจ้าของกิจการ', 
-              value: 'Oid',
-              align: 'center' 
-            },
-            {
-              text: 'จัดการข้อมูล', 
-              align: 'center',
-              value: ''
+                text: 'เลขที่กิจการ',
+                align: 'center',
+                // sortable: false,
+                value: 'Cid'
+                },
+                { 
+                text: 'ชื่อกิจการ', 
+                value: 'Cname',
+                align: 'center' 
+                },
+                { 
+                text: 'ประเภทกิจการ', 
+                value: 'CTname',
+                align: 'center' 
+                },
+                { 
+                text: 'เจ้าของกิจการ', 
+                value: 'Oid',
+                align: 'center' 
+                },
+                {
+                text: 'จัดการข้อมูล', 
+                align: 'center',
+                value: ''
             }
         ],
         company: []        

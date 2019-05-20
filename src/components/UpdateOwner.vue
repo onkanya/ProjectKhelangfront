@@ -122,7 +122,7 @@
                         ></v-text-field>
                     </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="owner.Pid"    
                                 :items="province"
                                 item-text="Pname_th"
@@ -131,10 +131,10 @@
                                 @change="selectedProvince"               
                                 required
                                 :rules="textRules"
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="owner.Did"    
                                 :items="district"
                                 item-text="Dname_th"
@@ -143,10 +143,10 @@
                                 @change="selectedDistrict"              
                                 required
                                 :rules="textRules"
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="owner.SDTid"    
                                 :items="subdistrict"
                                 item-text="SDTname_th"
@@ -154,7 +154,7 @@
                                 label="ตำบล*"        
                                 required
                                 :rules="textRules"
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                     </v-layout>
                 </v-form>

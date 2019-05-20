@@ -1,8 +1,8 @@
 <template>
     <v-container grid-list-xl text-xs-center>
-        <v-layout row wrap>
+        <v-layout row wrap mt-3 mb-3>
         <v-flex xs12>
-            <v-card>
+            <v-card class="mb-5">
             <v-card-title class="font-weight-bold">
                 สำรวจสถานประกอบการ
                 <v-spacer></v-spacer>            
@@ -26,18 +26,32 @@
                 <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.RLgetlicensedate) }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ HCISresulttoText(props.item.HCISresult) }}</td>
                 <td class="text-xs-center">
-                    <v-tooltip top v-if="props.item.HCISresult == 1">
-                        <v-btn fab dark small
-                            color="blue lighten-1"
-                            router
-                            exact
-                            slot="activator"
-                            :to="'/viewinvestigation/' + props.item.RLid"
-                        >
-                            <v-icon dark>visibility</v-icon>
-                        </v-btn>
-                        <span>รายละเอียดการสำรวจ</span>
-                    </v-tooltip>
+                    <span v-if="props.item.HCISresult == 1">
+                        <v-tooltip top>
+                            <v-btn fab dark small
+                                color="blue lighten-1"
+                                router
+                                exact
+                                slot="activator"
+                                :to="'/viewinvestigation/' + props.item.RLid"
+                            >
+                                <v-icon dark>rate_review</v-icon>
+                            </v-btn>
+                            <span>รายละเอียดการสำรวจ</span>
+                        </v-tooltip>
+                        <v-tooltip top v-if="props.item.LCreceiptno === null">
+                            <v-btn fab dark small
+                                color="blue lighten-1"
+                                router
+                                exact
+                                slot="activator"
+                                @click="ShowInsertRecieptDialog(props.item.Cid)"
+                            >
+                                <v-icon dark>list</v-icon>
+                            </v-btn>
+                            <span>ออกใบอนุญาต</span>
+                        </v-tooltip>
+                    </span>
                     <v-tooltip top v-else-if="props.item.HCISresult == 2" >
                         <v-btn fab dark small
                             color="cyan lighten-1"
@@ -50,18 +64,18 @@
                         </v-btn>
                         <span>แก้ไขข้อมูลสำรวจ</span>
                     </v-tooltip>
-                    <v-tooltip top v-else-if="props.item.HCISresult == 3">
-                        <v-btn fab dark small
-                            color="blue lighten-1"
-                            router
-                            exact
-                            slot="activator"
-                            :to="'/viewinvestigation/' + props.item.RLid"
-                        >
-                            <v-icon dark>visibility</v-icon>
-                        </v-btn>
-                        <span>รายละเอียดการสำรวจ</span>
-                    </v-tooltip>
+                        <v-tooltip top v-else-if="props.item.HCISresult == 3">
+                            <v-btn fab dark small
+                                color="blue lighten-1"
+                                router
+                                exact
+                                slot="activator"
+                                :to="'/viewinvestigation/' + props.item.RLid"
+                            >
+                                <v-icon dark>rate_review</v-icon>
+                            </v-btn>
+                            <span>รายละเอียดการสำรวจ</span>
+                        </v-tooltip>
                     <v-tooltip top v-else>
                         <v-btn fab dark small
                         color="orange accent-2"
@@ -84,13 +98,19 @@
             </v-card>
         </v-flex>
         </v-layout>
+        <LicensePDF v-if="dialog" :Cid="Cid" :dialog="dialog" @closeDialog="dialog = false" @Receipt="fetchData()"/>
     </v-container>
 </template>
 
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import { GetLCforPDF } from '@/utils/LicensePDFhci'
+import LicensePDF from './LicensePDF'
 export default {
+    components: {
+        LicensePDF
+    },
     data: () => ({
         search: '',
         headers: [
@@ -128,12 +148,18 @@ export default {
                 value: ''
             }
         ],
-        request: [] 
+        request: [],
+        dialog: false,
+        Cid: 0
     }),
     created () {
         this.fetchData()
     },
     methods: {
+        ShowInsertRecieptDialog (Cid) {
+            this.dialog = true
+            this.Cid = Cid
+        },
         convertToDate (date) {
             return date === '0000-00-00' ? date : moment(date).format('DD-MM-YYYY')
         },

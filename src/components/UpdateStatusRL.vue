@@ -13,16 +13,6 @@
                     v-model="valid"
                 >
                     <v-layout wrap>
-                        <v-flex xs12 sm6 md6>
-                            <v-select
-                                v-model="RequestLicense.RLTid"                                       
-                                :items="requesttype"
-                                item-text="RLTname"
-                                item-value="RLTid"
-                                label="ประเภทคำขอ*"   
-                                disabled
-                            ></v-select>
-                        </v-flex>
                         <v-flex xs12 sm6 md6>                
                             <v-autocomplete
                                 v-model="RequestLicense.Cid"
@@ -41,7 +31,7 @@
                                 disabled
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md6>
+                        <v-flex xs12 sm6 md3>
                             <v-text-field
                                 slot="activator"
                                 v-model="RequestLicense.RLdate"
@@ -52,7 +42,7 @@
                                 disabled
                                 ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md4>
+                        <v-flex xs12 sm6 md3>
                             <v-select
                                 v-model="RequestLicense.Prefixid"         
                                 :items="prefix"
@@ -62,7 +52,7 @@
                                 disabled
                             ></v-select>
                         </v-flex>
-                        <v-flex xs12 sm6 md4>
+                        <v-flex xs12 sm6 md3>
                             <v-text-field
                                 v-model="RequestLicense.RLfname"
                                 label="ชื่อผู้ยื่นคำขอ*"
@@ -70,7 +60,7 @@
                                 disabled
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md4>
+                        <v-flex xs12 sm6 md3>
                             <v-text-field
                                 v-model="RequestLicense.RLlname"
                                 label="นามสกุล*"
@@ -172,10 +162,12 @@
                         </v-flex>
                         ไฟล์แนบ
                         <div class="img-container-mean">
-                            <img
-                                v-for="(img, idx) in getPdf" s :key="idx"
-                                :src="img.RPDFpath"
-                            />
+                            <a v-for="(img, idx) in getPdf" :key="idx" :href="img.RPDFpath" target="_blank">
+                                <img
+                                    :src="require('../assets/pdf.png')"
+                                    height="100"
+                                />
+                            </a>
                         </div>
                     </v-layout>
                     <v-subheader>
@@ -191,6 +183,7 @@
                                 v-model="RequestLicense.RLstatus"                                       
                                 :items="statusoption"
                                 label="สถานะคำขอ"
+                                @change="onStatusChange"
                             ></v-select>
                         </v-flex>
                         <v-flex xs12 sm12 md6>
@@ -209,14 +202,14 @@
                                 <v-text-field
                                     slot="activator"
                                     v-model="statusdate"
+                                    :readonly="true"
                                     label="วันที่นัดรับใบอนุญาตประกอบกิจการ"
                                     prepend-icon="event"
-                                    readonly
                                     ></v-text-field>
-                                <v-date-picker v-model="statusdate" @change="onDateChange">
+                                <v-date-picker locale='th' @change="onDateChange">
                                     <v-spacer></v-spacer>
                                     <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-                                    <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                                    <v-btn flat color="primary" @click="$refs.menu.save(statusdate)">OK</v-btn>
                                 </v-date-picker>
                             </v-menu>
                         </v-flex>
@@ -243,13 +236,16 @@
 
 <script>
 import axios from 'axios'
+import moment from 'moment'
 export default {
     created () {
         axios.get('http://localhost:5003/getrequest/' + this.$route.params.id)
             .then(res => {
                 console.log(res)
                 this.RequestLicense = res.data[0]
-                this.date = this.RequestLicense.RLdate
+                this.RequestLicense.RLgetlicensedate === null || '0000-00-00' ? this.statusdate = '' : this.statusdate = this.RequestLicense.RLgetlicensedate
+                // this.date = this.RequestLicense.RLdate
+                this.RequestLicense.RLdate = moment(this.RequestLicense.RLdate, 'DD-MM-YYYY').add(543, 'years').format('DD/MM/YYYY')                
                 axios.get('http://localhost:5003/district/' + this.RequestLicense.Pid)
                     .then(res => {
                         this.district = res.data
@@ -300,8 +296,18 @@ export default {
         RLpdf: [],
         showPdf: [],
         getPdf: [],
+        enable: false
     }),
     methods: {
+        onStatusChange (val) {
+            console.log(val)
+        },
+        onDateChange (e) {
+            let d = new Date(e)
+            let year = d.getFullYear() + 543
+            let m = d.getMonth() > 8 ? d.getMonth() + 1 : `0${d.getMonth() + 1}`
+            this.statusdate = `${year}-${m}-${d.getDate()}`
+        },
         submitRequest () {
             if (!this.$refs.form.validate()) {
                 this.$swal.fire({

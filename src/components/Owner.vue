@@ -1,15 +1,15 @@
 <template>
     <v-container grid-list-xl text-xs-center>
-        <v-layout row wrap>
+        <v-layout row wrap mt-3 mb-3>
         <v-flex xs12>
             <!-- <NewOwner @AddOwner='fetchData'/>       -->
-            <v-btn 
+            <!-- <v-btn 
                 slot="activator" 
                 color="cyan lighten-1" 
                 dark 
                 to="/newowner"
                 >เพิ่มข้อมูลเจ้าของสถานประกอบการ
-            </v-btn>
+            </v-btn> -->
             <v-card>
                 <v-card-title class="font-weight-bold">
                     เจ้าของสถานประกอบการ
@@ -32,23 +32,43 @@
                     <td class="text-xs-center">{{ `${props.item.Ofirstname}  ${props.item.Olastname}` }}</td>
                     <td class="text-xs-center">{{ props.item.Otel }}</td>
                     <td class="text-xs-center">
-                        <v-btn fab dark small 
-                        color="red darken-1"
-                        router
-                        exact
-                        @click="DeleteOwner(props.item.Oid)"
-                        >
-                        <v-icon dark>delete</v-icon>
-                        </v-btn>
+                        <v-tooltip top>
+                            <v-btn fab dark small 
+                            color="red darken-1"
+                            router
+                            exact
+                            slot="activator"
+                            @click="DeleteOwner(props.item.Oid)"
+                            >
+                            <v-icon dark>delete</v-icon>
+                            </v-btn>
+                            <span>ลบข้อมูล</span>
+                        </v-tooltip>
+                        <v-tooltip top>
+                            <v-btn fab dark small 
+                            color="cyan lighten-1"
+                            router
+                            exact
+                            slot="activator"
+                            :to="'/updateowner/' + props.item.Oid"
+                            >
+                                <v-icon dark>edit</v-icon>
+                            </v-btn>
+                            <span>แก้ไขข้อมูล</span>
+                        </v-tooltip>
 
-                        <v-btn fab dark small 
-                        color="cyan lighten-1"
-                        router
-                        exact
-                        :to="'/updateowner/' + props.item.Oid"
-                        >
-                        <v-icon dark>edit</v-icon>
-                        </v-btn>
+                        <v-tooltip top>
+                            <v-btn fab dark small 
+                            color="blue lighten-1"
+                            router
+                            exact
+                            slot="activator"
+                            @click="ViewDetailOwner(props.item.Oid)"
+                            >
+                                <v-icon dark>rate_review</v-icon>
+                            </v-btn>
+                            <span>เรียกดูข้อมูลสถานประกอบการ</span>
+                        </v-tooltip>
                     </td>
                     </template>
                     <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -57,17 +77,20 @@
                 </v-data-table>
             </v-card>
         </v-flex>
-        </v-layout>         
+        </v-layout>
+            <ViewOwner v-if="dialog" :Oid="Oid" :dialog="dialog" @closeDialog="dialog = false"/>
     </v-container>
 </template>
 
 <script>
 // import NewOwner from './NewOwner'
-const axios = require('axios')
+// const axios = require('axios')
+import axios from 'axios'
+import ViewOwner from './ViewOwner'
 export default {
-    // components: {
-    //   NewOwner
-    // },
+    components: {
+        ViewOwner
+    },
     data: () => ({
         search: '',
         headers: [
@@ -94,7 +117,9 @@ export default {
                     value: ''
             }
         ],
-        owner: []       
+        owner: [],
+        dialog: false,
+        Oid: 0,   
     }),
     created () {
         this.fetchData()
@@ -105,7 +130,12 @@ export default {
         //     })
     },
     methods: {
+        ViewDetailOwner (ownerID) {
+            this.dialog = true
+            this.Oid = ownerID
+        },
         fetchData () {
+            this.dialog = false
             console.log('AddOwner')
             axios.get('http://localhost:5003/owner')
             .then(res => {

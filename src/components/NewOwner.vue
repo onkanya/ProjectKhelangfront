@@ -171,7 +171,7 @@
 </template>
 <script>
 const axios = require('axios')
-  export default {
+    export default {
     created () {
         axios.get('http://localhost:5003/prefix')
         .then(res => {

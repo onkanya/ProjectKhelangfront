@@ -1,5 +1,9 @@
 <template>
     <v-layout row justify-center>
+      <v-form
+                  ref="form"
+                  v-model="valid"
+              >
     <v-dialog v-model="dialog" persistent max-width="400px">
         <v-btn slot="activator" color="cyan accent-4" dark>เพิ่มประเภทสถานประกอบการ</v-btn>
       <v-card>
@@ -12,6 +16,8 @@
                   <v-text-field
                     v-model="NewCT.CTname"
                     label="ชื่อประเภทสถานประกอบการ"
+                    :rules="textRules"
+                    required
                   ></v-text-field></v-flex> 
                 </v-layout>
             </v-container>
@@ -24,6 +30,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+      </v-form>
   </v-layout>
 </template>
 
@@ -31,13 +38,25 @@
 const axios = require('axios')
   export default {
     data: () => ({
+        valid: true,
         dialog: false,
         NewCT: {
             CTname: ''
-        }
+        },
+        textRules: [
+                v => !!v || 'กรุณากรอกข้อมูล'
+            ],
     }),
     methods: {
         submitCT() {
+          if (!this.$refs.form.validate()) {
+                this.$swal.fire({
+                    title: 'ข้อมูลไม่ครบถ้วน!',
+                    text: "กรุณากรอกข้อมูลให้ครบถ้วนก่อนบันทึก",
+                    type: 'warning',
+                })
+                return
+            }
             let companytype = {
                 CTname: this.NewCT.CTname
             }

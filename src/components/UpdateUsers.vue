@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialog" max-width="800px">
         <v-card>
-            <v-card-title  class="font-weight-bold">แก้ไขข้อมูลผู้ใช้ระบบ</v-card-title>
+            <v-card-title class="font-weight-bold">แก้ไขข้อมูลผู้ใช้ระบบ</v-card-title>
             <v-divider></v-divider>
             <v-card-text>
                 <v-container grid-list-md>

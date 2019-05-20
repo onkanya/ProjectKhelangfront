@@ -15,10 +15,14 @@ import UpdateRequestLicense from "./views/UpdateRequestLicense.vue"
 import ConfirmRL from "./views/ConfirmRL.vue"
 import UpdateStatusRL from "./views/UpdateStatusRL.vue"
 import Investigation from "./views/Investigation.vue"
+import ReceiptInvestigation from "./views/ReceiptInvestigation.vue"
 import NewInvestigation from "./views/NewInvestigation.vue"
 import ViewInvestigation from "./views/ViewInvestigation.vue"
 import UpdateInvestigation from "./views/UpdateInvestigation.vue"
 import LicenseCompany from "./views/LicenseCompany.vue"
+import CompanyInvestigation from "./views/CompanyInvestigation.vue"
+import ViewLC from "./views/ViewLC.vue"
+import LicenseFee from "./views/LicenseFee.vue"
 
 Vue.use(Router);
 
@@ -102,6 +106,11 @@ export default new Router({
       component: Investigation
     },
     {
+      path: "/receiptinvestigation",
+      name: "receiptinvestigation",
+      component: ReceiptInvestigation
+    },
+    {
       path: "/newinvestigation/:id",
       name: "newinvestigation",
       component: NewInvestigation
@@ -120,6 +129,21 @@ export default new Router({
       path: "/licensecompany",
       name: "licensecompany",
       component: LicenseCompany
-    }
+    },
+    {
+      path: "/companyinvestigation/:id",
+      name: "companyinvestigation",
+      component: CompanyInvestigation
+    },
+    {
+      path: "/licensefee/:id",
+      name: "licensefee",
+      component: LicenseFee
+    },
+    {
+      path: "/viewlc",
+      name: "viewlc",
+      component: ViewLC
+    },
   ]
 });

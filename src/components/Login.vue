@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import Input from 'element-ui/packages/input'
 const axios = require('axios') 
 export default {
     data: () => ({
@@ -60,6 +59,7 @@ export default {
                 if (res.data.status) {
                     localStorage.setItem('userLogin', JSON.stringify(res.data.user[0]))
                     this.$emit('Login')
+                    this.$router.push('/home')
                 } else {
                     this.$swal.fire(
                         'ชื่อผู้ใช้ และรหัสผ่านไม่ถูกต้อง!',

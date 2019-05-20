@@ -2,20 +2,14 @@
     <v-container grid-list-xl text-xs-center>
         <v-layout row wrap justify-center>
             <v-flex xs12 sm12 md12>
-                <v-card>
-                    <v-card-title>
-                        ประเภทสถานประกอบการ
-                        <v-spacer></v-spacer>
-                    </v-card-title>
-                    <v-layout row justify-center>
-                        <v-flex xs12 sm10 md10>
-                            <Types @AddCT="onTypeDataChange" />
-                            <Typecategories @AddCTC="onTypeDataChange" />
-                            <Typecategoriesdetail @AddCTCD="onTypeDataChange" />
-                            <AllType @FetchSuccess="onFetchSuccess" :updated="updated" @triggerUpdate="onTriggerUpdate"/>
-                        </v-flex>
-                    </v-layout>
-                </v-card>
+                <v-layout row justify-center>
+                    <v-flex xs12 sm10 md10>
+                        <Types @AddCT="onTypeDataChange" />
+                        <!-- <Typecategories @AddCTC="onTypeDataChange" />
+                        <Typecategoriesdetail @AddCTCD="onTypeDataChange" /> -->
+                        <AllType @FetchSuccess="onFetchSuccess" :updated="updated" @triggerUpdate="onTriggerUpdate"/>
+                    </v-flex>
+                </v-layout>
             </v-flex>
         </v-layout>
         <UpdateCT v-if="dialogCT" :CTid="CTid" :dialog="dialogCT" @closeDialogCT="dialogCT = false" @onUpdateSuccess="onUpdateSuccess"/>
@@ -25,15 +19,15 @@
 <script>
 import axios from 'axios'
 import Types from './types'
-import Typecategories from './typecategories'
-import Typecategoriesdetail from './typecategoriesdetail'
+// import Typecategories from './typecategories'
+// import Typecategoriesdetail from './typecategoriesdetail'
 import AllType from './alltype'
 import UpdateCT from './UpdateCT'
 export default {
     components: {
         Types,
-        Typecategories,
-        Typecategoriesdetail,
+        // Typecategories,
+        // Typecategoriesdetail,
         AllType,
         UpdateCT
     },

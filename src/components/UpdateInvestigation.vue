@@ -480,13 +480,13 @@
                                             <template v-for="(header, idx) in props.headers">
                                                 <th v-if="idx === 3" :key="idx">
                                                     <v-checkbox
-                                                        readonly
                                                         :input-value="props.all"
                                                         :indeterminate="props.indeterminate"
                                                         primary
                                                         hide-details
                                                         @click.native="toggleAll"
                                                     ></v-checkbox>
+                                                    (ผ่าน / ไม่ผ่าน)
                                                 </th>
                                                 <th
                                                     :key="header.text"
@@ -505,14 +505,14 @@
                                             <td>{{ child.name }}</td>
                                             <td>
                                                 <v-checkbox
-                                                    :input-value="hci[child.checked]"
+                                                    :input-value="hci[child.checked] == 1"
                                                     primary
                                                     hide-details
                                                     :disabled="child.checked === null"
                                                 ></v-checkbox>
                                             </td>
                                             <td class="text-xs-center">
-                                                <v-text-field v-model="hci[child.noted]"></v-text-field>
+                                                <v-text-field v-model="hci[child.noted]" multi-line></v-text-field>
                                             </td>
                                         </tr>
                                     </template>
@@ -567,6 +567,7 @@
 
 <script>
 import axios from 'axios'
+import moment from 'moment'
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -589,7 +590,7 @@ export default {
         axios.get('http://localhost:5003/getrequest/' + this.$route.params.id)
             .then(res => {
                 this.RequestLicense = res.data[0]
-                this.date = this.RequestLicense.RLdate
+                this.RequestLicense.RLdate = moment(this.RequestLicense.RLdate, 'DD-MM-YYYY').add(543, 'years').format('DD-MM-YYYY')
                 axios.get('http://localhost:5003/district/' + this.RequestLicense.Pid)
                     .then(res => {
                         this.districtrequest = res.data
@@ -761,7 +762,7 @@ export default {
         printPDF(){
             var docDefinition = {
                 content: [
-                    { text: 'สวัสดีประเทศไทย reat pdf demo ', fontSize: 15 },
+                    { text: '1', fontSize: 15 },
                     { text: 'อาร์ตหัวควย ', fontSize: 15 },
                 ],
                 defaultStyle: {
@@ -770,7 +771,8 @@ export default {
             };
             pdfMake.createPdf(docDefinition).open()
         },
-        toggleAll () {
+        toggleAll (event) {
+            console.log(event)
             this.HCIErules.forEach(e => {
                 e.children.forEach(el => {
                     this.hci[el.checked] = !this.hci[el.checked]

@@ -260,6 +260,7 @@
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
                                         <v-text-field
+                                            v-model="companyowner.Carea"
                                             label="ขนาดพื้นที่ (ตารางเมตร)"
                                             :rules="textRules"
                                             required
@@ -498,6 +499,7 @@
                                                         hide-details
                                                         @click.native="toggleAll"
                                                     ></v-checkbox>
+                                                    (ผ่าน / ไม่ผ่าน)
                                                 </th>
                                                 <th
                                                     :key="header.text"
@@ -523,7 +525,7 @@
                                                 ></v-checkbox>
                                             </td>
                                             <td class="text-xs-center">
-                                                <v-text-field v-model="HCIenvironment[child.noted]"></v-text-field>
+                                                <v-text-field v-model="HCIenvironment[child.noted]" multi-line></v-text-field>
                                             </td>
                                         </tr>
                                     </template>
@@ -578,12 +580,13 @@
 
 <script>
 import axios from 'axios'
+import moment from 'moment'
 export default {
     created () {
         axios.get('http://localhost:5003/getrequest/' + this.$route.params.id)
             .then(res => {
                 this.RequestLicense = res.data[0]
-                this.date = this.RequestLicense.RLdate
+                this.RequestLicense.RLdate = moment(this.RequestLicense.RLdate, 'DD-MM-YYYY').add(543, 'years').format('DD-MM-YYYY')                
                 axios.get('http://localhost:5003/district/' + this.RequestLicense.Pid)
                     .then(res => {
                         this.districtrequest = res.data

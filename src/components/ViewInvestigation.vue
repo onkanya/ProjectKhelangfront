@@ -214,9 +214,8 @@
                             </v-card-text>
                         </v-card>
                         <div style="text-align: right;">
-                            <v-btn flat color="red darken-1" :to="'/Investigation/'">ยกเลิก</v-btn>
+                            <v-btn flat color="red darken-1" @click="$router.go(-1)">ยกเลิก</v-btn>
                             <v-btn flat color="blue darken-1" @click.native="e1 = 2">ถัดไป</v-btn>
-                            <v-btn flat color="purple darken-1" @click="printPDF">Print</v-btn>
                         </div>
                     </v-stepper-content>
                     <v-stepper-content step="2">
@@ -252,6 +251,7 @@
                                     </v-flex>
                                     <v-flex xs12 sm6 md3>
                                         <v-text-field
+                                            v-model="companyowner.Carea"
                                             label="ขนาดพื้นที่ (ตารางเมตร)"
                                             :rules="textRules"
                                             required
@@ -460,7 +460,9 @@
                                                         hide-details
                                                         @click.native="toggleAll"
                                                         readonly
-                                                    ></v-checkbox>
+                                                    >
+                                                    </v-checkbox>
+                                                    (ผ่าน / ไม่ผ่าน)
                                                 </th>
                                                 <th
                                                     :key="header.text"
@@ -480,7 +482,7 @@
                                             <td>
                                                 <v-checkbox
                                                     readonly
-                                                    :input-value="hci[child.checked]"
+                                                    :input-value="hci[child.checked] == 1"
                                                     primary
                                                     hide-details
                                                     :disabled="child.checked === null"
@@ -530,12 +532,11 @@
                         </v-card>
                         <div style="text-align: right;">
                             <v-btn flat color="red darken-1" @click.native="e1 = 3">ยกเลิก</v-btn>
-                            <v-btn flat color="blue darken-1" :to="'/Investigation/'">เสร็จสิ้น</v-btn>
+                            <v-btn flat color="blue darken-1" @click="$router.go(-1)">เสร็จสิ้น</v-btn>
                         </div>
                     </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
-                
             </v-container>
         </v-flex>
     </v-layout>
@@ -543,29 +544,13 @@
 
 <script>
 import axios from 'axios'
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-pdfMake.fonts = {
-    THSarabun: {
-        normal: 'THSarabun.ttf',
-        bold: 'THSarabun Bold.ttf',
-        italics: 'THSarabun Italic.ttf',
-        bolditalics: 'THSarabun Bold Italic.ttf'
-    },
-    Roboto: {
-        normal: 'Roboto-Regular.ttf',
-        bold: 'Roboto-Medium.ttf',
-        italics: 'Roboto-Italic.ttf',
-        bolditalics: 'Roboto-MediumItalic.ttf'
-    }
-}
+import moment from 'moment'
 export default {
     created () {
         axios.get('http://localhost:5003/getrequest/' + this.$route.params.id)
             .then(res => {
                 this.RequestLicense = res.data[0]
-                this.date = this.RequestLicense.RLdate
+                this.RequestLicense.RLdate = moment(this.RequestLicense.RLdate, 'DD-MM-YYYY').add(543, 'years').format('DD/MM/YYYY')
                 axios.get('http://localhost:5003/district/' + this.RequestLicense.Pid)
                     .then(res => {
                         this.districtrequest = res.data
@@ -627,6 +612,7 @@ export default {
     },
     data: () => ({
         // date: new Date().toISOString().substr(0, 10),
+        valid: true,
         time: null,
         time2: null,
         menuopen: false,
@@ -734,18 +720,6 @@ export default {
         hci: {}
     }),
     methods: {
-        printPDF(){
-            var docDefinition = {
-                content: [
-                    { text: 'สวัสดีประเทศไทย reat pdf demo ', fontSize: 15 },
-                    { text: 'อาร์ตหัวควย ', fontSize: 15 },
-                ],
-                defaultStyle: {
-                    font: 'THSarabun'
-                }
-            };
-            pdfMake.createPdf(docDefinition).open()
-        },
         toggleAll () {
             this.HCIErules.forEach(e => {
                 e.children.forEach(el => {

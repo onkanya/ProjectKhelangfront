@@ -1,13 +1,14 @@
 <template>
     <div>
-        <v-toolbar>
+        <v-toolbar fixed>
             <v-toolbar-side-icon
                 @click.stop="drawer = !drawer"
             >
             </v-toolbar-side-icon>
             <v-toolbar-title>ระบบบริหารจัดการใบอนุญาตประกอบกิจการ</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-toolbar-items class="hidden-sm-and-down">
+            <v-toolbar-items>
+            <!-- <v-toolbar-items class="hidden-sm-and-down"> -->
             <!-- <v-btn flat @click="userLogout">ออกจากระบบ</v-btn> -->
             <v-btn flat @click="userLogout">ออกจากระบบ</v-btn>
             </v-toolbar-items>
@@ -62,16 +63,17 @@ export default {
         return {
             drawer: null,
             items: [
-                { title: 'หน้าแรก', icon: 'dashboard', link: '/home', permission: [0] },
+                { title: 'หน้าแรก', icon: 'home', link: '/home', permission: [0] },
                 { title: 'ผู้ใช้ระบบ', icon: 'people', link: '/users', permission: [1] },
                 { title: 'คำขอรับ / ต่อใบอนุญาตประกอบกิจการ', icon: 'list', link: '/requestlicense', permission: [3, 4] },
-                { title: 'ตรวจสอบคำขอรับใบอนุญาตประกอบกิจการ', icon: 'mobile_friendly', link: '/confirmrequest', permission: [3, 4]},
+                { title: 'ตรวจสอบคำขอรับใบอนุญาต', icon: 'mobile_friendly', link: '/confirmrequest', permission: [3, 4]},
                 { title: 'สำรวจสถานประกอบการ', icon: 'security', link: '/investigation', permission: [3, 5]},
-                { title: 'เจ้าของสถานประกอบการ', icon: 'face', link: '/Owner', permission: [3, 4, 5] },
+                { title: 'สำรวจสถานประกอบการ', icon: 'security', link: '/receiptinvestigation', permission: [4]},
+                { title: 'เจ้าของสถานประกอบการ', icon: 'person_pin', link: '/Owner', permission: [3, 4, 5] },
                 { title: 'สถานประกอบการ', icon: 'account_balance', link: '/company', permission: [3, 4, 5] },
-                { title: 'ใบอนุญาตประกอบกิจการ', icon: 'account_balance', link: '/licensecompany', permission: [3, 4, 5] },
-                // { title: 'ประเภทสถานประกอบการ', icon: 'category', link: '/companytype', permission: [3] },
-                { title: 'รายงานการออกใบอนุญาตประกอบกิจการ', icon: 'dashboard', link: '/', permission: [2] }
+                { title: 'ใบอนุญาตประกอบกิจการ', icon: 'file_copy', link: '/licensecompany', permission: [2, 3, 4, 5] },
+                { title: 'ประเภทและค่าธรรมเนียม', icon: 'dashboard', link: '/companytype', permission: [3] },
+                // { title: 'รายงานการออกใบอนุญาตประกอบกิจการ', icon: 'dashboard', link: '/', permission: [2, 3] }
             ],
             userdata: ''
         }

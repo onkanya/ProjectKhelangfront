@@ -143,7 +143,7 @@
                             ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="RequestLicense.Pid"  
                                 :items="province"
                                 item-text="Pname_th"
@@ -152,10 +152,10 @@
                                 @change="selectedProvince"
                                 :rules="textRules"               
                                 required
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="RequestLicense.Did"  
                                 :items="district"
                                 item-text="Dname_th"
@@ -164,10 +164,10 @@
                                 @change="selectedDistrict"
                                 :rules="textRules"              
                                 required
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-select
+                            <v-autocomplete
                                 v-model="RequestLicense.SDTid"
                                 :items="subdistrict"
                                 item-value="SDTid"
@@ -175,7 +175,7 @@
                                 label="ตำบล*"
                                 :rules="textRules"
                                 required
-                            ></v-select>
+                            ></v-autocomplete>
                         </v-flex>
                         <v-layout>
                             <input @change="addPDF" type="file" class="upload-btn" name="upload" multiple  accept=".pdf">
@@ -184,15 +184,18 @@
                         <div class="img-container-mean">
                             <img
                                 v-for="(img, idx) in showPdf" s :key="idx"
-                                :src="img"
+                                :src="require('../assets/pdf.png')"
+                                height="100"
                             />
                         </div>
                         ไฟล์เดิม
                         <div class="img-container-mean">
-                            <img
-                                v-for="(img, idx) in getPdf" s :key="idx"
-                                :src="img.RPDFpath"
-                            />
+                            <a v-for="(img, idx) in getPdf" :key="idx" :href="img.RPDFpath" target="_blank">
+                                <img
+                                    :src="require('../assets/pdf.png')"
+                                    height="100"
+                                />
+                            </a>
                         </div>
                     </v-layout>
                 </v-form>
@@ -210,12 +213,14 @@
 
 <script>
 import axios from 'axios'
+import moment from 'moment'
 export default {
     created () {
         axios.get('http://localhost:5003/getrequest/' + this.$route.params.id)
             .then(res => {
                 console.log(res)
                 this.RequestLicense = res.data[0]
+                this.RequestLicense.RLdate = moment(this.RequestLicense.RLdate, 'DD-MM-YYYY').add(543, 'years').format('DD/MM/YYYY')
                 axios.get('http://localhost:5003/district/' + this.RequestLicense.Pid)
                     .then(res => {
                         this.district = res.data
@@ -233,10 +238,6 @@ export default {
             .then(res => {
                 this.province = res.data
             })
-        axios.get('http://localhost:5003/requestlicensetype')
-            .then(res => {
-                this.requesttype = res.data
-            })
         axios.get('http://localhost:5003/prefix')
         .then(res => {
             this.prefix = res.data
@@ -252,7 +253,6 @@ export default {
         masktel: '###-#######',
         menu: false,
         company: [],
-        requesttype: [],
         province: [],
         district: [],
         subdistrict: [],
@@ -376,8 +376,8 @@ export default {
         min-height: 200px;
 
         img {
-            max-width: 200px; 
-            max-height: 200px; 
+            max-width: 200px;
+            max-height: 200px;
             margin: 7px;
         }
     }

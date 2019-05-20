@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" max-width="800px">
+    <v-dialog v-model="dialog" max-width="600px">
         <v-card>
             <v-card-title  class="font-weight-bold">แก้ไขประเภทสถานประกอบการ</v-card-title>
             <v-divider></v-divider>
@@ -36,15 +36,7 @@ const axios = require('axios')
                 })
         },
         data: () => ({
-            CT: {},
-            prefix: [],
-            userstatus: [
-                { title: 'ผู้ดูแลระบบ', value: '1' },
-                { title: 'ผู้บริหาร', value: '2' },
-                { title: 'หัวหน้ากองสาธารณสุขและสิ่งแวดล้อม', value: '3' },
-                { title: 'เจ้าหน้าที่รับคำขอรับ / ต่อใบอนุญาตประกอบกิจการ', value: '4' },
-                { title: 'เจ้าหน้าที่สำรวจสถานประกอบการ', value: '5' }
-            ]
+            CT: {}
         }),
         methods: {
             closeDialogCT () {

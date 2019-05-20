@@ -2,6 +2,9 @@
     <v-app id="layout-app" v-if="!isLoading">
         <Header @Logout="checkLogout" v-if="isLogin" />
         <Login @Login="checkLogin" v-else />
+        <br>
+        <br>
+        <br>
         <router-view></router-view>
     </v-app>
 </template>
@@ -27,16 +30,15 @@ export default {
     },
     methods: {
         checkLogin () {
-        const user = localStorage.getItem('userLogin')
-        if (user !== null && user !== undefined) {
-            this.isLogin = true
-            this.$router.push('/home')
-        }
-        this.isLoading = false
+            const user = localStorage.getItem('userLogin')
+            if (user !== null && user !== undefined) {
+                this.isLogin = true
+            }
+            this.isLoading = false
         },
         checkLogout () {
-        this.isLogin = false
-        this.$router.push('/')
+            this.isLogin = false
+            this.$router.push('/')
         }
     }
 }
@@ -45,10 +47,10 @@ export default {
 <style>
     @import url('https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700');
     body, html {
-    font-family: 'Kanit';
+        font-family: 'Kanit';
     }
     #layout-app {
-    font-family: 'Kanit';
+        font-family: 'Kanit';
     }
     .toolbar {
         background-image: linear-gradient(#2962ff, #00b0ff);
