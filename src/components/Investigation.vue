@@ -18,13 +18,18 @@
                 :headers="headers"
                 :items="request"
                 :search="search"
+                :rows-per-page-items="dropdown"
             >
                 <template slot="items" slot-scope="props">
                 <td>{{ props.item.RLnorequest }}</td>
                 <td class="text-xs-center">{{ props.item.Cname }}</td>
                 <td class="text-xs-center">{{ `${props.item.RLfname} ${props.item.RLlname}` }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.RLgetlicensedate) }}</td>
-                <td class="text-xs-center" style="max-width:170px">{{ HCISresulttoText(props.item.HCISresult) }}</td>
+                <td class="text-xs-center" style="max-width:170px">
+                    <div v-bind:class="[(props.item.HCISresult === '3') ? 'red--text' : (props.item.HCISresult === null) ? 'light-blue--text' : (props.item.HCISresult === '2') ? 'orange--text' : '']">
+                        {{ HCISresulttoText(props.item.HCISresult) }}
+                    </div>
+                </td>
                 <td class="text-xs-center" style="max-width:170px">{{ (props.item.Ufirstname === null ? '' : `${props.item.Ufirstname}  ${props.item.Ulastname}`) }}</td>
                 <td class="text-xs-center">
                     <span v-if="props.item.HCISresult == 1">
@@ -93,7 +98,7 @@
                 </td>
                 </template>
                 <v-alert slot="no-results" :value="true" color="error" icon="warning">
-                ไม่พบข้อมูล "{{ search }}" ในผลลัพธ์.
+                Your search for "{{ search }}" found no results.                
                 </v-alert>
             </v-data-table>
             </v-card>
@@ -118,24 +123,26 @@ export default {
             {
                 text: 'เลขที่คำขอ',
                 align: 'center',
-                //   sortable: false,
+                sortable: false,
                 value: 'RLnorequest'
             },
             {
                 text: 'สถานประกอบการ',
                 align: 'center',
-                //   sortable: false,
-                value: 'RLTname'
+                sortable: false,
+                value: 'Cname'
             },
             {
                 text: 'ชื่อ - สกุลผู้ยื่นคำขอ',
-                align: 'center', 
-                value: ''
+                align: 'center',
+                sortable: false,
+                value: 'RLfname'
             },
             { 
                 text: 'วันที่นัดรับใบอนุญาต',
-                align: 'center', 
-                value: 'RLdate' 
+                align: 'center',
+                sortable: false,
+                value: 'RLgetlicensedate' 
             },
             { 
                 text: 'ผลลัพธ์การสำรวจสถานประกอบการ',
@@ -145,7 +152,7 @@ export default {
             { 
                 text: 'เจ้าหน้าที่สำรวจ',
                 align: 'center', 
-                value: 'Uid' 
+                value: 'Ufirstname' 
             },
             {
                 text: 'สำรวจสถานประกอบการ', 

@@ -7,11 +7,11 @@
                     color="cyan lighten-1" 
                     dark 
                     to="/newrequestlicense"
-                    >เพิ่มข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ
+                    >เพิ่มข้อมูลคำร้องขอรับใบอนุญาตประกอบกิจการ
                 </v-btn>
             <v-card>
             <v-card-title class="font-weight-bold">
-                คำขอรับ / ต่อใบอนุญาตประกอบกิจการ
+                คำขอรับใบอนุญาตประกอบกิจการ
                 <v-spacer></v-spacer>            
                 <v-text-field
                 v-model="search"
@@ -25,12 +25,13 @@
                 :headers="headers"
                 :items="request"
                 :search="search"
+                :rows-per-page-items="dropdown"
             >
                 <template slot="items" slot-scope="props">
                 <td>{{ props.item.RLnorequest }}</td>
                 <td class="text-xs-center">{{ props.item.Cname }}</td>
                 <td class="text-xs-center">{{ `${props.item.RLfname}  ${props.item.RLlname}` }}</td>
-                <td class="text-xs-center" style="max-width:170px">{{ props.item.RLtel }}</td>
+                <td class="text-xs-center" style="max-width:170px">{{ numberToTel(props.item.RLtel) }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.RLdate) }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ `${props.item.Ufirstname}  ${props.item.Ulastname}` }}</td>
                 <td class="text-xs-center">
@@ -81,33 +82,38 @@ export default {
             {
                 text: 'เลขที่คำขอ',
                 align: 'center',
-                //   sortable: false,
+                sortable: false,
                 value: 'RLnorequest'
                 },
                 {
                 text: 'ชื่อสถานประกอบการ',
                 align: 'center', 
-                value: ''
+                sortable: false,
+                value: 'Cname'
                 },
                 { 
                 text: 'ผู้ยื่นคำขอ',
                 align: 'center', 
-                value: '' 
+                sortable: false,
+                value: 'RLfname' 
                 },
                 { 
                 text: 'เบอร์โทรศัพท์',
-                align: 'center', 
-                value: 'RTtel' 
+                align: 'center',
+                sortable: false,
+                value: 'RLtel' 
                 },
                 { 
                 text: 'วันที่ทำรายการ',
-                align: 'center', 
+                align: 'center',
+                sortable: false,
                 value: 'RLdate' 
                 },
                 { 
                 text: 'เจ้าหน้าที่รับคำขอ',
-                align: 'center', 
-                value: 'Uid' 
+                align: 'center',
+                sortable: false,
+                value: 'Ufirstname' 
                 },
                 {
                 text: 'จัดการข้อมูล', 
@@ -122,8 +128,11 @@ export default {
         this.fetchData()
     },
     methods: {
+        numberToTel (tel) {
+            return tel = tel.replace( /(\d{3})(\d{3})(\d{4})/, '$1' + '-' + '$2' + '$3' )
+        },
         convertToDate (date) {
-            return date === '0000-00-00' ? date : moment(date, 'DD-MM-YYYY').add(543, 'years').format('DD/MM/YYYY')
+            return date === '0000-00-00' ? date : moment(date, 'DD-MM-YYYY').add(543, 'years').format('DD-MM-YYYY')
         },
         fetchData () {
             axios.get('http://localhost:5003/getrequest')

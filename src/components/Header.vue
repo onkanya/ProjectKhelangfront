@@ -5,7 +5,7 @@
                 @click.stop="drawer = !drawer"
             >
             </v-toolbar-side-icon>
-            <v-toolbar-title>ระบบบริหารจัดการใบอนุญาตประกอบกิจการ</v-toolbar-title>
+            <v-toolbar-title>ระบบบริหารจัดการข้อมูลใบอนุญาตประกอบกิจการ</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
             <!-- <v-toolbar-items class="hidden-sm-and-down"> -->
@@ -70,9 +70,9 @@ export default {
                 { title: 'สำรวจสถานประกอบการ', icon: 'security', link: '/investigation', permission: [3, 4, 5]},
                 // { title: 'สำรวจสถานประกอบการ', icon: 'security', link: '/receiptinvestigation', permission: [4]},
                 { title: 'เจ้าของสถานประกอบการ', icon: 'person_pin', link: '/Owner', permission: [3, 4, 5] },
-                { title: 'สถานประกอบการ', icon: 'account_balance', link: '/company', permission: [3, 4, 5] },
-                { title: 'ใบอนุญาตประกอบกิจการ', icon: 'file_copy', link: '/licensecompany', permission: [2, 3, 4, 5] },
+                { title: 'สถานประกอบการ', icon: 'place', link: '/company', permission: [3, 4, 5] },
                 { title: 'ประเภทและค่าธรรมเนียม', icon: 'dashboard', link: '/companytype', permission: [3] },
+                { title: 'ใบอนุญาตประกอบกิจการ', icon: 'file_copy', link: '/licensecompany', permission: [2, 3, 4, 5] },
                 // { title: 'รายงานการออกใบอนุญาตประกอบกิจการ', icon: 'dashboard', link: '/', permission: [2, 3] }
             ],
             userdata: ''

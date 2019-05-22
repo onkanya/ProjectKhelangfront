@@ -37,7 +37,7 @@
                                                         </v-btn>
                                                             <span>เรียกดูประวัติการสำรวจ</span>
                                                     </v-tooltip>
-                                                    <v-tooltip top>
+                                                    <v-tooltip top v-if="Company.LCreceiptno != null">
                                                         <v-btn fab dark 
                                                         color="teal lighten-2"
                                                         router
@@ -220,6 +220,6 @@ export default {
     }
     .titlename {
         font-family: 'Kanit';
-        font-size: 28px;
+        font-size: 24pt;
     }
 </style>

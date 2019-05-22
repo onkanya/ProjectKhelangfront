@@ -9,7 +9,7 @@
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
-                                <v-flex xs12 sm6 md6>
+                                <v-flex xs12 sm7 md7>
                                     <v-select
                                         v-model="Company.CTid"          
                                         :items="types"
@@ -20,7 +20,7 @@
                                         required
                                     ></v-select>
                                 </v-flex>
-                                <v-flex xs12 sm6 md6>
+                                <v-flex xs12 sm4 md4>
                                     <v-text-field
                                         v-model="Company.LFfee"
                                         label="ค่าธรรมเนียม*"
@@ -186,10 +186,8 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-layout>
-                            <v-btn color="blue darken-1" flat :to="'/company/'">Close</v-btn>
-                            <v-btn color="blue darken-1" flat @click="submitUpdateCompany">Save</v-btn>
-                        </v-layout>
+                            <v-btn color="red darken-4" flat :to="'/company/'">ยกเลิก</v-btn>
+                            <v-btn color="blue darken-1" flat @click="submitUpdateCompany">บันทึก</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-flex>

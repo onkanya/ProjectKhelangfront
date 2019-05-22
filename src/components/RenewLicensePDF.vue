@@ -17,7 +17,7 @@
                                 {{ lc.LCnolicense }}
                             </v-flex>
                             <v-flex xs12 sm12 md4 offset-md2>
-                                Expiredate:
+                                วันที่หมดอายุเดิม:
                             </v-flex>
                             <v-flex xs12 sm12 md5 class="font-weight-bold">
                                 {{ convertToDate(lc.LCexpiredate) }}

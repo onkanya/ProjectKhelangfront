@@ -3,7 +3,7 @@
         <v-flex xs12 sm10 md8> 
         <v-card>
             <v-card-title>
-                <span class="font-weight-bold">แก้ไขข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ</span>
+                <span class="font-weight-bold">แก้ไขข้อมูลคำร้องขอรับใบอนุญาตประกอบกิจการ</span>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -13,6 +13,14 @@
                     v-model="valid"
                 >
                     <v-layout wrap>
+                        <v-flex xs12 sm12 md12>
+                            <v-text-field
+                                v-model="RequestLicense.RLnorequest"
+                                label="เลขที่คำขอ*"
+                                :rules="textRules"
+                                required
+                            ></v-text-field>
+                        </v-flex>
                         <v-flex xs12 sm6 md6>                
                             <v-autocomplete
                                 v-model="RequestLicense.Cid"
@@ -23,14 +31,6 @@
                                 :rules="textRules"
                             >
                             </v-autocomplete>
-                        </v-flex>
-                        <v-flex xs12 sm6 md6>
-                            <v-text-field
-                                v-model="RequestLicense.RLnorequest"
-                                label="เลขที่คำขอ*"
-                                :rules="textRules"
-                                required
-                            ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md6>
                             <v-text-field
@@ -182,19 +182,30 @@
                         </v-layout>
                         เลือกไฟล์
                         <div class="img-container-mean">
-                            <img
-                                v-for="(img, idx) in showPdf" s :key="idx"
-                                :src="require('../assets/pdf.png')"
-                                height="100"
-                            />
+                            <span style="width: min-content;" v-for="(img, idx) in showPdf" s :key="idx">
+                                <div v-if="img.src !== ''">
+                                    <img
+                                        :src="require('../assets/pdf.png')"
+                                        height="80"
+                                    />
+                                </div>
+                                <div v-if="img.src !== ''">
+                                    {{ img.name }}
+                                </div>
+                            </span>
                         </div>
                         ไฟล์เดิม
                         <div class="img-container-mean">
                             <a v-for="(img, idx) in getPdf" :key="idx" :href="img.RPDFpath" target="_blank">
-                                <img
-                                    :src="require('../assets/pdf.png')"
-                                    height="100"
-                                />
+                                <div>
+                                    <img
+                                        :src="require('../assets/pdf.png')"
+                                        height="80"
+                                    />
+                                </div>
+                                <div>
+                                    {{ img.RPDFname }}
+                                </div>
                             </a>
                         </div>
                     </v-layout>
@@ -203,8 +214,8 @@
             </v-card-text>
             <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat :to="'/requestlicense/'" >Close</v-btn>
-            <v-btn color="blue darken-1" flat @click="submitRequest">Save</v-btn>
+            <v-btn color="red darken-4" flat :to="'/requestlicense/'" >ยกเลิก</v-btn>
+            <v-btn color="blue darken-1" flat @click="submitRequest">บันทึก</v-btn>
             </v-card-actions>
         </v-card> 
         </v-flex>
@@ -265,7 +276,7 @@ export default {
             v => /.+@.+/.test(v) || 'กรุณากรอกรูปแบบอีเมลล์ให้ถูกต้อง'
         ],
         RLpdf: [],
-        showPdf: [],
+        showPdf: [ {src: '', name: ''} ],
         getPdf: [],
     }),
     methods: {
@@ -354,7 +365,7 @@ export default {
                     fileReader.onload = (e) => resolve(fileReader.result);
                     fileReader.readAsDataURL(e.target.files[index]);
                 });
-                arr.push(result_base64)
+                arr.push({src: result_base64, name: e.target.files[index].name})
             }
             this.showPdf = arr
         }

@@ -4,7 +4,7 @@
         <v-flex xs12>
             <v-card>
             <v-card-title class="font-weight-bold">
-                ตรวจคำขอรับ / ต่อใบอนุญาตประกอบกิจการ
+                ตรวจคำขอรับใบอนุญาตประกอบกิจการ
                 <v-spacer></v-spacer>            
                 <v-text-field
                 v-model="search"
@@ -23,7 +23,12 @@
                 <td>{{ props.item.RLnorequest }}</td>
                 <td class="text-xs-center">{{ props.item.Cname }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.RLgetlicensedate) }}</td>
-                <td class="text-xs-center" style="max-width:170px">{{ RLstatustoText(props.item.RLstatus) }}</td>
+                <!-- <td class="text-xs-center" style="max-width:170px">{{ RLstatustoText(props.item.RLstatus) }}</td> -->
+                <td class="text-xs-center" style="max-width:170px">
+                    <div v-bind:class="[(props.item.RLstatus === '2') ? 'red--text' : (props.item.RLstatus === '1') ? 'light-blue--text' : '']">
+                        {{ RLstatustoText(props.item.RLstatus) }}
+                    </div>
+                </td>
                 <td class="text-xs-center">
                     <v-tooltip top>
                         <v-btn fab dark small 
@@ -59,22 +64,24 @@ export default {
             {
                 text: 'เลขที่คำขอ',
                 align: 'center',
-                //   sortable: false,
+                sortable: false,
                 value: 'RLnorequest'
             },
             {
                 text: 'ชื่อสถานประกอบการ',
-                align: 'center', 
-                value: ''
+                align: 'center',
+                sortable: false,
+                value: 'Cname'
             },
             { 
                 text: 'วันที่นัดรับใบอนุญาต',
-                align: 'center', 
+                align: 'center',
+                sortable: false,
                 value: 'RLgetlicensedate' 
             },
             { 
                 text: 'สถานะการดำเนินการ',
-                align: 'center', 
+                align: 'center',
                 value: 'RLstatus' 
             },
             {
@@ -84,7 +91,7 @@ export default {
                 value: ''
             }
         ],
-        request: []       
+        request: [],
     }),
     created () {
         this.fetchData()

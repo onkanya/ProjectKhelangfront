@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" max-width="800px">
+    <v-dialog v-model="dialog" persistent max-width="800px">
         <v-card>
             <v-card-title class="font-weight-bold">แก้ไขข้อมูลผู้ใช้ระบบ</v-card-title>
             <v-divider></v-divider>
@@ -56,8 +56,8 @@
             <v-divider></v-divider>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="red darken-4" flat @click="closeDialog">Close</v-btn>
-                <v-btn color="blue darken-1" flat @click="SubmitUsers">Save</v-btn>
+                <v-btn color="red darken-4" flat @click="closeDialog">ยกเลิก</v-btn>
+                <v-btn color="blue darken-1" flat @click="SubmitUsers">บันทึก</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>

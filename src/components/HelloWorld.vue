@@ -16,7 +16,7 @@
 
       <v-flex mb-4>
         <h2 class="font-weight-bold mb-3" style="font-size: 30pt">
-          ยินดีต้อนรับ
+          ยินดีต้อนรับ {{ userdata }}
         </h2>        
       </v-flex>
 
@@ -34,8 +34,26 @@
 <script>
   export default {
     data: () => ({
-
-    })
+      userdata: ''
+    }),
+    mounted () {
+        let { Ustatus } = JSON.parse(localStorage.getItem('userLogin'))
+        if(Ustatus == 1) {
+          this.userdata = 'ผู้ดูแลระบบ'
+        }
+        else if(Ustatus == 2) {
+          this.userdata = 'ผู้บริหาร'
+        }
+        else if(Ustatus == 3) {
+          this.userdata = 'หัวหน้ากองสาธารณสุขและสิ่งแวดล้อม'
+        }
+        else if(Ustatus == 4) {
+          this.userdata = 'เจ้าหน้าที่รับคำขอรับใบอนุญาตประกอบกิจการ'
+        }
+        else {
+          this.userdata = 'เจ้าหน้าที่สำรวจสถานประกอบการ'
+        }
+    },
   }
 </script>
 

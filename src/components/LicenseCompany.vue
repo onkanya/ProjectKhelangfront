@@ -1,7 +1,10 @@
 <template>
-    <v-container grid-list-xl text-xs-center mt-3>
+    <v-container grid-list-md text-xs-center mt-3>
         <v-layout row wrap>
-        <v-flex xs12>
+        <v-flex xs12 sm12 md12>
+            <div v-if="userstatus != 4 && userstatus != 5">
+                <v-btn outline small color="error" @click="print">พิมพ์รายงาน</v-btn>
+            </div>
             <v-card>
             <v-card-title class="font-weight-bold">
                 ใบอนุญาตประกอบกิจการ
@@ -15,7 +18,7 @@
                 ></v-text-field>
             </v-card-title>
             <v-layout wrap>
-                <v-flex xs12 sm6 md3 offset-md2>
+                <v-flex xs12 sm12 md4 offset-md1>
                     <v-menu
                         ref="menu"
                         :close-on-content-click="false"
@@ -43,10 +46,10 @@
                         </v-date-picker>
                     </v-menu>
                 </v-flex>
-                <v-flex xs12 sm6 md2 class="mt-4">
+                <v-flex xs12 sm12 md1 class="mt-4">
                     ถึง
                 </v-flex>
-                <v-flex xs12 sm6 md3>
+                <v-flex xs12 sm12 md4>
                     <v-menu
                         ref="menu2"
                         :close-on-content-click="false"
@@ -74,12 +77,16 @@
                         </v-date-picker>
                     </v-menu>
                 </v-flex>
+                <v-flex xs12 sm12 md1 mt-3>
+                    <v-btn outline small color="normal" @click="clear">ล้างข้อมูล</v-btn>
+                </v-flex>
             </v-layout>
             <v-data-table
                 :headers="headers"
                 :items="license"
                 :search="search"
                 :rows-per-page-items="dropdown"
+                id="PrintTable"
             >
                 <template slot="items" slot-scope="props">
                     <td>{{ props.item.LCnolicense }}</td>
@@ -87,7 +94,7 @@
                     <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.LCstartdate) }}</td>
                     <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.LCexpiredate) }}</td>
                     <td class="text-xs-center" style="max-width:170px">{{ props.item.LCreceiptno }}</td>
-                    <td class="text-xs-center" style="max-width:170px">{{ formatNumber(props.item.LFfee) }}</td>
+                    <td class="text-xs-right" style="max-width:170px">{{ formatNumber(props.item.LFfee) }}</td>
                     <td class="text-xs-center">
                         <v-tooltip top>
                             <v-btn fab dark small
@@ -101,7 +108,7 @@
                         </v-tooltip>
                     </td>
                 </template>
-                <template slot="footer">
+                <template slot="footer" v-if="userstatus != 4 && userstatus != 5">
                     <td :colspan="headers.length" style="text-align: rigth;">
                         ค่าธรรมเนียมรวม <strong>{{ formatNumber(summary) }}</strong> บาท
                     </td>
@@ -138,27 +145,31 @@ export default {
             {
                 text: 'สถานประกอบการ',
                 align: 'center',
-                //   sortable: false,
+                sortable: false,
                 value: 'Cname'
             },
             {
                 text: 'วันที่ออกใบอนุญาต',
-                align: 'center', 
+                align: 'center',
+                sortable: false,
                 value: 'LCstartdate'
             },
             { 
                 text: 'วันที่ใบอนุญาตหมดอายุ',
-                align: 'center', 
+                align: 'center',
+                sortable: false,
                 value: 'LCexpiredate' 
             },
             { 
                 text: 'เลขที่ใบเสร็จ',
-                align: 'center', 
+                align: 'center',
+                sortable: false,
                 value: 'LCreceiptno' 
             },
             { 
                 text: 'ค่าธรรมเนียม (บาท)',
-                align: 'center', 
+                align: 'center',
+                sortable: false,
                 value: 'LFfee' 
             },
             {
@@ -170,12 +181,32 @@ export default {
         ],
         alllc: [],
         license: [],
-        dropdown: [ 10, 20, 30, {"text":"All","value":-1} ]
+        dropdown: [{"text":"All","value":-1} ],
+        userstatus: ''
     }),
     created () {
         this.fetchData()
     },
+    mounted () {
+        let { Ustatus } = JSON.parse(localStorage.getItem('userLogin'))
+        this.userstatus = Ustatus
+    },
     methods: {
+        clear () {
+            this.date = ''
+            this.date2 = ''
+            this.fetchData()
+        },
+        print () {
+            const printcontent = document.getElementById('PrintTable')
+            const newPage = window.open()
+            newPage.document.write(printcontent.outerHTML)
+            newPage.print()
+            newPage.close()
+        },
+        sumLFfee (fee) {
+            console.log(fee)
+        },
         onDateChange (e) {
             // this.NewRequestLicense.RLdate = e
             let d = new Date(e)
@@ -200,16 +231,17 @@ export default {
             let arr = []
             const d1 = moment(this.date).add(-543, 'years')
             const d2 = moment(this.date2).add(-543, 'years')
+            this.summary = 0
             this.alllc.forEach(e => {
                 const d = moment(e.LCexpiredate)
                 if (d >= d1 && d <= d2) {
                     arr.push(e)
+                    this.summary += Number(e.LFfee)
                 }
             })
             this.license = arr
         },
         formatNumber(num) {
-            // console.log(num)
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         },
         GetLCforPDF (id) {
@@ -259,3 +291,6 @@ export default {
     }
 }
 </script>
+<style type="text/css" media="print">
+    @page { size: landscape; }
+</style>

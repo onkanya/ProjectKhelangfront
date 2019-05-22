@@ -34,8 +34,8 @@
             <v-divider></v-divider>
             <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red darken-4" flat @click="dialog = false">Close</v-btn>
-            <v-btn color="blue darken-1" flat @click="submitLF">Save</v-btn>
+            <v-btn color="red darken-4" flat @click="dialog = false">ยกเลิก</v-btn>
+            <v-btn color="blue darken-1" flat @click="submitLF">บันทึก</v-btn>
             </v-card-actions>
         </v-card>
         </v-dialog>

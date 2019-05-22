@@ -28,7 +28,7 @@
                 :search="search"
             >
                 <template slot="items" slot-scope="props">
-                <td>{{ props.item.Cid }}</td>
+                <!-- <td>{{ props.item.Cid }}</td> -->
                 <td class="text-xs-center">{{ props.item.Cname }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ props.item.CTname }}</td>
                 <td class="text-xs-center">{{ `${props.item.Ofirstname}  ${props.item.Olastname}` }}</td>
@@ -92,30 +92,28 @@ export default {
         return {
         search: '',
         headers: [
-            {
-                text: 'เลขที่กิจการ',
-                align: 'center',
-                // sortable: false,
-                value: 'Cid'
-                },
                 { 
                 text: 'ชื่อกิจการ', 
                 value: 'Cname',
+                sortable: false,
                 align: 'center' 
                 },
                 { 
                 text: 'ประเภทกิจการ', 
                 value: 'CTname',
+                sortable: false,
                 align: 'center' 
                 },
                 { 
                 text: 'เจ้าของกิจการ', 
                 value: 'Oid',
+                sortable: false,
                 align: 'center' 
                 },
                 {
                 text: 'จัดการข้อมูล', 
                 align: 'center',
+                sortable: false,
                 value: ''
             }
         ],

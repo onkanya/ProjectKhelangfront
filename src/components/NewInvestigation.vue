@@ -16,7 +16,7 @@
                     <v-stepper-content step="1">
                         <v-card class="mb-3" height="auto" flat>
                             <v-card-title>
-                                <span class="font-weight-bold">ข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ</span>
+                                <span class="font-weight-bold">ข้อมูลคำร้องขอรับใบอนุญาตประกอบกิจการ</span>
                             </v-card-title>
                             <v-divider></v-divider>
                             <v-card-text>
@@ -26,17 +26,14 @@
                                         v-model="valid"
                                     >
                                         <v-layout wrap>
-                                            <v-flex xs12 sm6 md6>
-                                                <v-select
-                                                    v-model="RequestLicense.RLTid"                                       
-                                                    :items="requesttype"
-                                                    item-text="RLTname"
-                                                    item-value="RLTid"
-                                                    label="ประเภทคำขอ*"   
+                                            <v-flex xs12 sm6 md4>
+                                                <v-text-field
+                                                    v-model="RequestLicense.RLnorequest"
+                                                    label="เลขที่คำขอ*"
                                                     disabled
-                                                ></v-select>
+                                                ></v-text-field>
                                             </v-flex>
-                                            <v-flex xs12 sm6 md6>                
+                                            <v-flex xs12 sm6 md4>                
                                                 <v-autocomplete
                                                     v-model="RequestLicense.Cid"
                                                     :items="company"
@@ -47,14 +44,7 @@
                                                 >
                                                 </v-autocomplete>
                                             </v-flex>
-                                            <v-flex xs12 sm6 md6>
-                                                <v-text-field
-                                                    v-model="RequestLicense.RLnorequest"
-                                                    label="เลขที่คำขอ*"
-                                                    disabled
-                                                ></v-text-field>
-                                            </v-flex>
-                                            <v-flex xs12 sm6 md6>
+                                            <v-flex xs12 sm6 md4>
                                                 <v-text-field
                                                     slot="activator"
                                                     v-model="RequestLicense.RLdate"
@@ -188,7 +178,7 @@
                                             <v-btn icon>
                                                 <v-icon color="blue white--text">info</v-icon>
                                             </v-btn>
-                                            สถานะคำขอ
+                                            ตรวจสอบคำขอ
                                         </v-subheader>
                                         <v-spacer></v-spacer>
                                         <v-layout wrap>
@@ -436,13 +426,6 @@
                                             :src="img"
                                         />
                                     </div>
-                                    รูปภาพเดิม
-                                    <div class="img-container-mean">
-                                        <img
-                                            v-for="(img, idx) in getImg" s :key="idx"
-                                            :src="img.IPpath"
-                                        />
-                                    </div>
                                     <v-layout>
                                         <v-flex>
                                             <span>เลือกตำแหน่งที่ตั้งสถานประกอบการ</span>
@@ -624,10 +607,6 @@ export default {
             .then(res => {
                 this.province = res.data
             })
-        axios.get('http://localhost:5003/requestlicensetype')
-            .then(res => {
-                this.requesttype = res.data
-            })
         axios.get('http://localhost:5003/prefix')
             .then(res => {
                 this.prefix = res.data
@@ -656,7 +635,6 @@ export default {
         statusdate: null,
         menu: false,
         company: [],
-        requesttype: [],
         province: [],
         districtrequest: [],
         subdistrictrequest: [],

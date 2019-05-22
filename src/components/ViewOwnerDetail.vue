@@ -19,7 +19,7 @@
                                                     เลขบัตรประจำตัวประชาชน:
                                                 </v-flex>                       
                                                 <v-flex xs12 sm6 md7>
-                                                    {{ owner.Ocitizenid }}
+                                                    {{ numberIDcard(owner.Ocitizenid) }}
                                                 </v-flex>                       
                                                 <v-flex xs12 sm6 md3 offset-md1 class="font-weight-bold">
                                                     ชื่อ - สกุล:
@@ -75,7 +75,7 @@
                                     <div style="text-align: right;">
                                     <v-spacer></v-spacer>
                                     
-                                    <v-btn color="red darken-4" flat :to="'/company/'" >
+                                    <v-btn color="red darken-4" flat @click="$router.go(-1)" >
                                         <v-icon>arrow_back_ios</v-icon>
                                         <span>ย้อนกลับ</span>
                                     </v-btn>
@@ -131,6 +131,9 @@ export default {
                 })
     },
     methods: {
+        numberIDcard(idcard) {
+            return idcard = idcard.replace( /(\d{1})(\d{4})(\d{5})(\d{1})(\d{2})/, '$1' + '-' + '$2' + '-' + '$3' + '-' + '$4' + '-' + '$5')
+        },
         formatNumber(num) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         },
@@ -148,6 +151,6 @@ export default {
     }
     .titlename {
         font-family: 'Kanit';
-        font-size: 28px;
+        font-size: 24pt;
     }
 </style>

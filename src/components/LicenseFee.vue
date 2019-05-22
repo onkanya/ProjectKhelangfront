@@ -93,7 +93,7 @@ export default {
                 value: 'LFname'
             },
             { 
-                text: 'อัตราค่าธรรมเนียม',
+                text: 'อัตราค่าธรรมเนียม(บาท)',
                 align: 'center',
                 value: 'LFfee'
             },

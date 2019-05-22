@@ -28,9 +28,9 @@
                     :search="search"
                 >
                     <template slot="items" slot-scope="props">
-                    <td>{{ props.item.Ocitizenid }}</td>
+                    <td>{{ numberIDcard(props.item.Ocitizenid) }}</td>
                     <td class="text-xs-center">{{ `${props.item.Ofirstname}  ${props.item.Olastname}` }}</td>
-                    <td class="text-xs-center">{{ props.item.Otel }}</td>
+                    <td class="text-xs-center">{{ numberToTel(props.item.Otel) }}</td>
                     <td class="text-xs-center">
                         <v-tooltip top>
                             <v-btn fab dark small 
@@ -92,17 +92,19 @@ export default {
             {
                 text: 'รหัสประจำตัวเจ้าของกิจการ',
                 align: 'center',
-            //   sortable: false,
+                sortable: false,
                 value: 'Ocitizenid'
             },
             {
                 text: 'ชื่อ - สกุล',
-                align: 'center', 
+                align: 'center',
+                sortable: false,
                 value: 'Ofirstname'
             },
             { 
                 text: 'เบอร์โทรศัพท์',
-                align: 'center', 
+                align: 'center',
+                sortable: false,
                 value: 'Otel' 
             },
             {
@@ -132,6 +134,12 @@ export default {
             .then(res => {
                 this.owner = res.data
             })
+        },
+        numberToTel (tel) {
+            return tel = tel.replace( /(\d{3})(\d{3})(\d{4})/, '$1' + '-' + '$2' + '$3' )
+        },
+        numberIDcard(idcard) {
+            return idcard = idcard.replace( /(\d{1})(\d{4})(\d{5})(\d{1})(\d{2})/, '$1' + '-' + '$2' + '-' + '$3' + '-' + '$4' + '-' + '$5')
         },
         DeleteOwner (Oid) {
             this.$swal.fire({

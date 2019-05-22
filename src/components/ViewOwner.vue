@@ -10,7 +10,7 @@
                             เลขบัตรประจำตัวประชาชน:
                         </v-flex>                       
                         <v-flex xs12 sm6 md7>
-                            {{ owner.Ocitizenid }}
+                            {{ numberIDcard(owner.Ocitizenid) }}
                         </v-flex>                       
                         <v-flex xs12 sm6 md3 offset-md1 class="font-weight-bold">
                             ชื่อ - สกุล:
@@ -93,6 +93,9 @@ const axios = require('axios')
             }
         }),
         methods: {
+            numberIDcard(idcard) {
+                return idcard = idcard.replace( /(\d{1})(\d{4})(\d{5})(\d{1})(\d{2})/, '$1' + '-' + '$2' + '-' + '$3' + '-' + '$4' + '-' + '$5')
+            },
             closeDialog () {
                 this.$emit('closeDialog')
             },

@@ -1,9 +1,9 @@
 <template>
-    <v-layout row justify-center mt-3>  
+    <v-layout row justify-center mt-3 mb-5>  
         <v-flex xs12 sm10 md8> 
         <v-card>
             <v-card-title>
-                <span class="headline">แก้ไขข้อมูลเจ้าของสถานประกอบการ</span>
+                <div class="titlename">แก้ไขข้อมูลเจ้าของสถานประกอบการ</div>
             </v-card-title>
             <v-card-text>
             <v-container grid-list-md>
@@ -162,8 +162,8 @@
             </v-card-text>
             <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat :to="'/Owner/'" >Close</v-btn>
-            <v-btn color="blue darken-1" flat @click="submitUpdateOwner">Save</v-btn>
+            <v-btn color="red darken-4" flat :to="'/Owner/'" >ยกเลิก</v-btn>
+            <v-btn color="blue darken-1" flat @click="submitUpdateOwner">บันทึก</v-btn>
             </v-card-actions>
         </v-card> 
         </v-flex>
@@ -293,4 +293,15 @@ export default {
     }
 }
 </script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700');
+    body, html {
+        font-family: 'Kanit';
+        }
+    .titlename {
+        font-family: 'Kanit';
+        font-size: 20pt;
+    }
+</style>
 

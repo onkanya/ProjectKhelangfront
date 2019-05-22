@@ -4,7 +4,7 @@
         <v-flex xs12>
             <v-card>
             <v-card-title class="font-weight-bold">
-                คำขอรับ / ต่อใบอนุญาตประกอบกิจการ
+                ประเภทสถานประกอบการ
                 <v-spacer></v-spacer>            
                 <v-text-field
                 v-model="search"

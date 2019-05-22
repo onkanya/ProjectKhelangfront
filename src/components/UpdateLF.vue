@@ -1,5 +1,5 @@
 <template>
-    <v-layout row justify-center>
+    <v-layout row justify-center >
         <v-dialog v-model="dialog" max-width="600px" persistent>
             <v-card>
                 <v-card-title  class="font-weight-bold">แก้ไขอัตราค่าธรรมเนียม</v-card-title>
@@ -34,8 +34,8 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red darken-4" flat @click="closeDialogLF">Close</v-btn>
-                    <v-btn color="blue darken-1" flat @click="SubmitLF">Save</v-btn>
+                    <v-btn color="red darken-4" flat @click="closeDialogLF">ยกเลิก</v-btn>
+                    <v-btn color="blue darken-1" flat @click="SubmitLF">บันทึก</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>

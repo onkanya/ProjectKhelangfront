@@ -3,7 +3,7 @@
         <v-flex xs12 sm10 md8> 
         <v-card class="mb-5">
             <v-card-title>
-                <span class="font-weight-bold">เพิ่มข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ</span>
+                <span class="font-weight-bold">เพิ่มข้อมูลคำร้องขอรับใบอนุญาตประกอบกิจการ</span>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -16,8 +16,9 @@
                         <v-flex xs12 sm6 md4>
                             <v-text-field
                                 v-model="NewRequestLicense.RLnorequest"
-                                label="เลขที่คำขอ*"
+                                label="เลขที่คำขอ*" 
                                 :rules="textRules"
+                                :placeholder="'เลขที่คำขอล่าสุด ' + getRLnorequest.RLnorequest"
                                 required
                             ></v-text-field>
                         </v-flex>
@@ -370,11 +371,17 @@
                         </v-layout>
                         เลือกไฟล์
                         <div class="img-container-mean">
-                            <img
-                                v-for="(img, idx) in showPdf" s :key="idx"
-                                :src="require('../assets/pdf.png')"
-                                height="100"
-                            />
+                            <span style="width: min-content;" v-for="(img, idx) in showPdf" s :key="idx">
+                                <div v-if="img.src !== ''">
+                                    <img
+                                        :src="require('../assets/pdf.png')"
+                                        height="80"
+                                    />
+                                </div>
+                                <div v-if="img.src !== ''">
+                                    {{ img.name }}
+                                </div>
+                            </span>
                         </div>
                     </v-layout>
                 </v-form>
@@ -382,8 +389,8 @@
             </v-card-text>
             <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat :to="'/requestlicense/'" >Close</v-btn>
-            <v-btn color="blue darken-1" flat @click="submitNewRequest">Save</v-btn>
+            <v-btn color="red darken-4" flat :to="'/requestlicense/'" >ยกเลิก</v-btn>
+            <v-btn color="blue darken-1" flat @click="submitNewRequest">บันทึก</v-btn>
             </v-card-actions>
         </v-card> 
         </v-flex>
@@ -403,9 +410,9 @@ export default {
                 this.province = res.data
             })
         axios.get('http://localhost:5003/prefix')
-        .then(res => {
-            this.prefix = res.data
-        })
+            .then(res => {
+                this.prefix = res.data
+            })
         axios.get('http://localhost:5003/getcompanytype')
             .then(res => {
                 this.types = res.data
@@ -413,6 +420,10 @@ export default {
         axios.get('http://localhost:5003/getocitizenid')
             .then(res => {
                 this.ocitizenid = res.data
+            })
+        axios.get('http://localhost:5003/getlastRLnorequest')
+            .then(res => {
+                this.getRLnorequest = res.data[0]
             })
     },
     data: () => ({
@@ -434,7 +445,7 @@ export default {
         licensefee: [],
         fee: null,
         RLpdf: [],
-        showPdf: [],
+        showPdf: [ {src: '', name: ''} ],
         getPdf: [],
         NewRequestLicense: {
             RLTid: null,
@@ -507,6 +518,7 @@ export default {
             v => !!v || 'กรุณาเลขบัตรประจำตัวประชาชน',
             v => (v && v.length <= 13) || 'ตัวเลข 13 ตัวเท่านั้น'
         ],
+        getRLnorequest: ''
     }),
     methods: {
         onDateChange (e) {
@@ -708,12 +720,13 @@ export default {
             let arr = []
             for (let index = 0; index < e.target.files.length; index++) {
                 this.RLpdf.push(e.target.files[index])
+                console.log(e.target.files[index])
                 let result_base64 = await new Promise((resolve) => {
                     let fileReader = new FileReader();
                     fileReader.onload = (e) => resolve(fileReader.result);
                     fileReader.readAsDataURL(e.target.files[index]);
                 });
-                arr.push(result_base64)
+                arr.push({ src: result_base64, name: e.target.files[index].name })
             }
             this.showPdf = arr
         }

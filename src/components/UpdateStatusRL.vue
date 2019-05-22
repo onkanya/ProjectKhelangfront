@@ -3,7 +3,7 @@
         <v-flex xs12 sm10 md8> 
         <v-card>
             <v-card-title>
-                <span class="font-weight-bold">ข้อมูลคำร้องขอรับ / ต่อใบอนุญาตประกอบกิจการ</span>
+                <span class="font-weight-bold">ตรวจสอบคำขอรับใบอนุญาตประกอบกิจการ</span>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -163,10 +163,15 @@
                         ไฟล์แนบ
                         <div class="img-container-mean">
                             <a v-for="(img, idx) in getPdf" :key="idx" :href="img.RPDFpath" target="_blank">
-                                <img
-                                    :src="require('../assets/pdf.png')"
-                                    height="100"
-                                />
+                                <div>
+                                    <img
+                                        :src="require('../assets/pdf.png')"
+                                        height="80"
+                                    />
+                                </div>
+                                <div>
+                                    {{ img.RPDFname }}
+                                </div>
                             </a>
                         </div>
                     </v-layout>
@@ -174,7 +179,7 @@
                         <v-btn icon>
                             <v-icon color="blue white--text">info</v-icon>
                         </v-btn>
-                        สถานะคำขอ
+                        ตรวจสอบคำขอ
                     </v-subheader>
                     <v-spacer></v-spacer>
                     <v-layout wrap>
@@ -206,7 +211,7 @@
                                     label="วันที่นัดรับใบอนุญาตประกอบกิจการ"
                                     prepend-icon="event"
                                     ></v-text-field>
-                                <v-date-picker locale='th' @change="onDateChange">
+                                <v-date-picker locale='th' :readonly="disableWud || RequestLicense.RLstatus !== '3'" @change="onDateChange">
                                     <v-spacer></v-spacer>
                                     <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
                                     <v-btn flat color="primary" @click="$refs.menu.save(statusdate)">OK</v-btn>
@@ -226,8 +231,8 @@
             </v-card-text>
             <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat :to="'/confirmrequest/'" >Close</v-btn>
-            <v-btn color="blue darken-1" flat @click="submitRequest">Save</v-btn>
+            <v-btn color="red darken-4" flat :to="'/confirmrequest/'" >ยกเลิก</v-btn>
+            <v-btn color="blue darken-1" flat @click="submitRequest">บันทึก</v-btn>
             </v-card-actions>
         </v-card> 
         </v-flex>
@@ -274,6 +279,7 @@ export default {
         axios.get('http://localhost:5003/RLpdf/' + this.$route.params.id)
             .then(res => {
                 this.getPdf = res.data
+                console.log(this.getPdf)
             })
     },
     data: () => ({
@@ -296,11 +302,16 @@ export default {
         RLpdf: [],
         showPdf: [],
         getPdf: [],
+        disableWud: false,
         enable: false
     }),
     methods: {
         onStatusChange (val) {
-            console.log(val)
+            if(val !== "3") {
+                this.disableWud = true
+            } else {
+                this.disableWud = false
+            }
         },
         onDateChange (e) {
             let d = new Date(e)
