@@ -357,6 +357,7 @@ export default {
                 })
         },
         async addPDF (e) {
+            this.RLpdf = []
             let arr = []
             for (let index = 0; index < e.target.files.length; index++) {
                 this.RLpdf.push(e.target.files[index])

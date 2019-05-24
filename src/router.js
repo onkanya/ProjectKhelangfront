@@ -10,16 +10,19 @@ import NewCompany from "./views/NewCompany.vue"
 import UpdateCompany from "./views/UpdateCompany.vue"
 import Users from "./views/Users.vue"
 import RequestLicense from "./views/RequestLicense.vue"
+import ReportRequestLicense from "./views/ReportRequestLicense.vue"
 import NewRequestLicense from "./views/NewRequestLicense.vue"
 import UpdateRequestLicense from "./views/UpdateRequestLicense.vue"
 import ConfirmRL from "./views/ConfirmRL.vue"
 import UpdateStatusRL from "./views/UpdateStatusRL.vue"
 import Investigation from "./views/Investigation.vue"
+import ReportInvestigation from "./views/ReportInvestigation.vue"
 import ReceiptInvestigation from "./views/ReceiptInvestigation.vue"
 import NewInvestigation from "./views/NewInvestigation.vue"
 import ViewInvestigation from "./views/ViewInvestigation.vue"
 import UpdateInvestigation from "./views/UpdateInvestigation.vue"
 import LicenseCompany from "./views/LicenseCompany.vue"
+import ReportLicenseCompany from "./views/ReportLicenseCompany.vue"
 import CompanyInvestigation from "./views/CompanyInvestigation.vue"
 import ViewLC from "./views/ViewLC.vue"
 import ViewCompany from "./views/ViewCompany.vue"
@@ -83,6 +86,11 @@ export default new Router({
       component: RequestLicense
     },
     {
+      path: "/reportrequestlicense",
+      name: "reportrequestlicense",
+      component: ReportRequestLicense
+    },
+    {
       path: "/newrequestlicense",
       name: "newrequestlicense",
       component: NewRequestLicense
@@ -108,6 +116,11 @@ export default new Router({
       component: Investigation
     },
     {
+      path: "/reportinvestigation",
+      name: "reportinvestigation",
+      component: ReportInvestigation
+    },
+    {
       path: "/receiptinvestigation",
       name: "receiptinvestigation",
       component: ReceiptInvestigation
@@ -131,6 +144,11 @@ export default new Router({
       path: "/licensecompany",
       name: "licensecompany",
       component: LicenseCompany
+    },
+    {
+      path: "/reportlicensecompany",
+      name: "reportlicensecompany",
+      component: ReportLicenseCompany
     },
     {
       path: "/companyinvestigation/:id",

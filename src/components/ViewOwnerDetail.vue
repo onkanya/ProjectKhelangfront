@@ -10,7 +10,7 @@
                                         <v-flex xs12>
                                             <v-layout row wrap>
                                                 <v-flex xs12 sm12 md12>
-                                                    <div class="titlename">ข้อมูลเจ้าของสถานประกอบการ: {{ `${owner.Prefixname}${owner.Ofirstname}    ${owner.Olastname}` }}</div>
+                                                    <div class="titlename">ข้อมูลเจ้าของสถานประกอบการ: {{ `${owner.Prefixname}${owner.Ofirstname}    ${owner.Olastname}` }}</div>                                                    </div>
                                                 </v-flex>
                                             </v-layout>
                                             <v-divider></v-divider>
@@ -151,6 +151,6 @@ export default {
     }
     .titlename {
         font-family: 'Kanit';
-        font-size: 24pt;
+        font-size: 22pt;
     }
 </style>

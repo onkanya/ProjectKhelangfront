@@ -2,9 +2,12 @@
     <v-container grid-list-md text-xs-center mt-3>
         <v-layout row wrap>
         <v-flex xs12 sm12 md12>
+            <div v-if="userstatus != 4 && userstatus != 5">
+                <v-btn outline small color="error" @click="print">พิมพ์รายงาน</v-btn>
+            </div>
             <v-card>
             <v-card-title class="font-weight-bold">
-                ใบอนุญาตประกอบกิจการ
+                รายงานใบอนุญาตประกอบกิจการ
                 <v-spacer></v-spacer>            
                 <v-text-field
                 v-model="search"
@@ -83,6 +86,8 @@
                 :items="license"
                 :search="search"
                 :rows-per-page-items="dropdown"
+                hide-actions
+                id="PrintTable"
             >
                 <template slot="items" slot-scope="props">
                     <td>{{ props.item.LCnolicense }}</td>
@@ -91,18 +96,6 @@
                     <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.LCexpiredate) }}</td>
                     <td class="text-xs-center" style="max-width:170px">{{ props.item.LCreceiptno }}</td>
                     <td class="text-xs-right" style="max-width:170px">{{ formatNumber(props.item.LFfee) }}</td>
-                    <!-- <td class="text-xs-center">
-                        <v-tooltip top>
-                            <v-btn fab dark small
-                                color="blue lighten-1"
-                                slot="activator"
-                                @click="GetLCforPDF(props.item.LCid)"
-                            >
-                                <v-icon dark>list</v-icon>
-                            </v-btn>
-                            <span>ออกใบอนุญาต</span>
-                        </v-tooltip>
-                    </td> -->
                 </template>
                 <template slot="footer" v-if="userstatus != 4 && userstatus != 5">
                     <td :colspan="headers.length" style="text-align: rigth;">
@@ -168,12 +161,6 @@ export default {
                 sortable: false,
                 value: 'LFfee' 
             },
-            {
-                text: 'ใบอนุญาต', 
-                align: 'center',
-                sortable: false,
-                value: ''
-            }
         ],
         alllc: [],
         license: [],
@@ -192,6 +179,13 @@ export default {
             this.date = ''
             this.date2 = ''
             this.fetchData()
+        },
+        print () {
+            const printcontent = document.getElementById('PrintTable')
+            const newPage = window.open()
+            newPage.document.write(printcontent.outerHTML)
+            newPage.print()
+            newPage.close()
         },
         sumLFfee (fee) {
             console.log(fee)

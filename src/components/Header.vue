@@ -65,14 +65,17 @@ export default {
             items: [
                 { title: 'หน้าแรก', icon: 'home', link: '/home', permission: [0] },
                 { title: 'ผู้ใช้ระบบ', icon: 'people', link: '/users', permission: [1] },
-                { title: 'คำขอรับ / ต่อใบอนุญาตประกอบกิจการ', icon: 'list', link: '/requestlicense', permission: [3, 4] },
+                { title: 'คำขอรับใบอนุญาตประกอบกิจการ', icon: 'list', link: '/requestlicense', permission: [3, 4] },
                 { title: 'ตรวจสอบคำขอรับใบอนุญาต', icon: 'mobile_friendly', link: '/confirmrequest', permission: [3, 4]},
                 { title: 'สำรวจสถานประกอบการ', icon: 'security', link: '/investigation', permission: [3, 4, 5]},
                 // { title: 'สำรวจสถานประกอบการ', icon: 'security', link: '/receiptinvestigation', permission: [4]},
                 { title: 'เจ้าของสถานประกอบการ', icon: 'person_pin', link: '/Owner', permission: [3, 4, 5] },
                 { title: 'สถานประกอบการ', icon: 'place', link: '/company', permission: [3, 4, 5] },
                 { title: 'ประเภทและค่าธรรมเนียม', icon: 'dashboard', link: '/companytype', permission: [3] },
-                { title: 'ใบอนุญาตประกอบกิจการ', icon: 'file_copy', link: '/licensecompany', permission: [2, 3, 4, 5] },
+                { title: 'ใบอนุญาตประกอบกิจการ', icon: 'file_copy', link: '/licensecompany', permission: [3, 4, 5] },
+                { title: 'รายงานใบอนุญาตประกอบกิจการ', icon: 'table_chart', link: '/reportlicensecompany', permission: [2, 3] },
+                { title: 'รายงานคำขอรับใบอนุญาต', icon: 'table_chart', link: '/reportrequestlicense', permission: [2, 3] },
+                { title: 'รายงานสำรวจสถานประกอบการ', icon: 'table_chart', link: '/reportinvestigation', permission: [2, 3] },
                 // { title: 'รายงานการออกใบอนุญาตประกอบกิจการ', icon: 'dashboard', link: '/', permission: [2, 3] }
             ],
             userdata: ''

@@ -523,7 +523,7 @@
                     <v-stepper-content step="4">
                         <v-card class="mb-3" height="auto" flat>
                             <v-card-title>
-                                <span class="font-weight-bold">ข้อมูลด้านการสุขาภิบาลสิ่งแวดล้อมและความปลอดภัย</span>
+                                <span class="font-weight-bold">ผลการสำรวจสถานประกอบการและข้อแนะนำ</span>
                             </v-card-title>
                             <v-divider></v-divider>
                             <v-card-text>

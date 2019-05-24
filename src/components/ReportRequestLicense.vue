@@ -2,13 +2,16 @@
     <v-container grid-list-xl text-xs-center>
         <v-layout row wrap>
         <v-flex xs12>
-            <v-btn 
+            <!-- <v-btn 
                 slot="activator" 
                 color="cyan lighten-1" 
                 dark 
                 to="/newrequestlicense"
                 >เพิ่มข้อมูลคำร้องขอรับใบอนุญาตประกอบกิจการ
-            </v-btn>
+            </v-btn> -->
+            <div v-if="userstatus != 4 && userstatus != 5">
+                <v-btn outline small color="error" @click="print">พิมพ์รายงาน</v-btn>
+            </div>
             <v-card>
             <v-card-title class="font-weight-bold">
                 คำขอรับใบอนุญาตประกอบกิจการ
@@ -26,6 +29,8 @@
                 :items="request"
                 :search="search"
                 :rows-per-page-items="dropdown"
+                id="PrintTable"
+                hide-actions
             >
                 <template slot="items" slot-scope="props">
                 <td>{{ props.item.RLnorequest }}</td>
@@ -34,7 +39,7 @@
                 <td class="text-xs-center" style="max-width:170px">{{ numberToTel(props.item.RLtel) }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.RLdate) }}</td>
                 <td class="text-xs-center" style="max-width:170px">{{ `${props.item.Ufirstname}  ${props.item.Ulastname}` }}</td>
-                <td class="text-xs-center">
+                <!-- <td class="text-xs-center">
                     <v-tooltip top>
                         <v-btn fab dark small 
                         color="red darken-1"
@@ -60,7 +65,7 @@
                         </v-btn>
                         <span>แก้ไขข้อมูล</span>
                     </v-tooltip>
-                </td>
+                </td> -->
                 </template>
                 <v-alert slot="no-results" :value="true" color="error" icon="warning">
                 Your search for "{{ search }}" found no results.
@@ -115,12 +120,6 @@ export default {
                 sortable: false,
                 value: 'Ufirstname' 
                 },
-                {
-                text: 'จัดการข้อมูล', 
-                align: 'center',
-                sortable: false,
-                value: ''
-            }
         ],
         request: []       
     }),
@@ -128,6 +127,13 @@ export default {
         this.fetchData()
     },
     methods: {
+        print () {
+            const printcontent = document.getElementById('PrintTable')
+            const newPage = window.open()
+            newPage.document.write(printcontent.outerHTML)
+            newPage.print()
+            newPage.close()
+        },
         numberToTel (tel) {
             return tel = tel.replace( /(\d{3})(\d{3})(\d{4})/, '$1' + '-' + '$2' + '$3' )
         },
@@ -169,3 +175,6 @@ export default {
     }
 }
 </script>
+<style type="text/css" media="print">
+    @page { size: landscape; }
+</style>
