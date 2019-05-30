@@ -505,7 +505,8 @@
                                             <td>{{ child.name }}</td>
                                             <td>
                                                 <v-checkbox
-                                                    :input-value="hci[child.checked] == 1"
+                                                    :input-value="Number(hci[child.checked]) == 1"
+                                                    @change="onCheckChange($event, child.checked)"
                                                     primary
                                                     hide-details
                                                     :disabled="child.checked === null"
@@ -759,6 +760,9 @@ export default {
         hci: {}
     }),
     methods: {
+        onCheckChange (e, name) {
+            this.hci[name] = e ? 1 : 0
+        },
         printPDF(){
             var docDefinition = {
                 content: [
@@ -929,6 +933,7 @@ export default {
                 })
         },
         async addImage (e) {
+            this.HCIimg = []
             let arr = []
             for (let index = 0; index < e.target.files.length; index++) {
                 this.HCIimg.push(e.target.files[index])

@@ -91,7 +91,7 @@
                     <td class="text-xs-center" style="max-width:170px">{{ convertToDate(props.item.LCexpiredate) }}</td>
                     <td class="text-xs-center" style="max-width:170px">{{ props.item.LCreceiptno }}</td>
                     <td class="text-xs-right" style="max-width:170px">{{ formatNumber(props.item.LFfee) }}</td>
-                    <!-- <td class="text-xs-center">
+                    <td class="text-xs-center">
                         <v-tooltip top>
                             <v-btn fab dark small
                                 color="blue lighten-1"
@@ -102,7 +102,7 @@
                             </v-btn>
                             <span>ออกใบอนุญาต</span>
                         </v-tooltip>
-                    </td> -->
+                    </td>
                 </template>
                 <template slot="footer" v-if="userstatus != 4 && userstatus != 5">
                     <td :colspan="headers.length" style="text-align: rigth;">

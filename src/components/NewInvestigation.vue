@@ -504,6 +504,7 @@
                                                     :input-value="HCIenvironment[child.checked]"
                                                     primary
                                                     hide-details
+                                                    v-model="HCIenvironment[child.checked]"
                                                     :disabled="child.checked === null"
                                                 ></v-checkbox>
                                             </td>
@@ -756,6 +757,10 @@ export default {
         }
     }),
     methods: {
+        onCheckedChange (e, name) {
+            console.log(e)
+            console.log(name)
+        },
         toggleAll () {
             this.HCIErules.forEach(e => {
                 e.children.forEach(el => {
